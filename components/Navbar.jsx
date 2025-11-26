@@ -8,11 +8,15 @@ import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/health-guide", label: "Health guide" },
+  { href: "/glp1-science", label: "GLP-1 Science" },
   { href: "/program", label: "Program" },
   { href: "/pricing", label: "Pricing" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
+
 
 export default function Navbar() {
   const pathname = usePathname();

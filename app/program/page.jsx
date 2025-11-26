@@ -1,199 +1,189 @@
-"use client";
-
+// app/program/page.jsx
 import Link from "next/link";
-
-const pillars = [
-  {
-    title: "Screening first, action second",
-    text: "You start with a short eligibility quiz that surfaces basic medical and lifestyle risks before you dive into routines.",
-  },
-  {
-    title: "Weekly focus, not daily chaos",
-    text: "Each week highlights 1–2 key levers (sleep, movement, timing, appetite) so you’re never trying to fix everything at once.",
-  },
-  {
-    title: "Gentle, repeatable routines",
-    text: "The program is built around realistic actions that can live next to work, family, and irregular schedules.",
-  },
-];
-
-const weeklyStructure = [
-  { day: "Monday", focus: "Sleep reset", detail: "Bedtime window + wake time anchor." },
-  { day: "Tuesday", focus: "Light movement", detail: "Low-impact movement blocks you can actually keep." },
-  { day: "Wednesday", focus: "Meal rhythm", detail: "Spacing, timing, and simple guardrails." },
-  { day: "Thursday", focus: "Evening structure", detail: "Shut-down routine to avoid late-night spirals." },
-  { day: "Friday", focus: "Check-in + reflection", detail: "What felt easy, what felt heavy, what to adjust." },
-  { day: "Saturday", focus: "Recovery", detail: "Deload, gentle mobility, and mental reset." },
-  { day: "Sunday", focus: "Prep + reset", detail: "Plan the next week without perfection pressure." },
-];
-
-const tracks = [
-  {
-    label: "Track A · Steady",
-    level: "For beginners or restarts",
-    text: "Low-friction routines focused on sleep rhythm, steps, and basic food timing.",
-    bullets: ["10–15 min movement blocks", "Simple meal timing anchors", "Screen-time limits before bed"],
-  },
-  {
-    label: "Track B · Structured",
-    level: "For people already moving",
-    text: "Adds slightly higher step goals, more structure on meals, and deeper reflections.",
-    bullets: ["Goal-based step ranges", "Refined timing around key meals", "Weekly progress review prompts"],
-  },
-  {
-    label: "Track C · Focused",
-    level: "For stable, low-risk profiles",
-    text: "Focus on optimization without crash behavior, still within clear safety boundaries.",
-    bullets: ["Layered habits (stacking)", "Energy + hunger pattern tracking", "Tighter feedback loops each week"],
-  },
-];
 
 export default function ProgramPage() {
   return (
     <div className="min-h-screen transition-colors">
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-10">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-light-primary dark:text-sky-300">
-              Program Overview
+      {/* HERO */}
+      <section className="mx-auto max-w-6xl px-4 pt-12 pb-10 md:pt-20">
+        <div className="grid gap-8 md:grid-cols-[1.4fr,1fr] items-center">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600 dark:text-sky-300">
+              FITYOU PROGRAM
             </p>
-            <h1 className="mt-2 text-3xl md:text-4xl font-bold text-light-primary dark:text-slate-50">
-              A weekly structure that respects your health limits.
+            <h1 className="mt-3 text-3xl md:text-4xl font-bold text-light-primary dark:text-slate-50">
+              A weekly structure that fits real life, not a perfect schedule.
             </h1>
-            <p className="mt-3 text-sm md:text-base text-light-primary dark:text-slate-300">
-              Fityou doesn’t throw you into a “challenge.” It gives you a clear,
-              medically-aware sequence of weeks that you can actually live with.
+            <p className="mt-4 text-sm md:text-[15px] text-slate-600 dark:text-slate-300 max-w-xl">
+              Fityou is designed for people who want to improve their weight and
+              energy without extreme diets or all-or-nothing workout phases.
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
+
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/quiz"
                 className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400"
               >
                 Take the eligibility quiz
               </Link>
-              <span className="text-xs text-light-primary dark:text-slate-400">
-                No payment needed to view your starting point.
-              </span>
-            </div>
-          </div>
-
-          <div className="w-full max-w-sm rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
-              Inside a sample week
-            </p>
-            <ul className="mt-3 space-y-3 text-xs text-slate-700 dark:text-slate-200">
-              <li>• 5–20 minute actions, not 90-minute punishments</li>
-              <li>• Focus on sleep, movement, appetite, and timing</li>
-              <li>• Written prompts to catch early warning signs</li>
-              <li>• Hard “no-go” zones for high-risk situations</li>
-            </ul>
-            <div className="mt-4 rounded-2xl bg-sky-50 p-3 text-[11px] text-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
-              Fityou is built to complement professional care, not replace it.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3 pillars */}
-      <section className="mx-auto max-w-6xl px-4 pb-14">
-        <div className="grid gap-5 md:grid-cols-3">
-          {pillars.map((p) => (
-            <div
-              key={p.title}
-              className="rounded-3xl border border-slate-200 bg-white p-5 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900"
-            >
-              <h3 className="text-sm font-semibold text-light-primary dark:text-slate-50">
-                {p.title}
-              </h3>
-              <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">{p.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Weekly structure timeline */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-sm">
-            <h2 className="text-xl md:text-2xl font-semibold text-light-primary dark:text-slate-50">
-              Weekly rhythm, clearly defined.
-            </h2>
-            <p className="mt-3 text-sm text-light-primary dark:text-slate-300">
-              Your week is broken into small focus blocks so your brain knows
-              exactly what “success” means on each day.
-            </p>
-          </div>
-
-          <div className="flex-1 grid gap-4 md:grid-cols-2">
-            {weeklyStructure.map((d) => (
-              <div
-                key={d.day}
-                className="rounded-2xl border border-slate-200 bg-white p-4 text-xs shadow-sm dark:border-slate-800 dark:bg-slate-900"
+              <Link
+                href="/pricing"
+                className="text-sm font-medium text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-200"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
-                  {d.day}
+                View pricing →
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-3xl bg-white border border-slate-200 p-5 shadow-sm text-sm dark:bg-slate-900 dark:border-slate-800">
+            <h2 className="text-sm font-semibold text-light-primary dark:text-slate-50">
+              What you get inside Fityou
+            </h2>
+            <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              <li>• A weekly focus you can remember</li>
+              <li>• Small daily actions instead of huge checklists</li>
+              <li>• Gentle tracking: sleep, movement, timing, cravings</li>
+              <li>• Clear signals when you should slow down</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* WEEKLY STRUCTURE GRID */}
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+          <h2 className="text-xl md:text-2xl font-semibold text-light-primary dark:text-slate-50">
+            Your week inside Fityou
+          </h2>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 max-w-xl">
+            Each day has a single priority, so you’re never guessing what to
+            focus on — even when life gets messy.
+          </p>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-4 text-xs">
+            {[
+              { day: "Mon", focus: "Sleep reset", detail: "Set a realistic bedtime window and wake anchor." },
+              { day: "Tue", focus: "Light movement", detail: "Short walks, mobility or low-impact activity." },
+              { day: "Wed", focus: "Meal rhythm", detail: "Stabilise meal timing instead of obsessing over perfection." },
+              { day: "Thu", focus: "Evening structure", detail: "Reduce chaotic late-night scrolling and snacking." },
+              { day: "Fri", focus: "Check-in & reflection", detail: "Note what helped and what hurt your energy." },
+              { day: "Sat", focus: "Recovery routine", detail: "De-stress with low-effort recovery, not all-out training." },
+              { day: "Sun", focus: "Prep + reset", detail: "Light planning so Monday doesn’t feel like a shock." },
+            ].map((w) => (
+              <div
+                key={w.day}
+                className="rounded-2xl bg-slate-50 border border-slate-200 p-4 dark:bg-slate-800 dark:border-slate-700"
+              >
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  {w.day}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-light-primary dark:text-slate-50">
-                  {d.focus}
+                  {w.focus}
                 </p>
-                <p className="mt-1 text-slate-600 dark:text-slate-300">{d.detail}</p>
+                <p className="mt-1 text-[11px] text-slate-600 dark:text-slate-300">
+                  {w.detail}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Tracks */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="rounded-3xl border border-slate-200 bg-white  p-6 md:p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-xl md:text-2xl font-semibold  dark:text-slate-50">
-                Tracks that match your current capacity.
-              </h2>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                Fityou adjusts intensity based on your risk profile and life
-                bandwidth — not on how “motivated” you feel on a random Sunday.
-              </p>
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs">
-              You’re never locked into a track forever. As your situation changes,
-              your track can be adjusted.
-            </p>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {tracks.map((t) => (
+      {/* WHAT'S INCLUDED */}
+      <section className="mx-auto max-w-6xl px-4 pb-16 grid gap-6 md:grid-cols-[1.3fr,1fr]">
+        <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+          <h2 className="text-lg md:text-xl font-semibold text-light-primary dark:text-slate-50">
+            What’s actually inside the program
+          </h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 text-sm">
+            {[
+              {
+                title: "Guided weekly themes",
+                text: "You’re not hit with 20 new habits at once. Each theme builds on the last.",
+              },
+              {
+                title: "Low-friction actions",
+                text: "Actions that you can complete even on bad days, so you keep momentum.",
+              },
+              {
+                title: "Simple tracking views",
+                text: "A quick view of sleep, movement and timing trends over weeks — not minute-by-minute perfection.",
+              },
+              {
+                title: "Built-in pause points",
+                text: "Prompts that remind you to slow down or get help when your inputs look worrying.",
+              },
+            ].map((item) => (
               <div
-                key={t.label}
-                className="flex flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs dark:border-slate-700 dark:bg-slate-800"
+                key={item.title}
+                className="rounded-2xl bg-slate-50 border border-slate-200 p-4 dark:bg-slate-800 dark:border-slate-700"
               >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
-                  {t.label}
+                <h3 className="text-sm font-semibold text-light-primary dark:text-slate-50">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                  {item.text}
                 </p>
-                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{t.level}</p>
-                <p className="mt-2 text-slate-700 dark:text-slate-200">{t.text}</p>
-                <ul className="mt-3 space-y-1 text-slate-600 dark:text-slate-300">
-                  {t.bullets.map((b) => (
-                    <li key={b}>• {b}</li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <p className="text-slate-500 dark:text-slate-400">
-              Fityou is not a medical tool. Any concerns are redirected toward professional advice.
+        <div className="rounded-3xl bg-sky-50/80 border border-sky-200 p-6 text-sm text-slate-700 dark:bg-sky-900/30 dark:border-sky-800 dark:text-slate-200">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
+            NOT A “PERFECT DAY” APP
+          </p>
+          <p className="mt-2 text-xs">
+            Fityou is designed for missed workouts, late nights, stressful weeks
+            and imperfect humans. The structure bends; it doesn’t break.
+          </p>
+          <Link
+            href="/faq"
+            className="mt-4 inline-flex text-xs font-semibold text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-200"
+          >
+            Read FAQs about the program →
+          </Link>
+        </div>
+      </section>
+
+      {/* SAFETY NOTE + CTA */}
+      <section className="mx-auto max-w-6xl px-4 pb-20 grid gap-6 md:grid-cols-[1.2fr,1fr]">
+        <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
+          <h2 className="text-lg md:text-xl font-semibold text-light-primary dark:text-slate-50">
+            Safety boundaries built into the experience
+          </h2>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            Some people should not start a weight-focused routine without
+            professional clearance. Fityou’s quiz is designed to surface some of
+            those situations.
+          </p>
+          <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+            <li>• Recent serious medical events</li>
+            <li>• Pregnancy or immediate postpartum</li>
+            <li>• History of eating disorders</li>
+            <li>• Unexplained chest pain or fainting</li>
+          </ul>
+          <p className="mt-3 text-[11px] text-slate-500 dark:text-slate-400">
+            If your inputs suggest higher risk, Fityou recommends talking to a
+            doctor instead of continuing into the program structure.
+          </p>
+        </div>
+
+        <div className="rounded-3xl bg-slate-900 text-slate-50 p-6 md:p-8 flex flex-col justify-between dark:bg-slate-950">
+          <div>
+            <h2 className="text-lg font-semibold">Start with clarity, not pressure.</h2>
+            <p className="mt-2 text-sm text-slate-200">
+              Take the free eligibility quiz. If it suggests you should pause
+              and seek medical advice, that’s a win — you just avoided the wrong
+              kind of program.
             </p>
-            <Link
-              href="/pricing"
-              className="rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-xs font-medium text-sky-700 hover:bg-sky-100 dark:border-sky-900 dark:bg-sky-900/30 dark:text-sky-300"
-            >
-              See pricing & access options →
-            </Link>
           </div>
+          <Link
+            href="/quiz"
+            className="mt-5 inline-block rounded-full bg-sky-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-sky-400"
+          >
+            Begin the free check →
+          </Link>
         </div>
       </section>
     </div>
