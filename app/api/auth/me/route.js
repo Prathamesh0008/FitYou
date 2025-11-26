@@ -1,0 +1,25 @@
+import jwt from "jsonwebtoken";
+import { localDB } from "@/lib/localDB";
+
+export async function GET(req) {
+  try {
+    const token = req.cookies.get("token")?.value;
+    if (!token) return Response.json({ user: null });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev-secret");
+
+    const user = localDB.users.find((u) => u.id === decoded.id);
+    if (!user) return Response.json({ user: null });
+
+    return Response.json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch {
+    return Response.json({ user: null });
+  }
+}
