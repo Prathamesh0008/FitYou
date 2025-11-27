@@ -67,7 +67,8 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-12 md:flex-row md:items-center md:pt-20">
         {/* Decorative hero background shape */}
-        <div className="pointer-events-none absolute inset-y-6 right-0 -z-10 ]    dark:bg-slate-900/70" />
+       <div className="pointer-events-none absolute inset-y-6 right-0 -z-10 dark:bg-slate-900/70" />
+
 
         {/* LEFT SIDE */}
         <div className="w-full md:w-1/2 relative z-10">
@@ -557,11 +558,8 @@ export default function HomePage() {
     </div>
 
     {/* RIGHT – CALCULATOR */}
-    <div
-      className="rounded-2xl p-8 shadow-xl backdrop-blur-xl 
-      bg-white dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 
-      animate-[fadeUp_1.1s_ease-out] opacity-0"
-      style={{ animationFillMode: "forwards" }}
+    <div className="rounded-2xl p-8 shadow-xl backdrop-blur-xl bg-white dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700 animate-[fadeUp_1.1s_ease-out] opacity-0"
+
     >
       {/* WEIGHT DROPDOWN */}
       <div>
