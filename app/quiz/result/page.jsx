@@ -37,15 +37,15 @@ export default function QuizResultPage() {
         <h1 className="mt-2 text-3xl font-bold text-light-primary dark:text-slate-50">
           Your eligibility snapshot.
         </h1>
-        <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+        <p className="mt-3 text-sm text-light-primary dark:text-slate-300">
           This is not a diagnosis. It’s a simple risk-oriented summary based on
           the limited information you shared.
         </p>
       </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-20 space-y-6">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="text-lg font-semibold text-light-primary dark:text-slate-50">
+        <div className="rounded-3xl border border-slate-200 bg-white p-6  text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h2 className="text-lg font-semibold dark:text-slate-50">
             Basic indicators
           </h2>
 
@@ -54,7 +54,7 @@ export default function QuizResultPage() {
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Height
               </p>
-              <p className="mt-1 text-sm font-semibold text-light-primary dark:text-slate-50">
+              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
                 {height ? `${height} cm` : "Not provided"}
               </p>
             </div>
@@ -62,7 +62,7 @@ export default function QuizResultPage() {
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Weight
               </p>
-              <p className="mt-1 text-sm font-semibold text-light-primary dark:text-slate-50">
+              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
                 {weight ? `${weight} kg` : "Not provided"}
               </p>
             </div>
@@ -70,7 +70,7 @@ export default function QuizResultPage() {
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Approx. BMI
               </p>
-              <p className="mt-1 text-sm font-semibold text-light-primary dark:text-slate-50">
+              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
                 {bmi ?? "—"}
               </p>
               <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
@@ -81,7 +81,7 @@ export default function QuizResultPage() {
         </div>
 
         <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="text-lg font-semibold text-light-primary dark:text-slate-50">
+          <h2 className="text-lg font-semibold  dark:text-slate-50">
             Our suggestion based on this snapshot
           </h2>
 

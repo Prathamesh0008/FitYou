@@ -14,7 +14,7 @@ export default function HowItWorksPage() {
             <h1 className="mt-3 text-3xl md:text-4xl font-bold text-light-primary dark:text-slate-50">
               Simple, structured, and medically aware from day one.
             </h1>
-            <p className="mt-4 text-sm md:text-[15px] text-slate-600 dark:text-slate-300 max-w-xl">
+            <p className="mt-4 text-sm md:text-[15px] text-light-primary dark:text-slate-300 max-w-xl">
               Fityou isn’t a crash transformation program. It’s a guided system
               that screens basic health risks, then walks you into better routines
               one week at a time.
@@ -37,7 +37,7 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="rounded-3xl bg-white border border-slate-200 p-5 shadow-sm dark:bg-slate-900 dark:border-slate-800">
-            <h2 className="text-sm font-semibold text-light-primary dark:text-slate-50">
+            <h2 className="text-sm font-semibold  dark:text-slate-50">
               In 3 guided phases
             </h2>
             <ol className="mt-3 space-y-3 text-xs text-slate-600 dark:text-slate-300">
@@ -91,7 +91,7 @@ export default function HowItWorksPage() {
       {/* TIMELINE SECTION */}
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
-          <h2 className="text-xl md:text-2xl font-semibold text-light-primary dark:text-slate-50">
+          <h2 className="text-xl md:text-2xl font-semibold  dark:text-slate-50">
             Your first 4 weeks inside Fityou
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 max-w-2xl">
@@ -162,7 +162,7 @@ export default function HowItWorksPage() {
       {/* SAFETY & LIMITS */}
       <section className="mx-auto max-w-6xl px-4 pb-20 grid gap-6 md:grid-cols-[1.3fr,1fr]">
         <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
-          <h2 className="text-lg md:text-xl font-semibold text-light-primary dark:text-slate-50">
+          <h2 className="text-lg md:text-xl font-semibold  dark:text-slate-50">
             Built with boundaries, not just ambition
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
@@ -186,7 +186,7 @@ export default function HowItWorksPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
             QUICK SUMMARY
           </p>
-          <ul className="mt-3 space-y-2 text-xs">
+          <ul className="mt-3 space-y-2 text-xs text-light-primary">
             <li>✓ Start only after a simple health screen</li>
             <li>✓ Weekly themes that don’t overwhelm you</li>
             <li>✓ Designed around real-life constraints</li>

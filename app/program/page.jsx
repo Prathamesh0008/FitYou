@@ -14,7 +14,7 @@ export default function ProgramPage() {
             <h1 className="mt-3 text-3xl md:text-4xl font-bold text-light-primary dark:text-slate-50">
               A weekly structure that fits real life, not a perfect schedule.
             </h1>
-            <p className="mt-4 text-sm md:text-[15px] text-slate-600 dark:text-slate-300 max-w-xl">
+            <p className="mt-4 text-sm md:text-[15px] text-light-primary dark:text-slate-300 max-w-xl">
               Fityou is designed for people who want to improve their weight and
               energy without extreme diets or all-or-nothing workout phases.
             </p>
@@ -36,7 +36,7 @@ export default function ProgramPage() {
           </div>
 
           <div className="rounded-3xl bg-white border border-slate-200 p-5 shadow-sm text-sm dark:bg-slate-900 dark:border-slate-800">
-            <h2 className="text-sm font-semibold text-light-primary dark:text-slate-50">
+            <h2 className="text-sm font-semibold  dark:text-slate-50">
               What you get inside Fityou
             </h2>
             <ul className="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-300">
@@ -52,7 +52,7 @@ export default function ProgramPage() {
       {/* WEEKLY STRUCTURE GRID */}
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="rounded-3xl bg-white border border-slate-200 p-6 md:p-8 shadow-sm dark:bg-slate-900 dark:border-slate-800">
-          <h2 className="text-xl md:text-2xl font-semibold text-light-primary dark:text-slate-50">
+          <h2 className="text-xl md:text-2xl font-semibold  dark:text-slate-50">
             Your week inside Fityou
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 max-w-xl">
