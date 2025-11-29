@@ -2,7 +2,6 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
 import { Laila } from "next/font/google";
@@ -12,6 +11,7 @@ export const metadata = {
   description: "Safer weight management with medical awareness.",
 };
 
+// Load Laila font
 const laila = Laila({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -23,21 +23,29 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={laila.variable}     // ✅ FONT VARIABLE SET HERE
+      className={laila.variable} // Apply font variable
     >
-      <body className="font-laila min-h-screen transition-colors"> {/* ✅ APPLY FONT HERE */}
-        <ThemeProvider>
-          <AuthProvider>
-            <RouteLoader />
-            <Navbar />
+      <body
+        className="
+          font-laila 
+          min-h-screen 
+          bg-white 
+          text-[#1A1A1A] 
+          transition-all
+        "
+      >
+        <AuthProvider>
+          <RouteLoader />
+          <Navbar />
 
-            <PageTransition>
-              <main className="min-h-[80vh]">{children}</main>
-            </PageTransition>
+          <PageTransition>
+            <main>
+              {children}
+            </main>
+          </PageTransition>
 
-            <Footer />
-          </AuthProvider>
-        </ThemeProvider>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

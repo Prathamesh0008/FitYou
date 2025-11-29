@@ -1,6 +1,8 @@
 "use client";
 
+import HealthGuide from "@/components/HealthGuide";
 import Splash from "@/components/Splash";
+import StepsSection from "@/components/StepsSection";
 import Link from "next/link";
 
 const benefits = [
@@ -57,44 +59,36 @@ const readinessTrends = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen transition-colors relative overflow-hidden">
+    <main className="min-h-screen relative overflow-hidden bg-[#F7FAFF] text-[#0D4F8B] font-laila">
       <Splash />
-
-      {/* GLOBAL BACKGROUND ORBS / GRADIENTS */}
-      <div className="pointer-events-none absolute -top-32 -left-20 h-72 w-72 rounded-full bg-sky-300/40 blur-3xl dark:bg-sky-500/10" />
-      <div className="pointer-events-none absolute -bottom-32 -right-10 h-80 w-80 rounded-full bg-indigo-300/40 blur-3xl dark:bg-indigo-500/10" />
-      <div className="hidden" />
 
       {/* HERO */}
       <section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-12 md:flex-row md:items-center md:pt-20">
-        {/* Decorative hero background shape */}
-        <div className="pointer-events-none absolute inset-y-6 right-0 -z-10 dark:bg-slate-900/70" />
-
         {/* LEFT SIDE */}
         <div className="w-full md:w-1/2 relative z-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-sky-300 bg-sky-100 px-3 py-1 text-xs font-medium text-light-primary dark:border-sky-900 dark:bg-sky-900/30 dark:text-sky-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 dark:bg-emerald-300" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#BFD6F2] bg-[#E9F3FF] px-3 py-1 text-xs font-medium text-[#0D4F8B]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF6A]" />
             Medically-aware weight management
           </div>
 
-          <h1 className="mt-4 text-3xl font-bold leading-tight text-light-primary sm:text-4xl md:text-5xl dark:text-slate-50">
+          <h1 className="mt-4 text-3xl font-bold leading-tight text-[#0D4F8B] sm:text-4xl md:text-5xl">
             Not just “weight loss.”
             <br />
-            <span className="bg-gradient-to-r from-sky-500 to-indigo-600 bg-clip-text text-transparent">
+            <span className="text-[#0D4F8B]">
               A safer way to start.
             </span>
           </h1>
 
-          <p className="mt-4 max-w-xl text-sm text-light-primary md:text-base dark:text-slate-300">
+          <p className="mt-4 max-w-xl text-sm md:text-base text-[#375C7A]">
             Fityou starts with a simple health quiz to screen for basic risks,
             then unlocks structured weekly routines that are realistic and
             sustainable.
           </p>
 
           {/* Mini trust strip */}
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-3 py-1 shadow-sm dark:bg-slate-900/70 border border-slate-200/60 dark:border-slate-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-[11px] text-[#60738C]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 shadow-sm border border-[#D3E1F4]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF6A]" />
               Risk-aware first, routine next
             </span>
             <span>• No false promises</span>
@@ -104,22 +98,22 @@ export default function HomePage() {
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               href="/quiz"
-              className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-sky-500/30 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400"
+              className="rounded-full bg-[#0D4F8B] px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-[#0A3E70]"
             >
               Start eligibility quiz
             </Link>
             <Link
               href="/program"
-              className="text-sm font-medium text-slate-700 underline-offset-4 hover:text-slate-900 hover:underline dark:text-slate-200 dark:hover:text-slate-50"
+              className="text-sm font-medium text-[#0D4F8B] underline-offset-4 hover:underline"
             >
               Explore the program →
             </Link>
           </div>
 
-          <ul className="mt-6 grid gap-2 text-xs text-light-primary sm:text-sm dark:text-slate-300">
+          <ul className="mt-6 grid gap-2 text-xs sm:text-sm text-[#375C7A]">
             {benefits.map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-[5px] h-1.5 w-1.5 rounded-full bg-sky-500" />
+                <span className="mt-[5px] h-1.5 w-1.5 rounded-full bg-[#0D4F8B]" />
                 <span>{item}</span>
               </li>
             ))}
@@ -128,16 +122,13 @@ export default function HomePage() {
 
         {/* RIGHT SIDE – SNAPSHOT + VISUALS */}
         <div className="relative w-full md:w-1/2">
-          {/* Light illustration block behind card */}
-          <div />
-
-          {/* “Abstract person” image / silhouette */}
-          <div className="mb-4 ml-auto flex max-w-xs items-center gap-3 rounded-3xl border border-sky-100/70 bg-sky-50/70 p-3 text-[11px] text-slate-700 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-200">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-500 text-xs font-semibold text-white">
+          {/* “Abstract person” / info pill */}
+          <div className="mb-4 ml-auto flex max-w-xs items-center gap-3 rounded-3xl border border-[#D3E1F4] bg-white p-3 text-[11px] text-[#375C7A] shadow-sm">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#0D4F8B] text-xs font-semibold text-white">
               FY
             </div>
             <div>
-              <p className="font-semibold">A safer first step</p>
+              <p className="font-semibold text-[#0D4F8B]">A safer first step</p>
               <p className="text-[10px]">
                 Example profile: no emergencies flagged, cleared for light routines.
               </p>
@@ -145,10 +136,10 @@ export default function HomePage() {
           </div>
 
           {/* MAIN SNAPSHOT CARD */}
-          <div className="relative mx-auto max-w-md rounded-3xl bg-white p-5 shadow-xl border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
+          <div className="relative mx-auto max-w-md rounded-3xl bg-white p-5 shadow-xl border border-[#D3E1F4]">
             {/* floating top-right mini card */}
-            <div className="absolute -top-8 right-4 hidden rounded-2xl border border-emerald-100 bg-emerald-50/80 px-3 py-2 text-[10px] text-emerald-900 shadow-md shadow-emerald-200/50 md:flex dark:border-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-100">
-              <div className="mr-2 h-7 w-7 rounded-xl bg-gradient-to-tr from-emerald-400 to-sky-400" />
+            <div className="absolute -top-8 right-4 hidden rounded-2xl border border-[#CBE9D5] bg-[#E7F6EC] px-3 py-2 text-[10px] text-[#255C3E] shadow-md md:flex">
+              <div className="mr-2 h-7 w-7 rounded-xl bg-[#4CAF6A]" />
               <div>
                 <p className="font-semibold">Safe to begin</p>
                 <p className="text-[9px]">No red-flag symptoms reported.</p>
@@ -157,14 +148,14 @@ export default function HomePage() {
 
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500 dark:text-slate-500">
+                <p className="text-xs font-medium uppercase tracking-[0.16em] text-[#60738C]">
                   YOUR SNAPSHOT
                 </p>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <p className="text-sm font-semibold text-[#0D4F8B]">
                   Today&apos;s readiness
                 </p>
               </div>
-              <span className="rounded-full bg-emerald-100 px-3 py-1 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+              <span className="rounded-full bg-[#E7F6EC] px-3 py-1 text-[11px] font-semibold text-[#255C3E]">
                 Low risk
               </span>
             </div>
@@ -175,29 +166,29 @@ export default function HomePage() {
                   label: "BMI (approx.)",
                   value: "24.3",
                   status: "In range",
-                  color: "text-emerald-600 dark:text-emerald-300",
+                  color: "text-[#2F7A4A]",
                 },
                 {
                   label: "Week target",
                   value: "4 / 7",
                   status: "Small, doable steps",
-                  color: "text-sky-600 dark:text-sky-300",
+                  color: "text-[#0D4F8B]",
                 },
                 {
                   label: "Focus",
                   value: "Sleep",
                   status: "Late nights ↓",
-                  color: "text-slate-500 dark:text-slate-400",
+                  color: "text-[#60738C]",
                 },
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-2xl bg-[#d9e9ff] border border-[#b2cffd] p-3 dark:bg-slate-800 dark:border-slate-700"
+                  className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-3"
                 >
-                  <p className="text-[11px] text-slate-600 dark:text-slate-500">
+                  <p className="text-[11px] text-[#60738C]">
                     {item.label}
                   </p>
-                  <p className="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-50">
+                  <p className="mt-1 text-lg font-semibold text-[#0D4F8B]">
                     {item.value}
                   </p>
                   <p className={`mt-1 text-[11px] ${item.color}`}>{item.status}</p>
@@ -205,24 +196,24 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* Mini animated “trend line” feel using bars */}
-            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50/80 p-3 text-[11px] text-slate-700 dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-300">
+            {/* Mini “trend line” feel using bars */}
+            <div className="mt-4 rounded-2xl border border-[#D3E1F4] bg-[#F4F7FC] p-3 text-[11px] text-[#375C7A]">
               <div className="flex items-center justify-between">
-                <p className="font-semibold">Readiness trend (preview)</p>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-300">
+                <p className="font-semibold text-[#0D4F8B]">Readiness trend (preview)</p>
+                <p className="text-[10px] text-[#2F7A4A]">
                   Steady ↑
                 </p>
               </div>
               <div className="mt-2 flex h-16 items-end gap-2">
                 {readinessTrends.map((item) => (
                   <div key={item.label} className="flex-1">
-                    <div className="relative h-12 w-full overflow-hidden rounded-full bg-slate-200/70 dark:bg-slate-800">
+                    <div className="relative h-12 w-full overflow-hidden rounded-full bg-[#D3E1F4]">
                       <div
                         style={{ height: `${item.value}%` }}
-                        className="absolute bottom-0 left-0 w-full rounded-full bg-gradient-to-t from-sky-500 to-indigo-500"
+                        className="absolute bottom-0 left-0 w-full rounded-full bg-[#0D4F8B]"
                       />
                     </div>
-                    <p className="mt-1 text-[9px] text-center text-slate-500 dark:text-slate-400">
+                    <p className="mt-1 text-[9px] text-center text-[#60738C]">
                       {item.label}
                     </p>
                   </div>
@@ -230,51 +221,49 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 p-[1px]">
-              <div className="rounded-[14px] bg-slate-900/90 px-4 py-3 text-[11px] text-slate-200">
-                <p className="font-medium">
-                  “Start where you are. Not where you think you should be.”
-                </p>
-                <p className="mt-1 text-[10px] text-slate-400">
-                  Fityou focuses first on risk-awareness and consistency.
-                </p>
-              </div>
+            <div className="mt-4 rounded-2xl border border-[#0D4F8B] bg-[#0D4F8B] px-4 py-3 text-[11px] text-white">
+              <p className="font-medium">
+                “Start where you are. Not where you think you should be.”
+              </p>
+              <p className="mt-1 text-[10px] text-[#D3E1F4]">
+                Fityou focuses first on risk-awareness and consistency.
+              </p>
             </div>
           </div>
 
           {/* Illustrative “phone UI” preview under card */}
-          <div className="mt-6 hidden max-w-md rounded-3xl border border-slate-200 bg-white/80 p-4 text-[11px] text-slate-700 shadow-md backdrop-blur-sm md:block dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200">
+          <div className="mt-6 hidden max-w-md rounded-3xl border border-[#D3E1F4] bg-white p-4 text-[11px] text-[#375C7A] shadow-md md:block">
             <div className="flex items-center justify-between">
-              <p className="font-semibold">Today at a glance</p>
-              <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] text-slate-50 dark:bg-slate-100 dark:text-slate-900">
+              <p className="font-semibold text-[#0D4F8B]">Today at a glance</p>
+              <span className="rounded-full bg-[#0D4F8B] px-2 py-0.5 text-[10px] text-white">
                 Demo
               </span>
             </div>
             <div className="mt-3 grid grid-cols-3 gap-3">
-              <div className="rounded-xl bg-sky-50 p-3 dark:bg-sky-950/40">
-                <p className="text-[10px] text-slate-500 dark:text-slate-400">
+              <div className="rounded-xl bg-[#E9F3FF] p-3">
+                <p className="text-[10px] text-[#60738C]">
                   Sleep target
                 </p>
-                <p className="mt-1 text-sm font-semibold">11:00 pm</p>
-                <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">11:00 pm</p>
+                <p className="mt-1 text-[10px] text-[#60738C]">
                   Wind down 30 mins earlier
                 </p>
               </div>
-              <div className="rounded-xl bg-emerald-50 p-3 dark:bg-emerald-950/40">
-                <p className="text-[10px] text-slate-500 dark:text-slate-400">
+              <div className="rounded-xl bg-[#E7F6EC] p-3">
+                <p className="text-[10px] text-[#60738C]">
                   Movement
                 </p>
-                <p className="mt-1 text-sm font-semibold">Light walk</p>
-                <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">Light walk</p>
+                <p className="mt-1 text-[10px] text-[#60738C]">
                   15–20 mins, relaxed pace
                 </p>
               </div>
-              <div className="rounded-xl bg-violet-50 p-3 dark:bg-violet-950/40">
-                <p className="text-[10px] text-slate-500 dark:text-slate-400">
+              <div className="rounded-xl bg-[#F5ECFF] p-3">
+                <p className="text-[10px] text-[#60738C]">
                   Focus
                 </p>
-                <p className="mt-1 text-sm font-semibold">Evening screen</p>
-                <p className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
+                <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">Evening screen</p>
+                <p className="mt-1 text-[10px] text-[#60738C]">
                   30 mins no-scroll buffer
                 </p>
               </div>
@@ -284,20 +273,15 @@ export default function HomePage() {
       </section>
 
       {/* WHY OUR PROGRAM WORKS SECTION */}
-      <section
-        className="relative overflow-hidden py-20 transition-colors
-        bg-white text-slate-900 
-        dark:bg-[#0b1220] dark:text-white"
-      >
-        {/* WAVE BACKGROUND */}
-        <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-90">
+      <section className="relative overflow-hidden py-20 bg-white text-[#0D4F8B]">
+        {/* WAVE BACKGROUND (soft Aktive-style) */}
+        <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-80 text-[#E9F3FF]">
           <svg
             viewBox="0 0 1440 320"
             className="w-full h-40"
             preserveAspectRatio="none"
           >
             <path
-              className="transition-colors"
               fill="currentColor"
               d="M0,160L60,181.3C120,203,240,245,360,229.3C480,213,600,139,720,138.7C840,139,960,213,1080,234.7C1200,256,1320,224,1380,208L1440,192V0H0Z"
             />
@@ -320,26 +304,16 @@ export default function HomePage() {
             <div className="space-y-10">
               {/* ITEM 1 */}
               <div className="flex items-start gap-4">
-                <div
-                  className="h-12 w-12 rounded-full flex items-center justify-center
-                  bg-sky-200/40 dark:bg-sky-900/40 text-2xl"
-                >
+                <div className="h-12 w-12 rounded-full flex items-center justify-center bg-[#E9F3FF] text-2xl">
                   🍜
                 </div>
 
                 <div>
-                  <div
-                    className="rounded-xl px-4 py-2 text-sm font-semibold shadow-md 
-                    bg-white text-sky-900 
-                    dark:bg-slate-800 dark:text-sky-200"
-                  >
+                  <div className="rounded-xl px-4 py-2 text-sm font-semibold shadow-sm bg-white text-[#0D4F8B]">
                     I love food too much to go on a diet
                   </div>
 
-                  <p
-                    className="mt-2 text-xs italic 
-                    text-slate-600 dark:text-slate-300"
-                  >
+                  <p className="mt-2 text-xs italic text-[#375C7A]">
                     You can still enjoy the foods you love — you&apos;ll feel
                     satisfied after small amounts.
                   </p>
@@ -348,26 +322,16 @@ export default function HomePage() {
 
               {/* ITEM 2 */}
               <div className="flex items-start gap-4">
-                <div
-                  className="h-12 w-12 rounded-full flex items-center justify-center
-                  bg-sky-200/40 dark:bg-sky-900/40 text-2xl"
-                >
+                <div className="h-12 w-12 rounded-full flex items-center justify-center bg-[#E9F3FF] text-2xl">
                   📘
                 </div>
 
                 <div>
-                  <div
-                    className="rounded-xl px-4 py-2 text-sm font-semibold shadow-md 
-                    bg-white text-sky-900 
-                    dark:bg-slate-800 dark:text-sky-200"
-                  >
+                  <div className="rounded-xl px-4 py-2 text-sm font-semibold shadow-sm bg-white text-[#0D4F8B]">
                     It’s too difficult to stay motivated
                   </div>
 
-                  <p
-                    className="mt-2 text-xs italic 
-                    text-slate-600 dark:text-slate-300"
-                  >
+                  <p className="mt-2 text-xs italic text-[#375C7A]">
                     Our programme removes the mental pressure — the routine
                     guides you step-by-step.
                   </p>
@@ -376,26 +340,16 @@ export default function HomePage() {
 
               {/* ITEM 3 */}
               <div className="flex items-start gap-4">
-                <div
-                  className="h-12 w-12 rounded-full flex items-center justify-center
-                  bg-sky-200/40 dark:bg-sky-900/40 text-2xl"
-                >
+                <div className="h-12 w-12 rounded-full flex items-center justify-center bg-[#E9F3FF] text-2xl">
                   🧁
                 </div>
 
                 <div>
-                  <div
-                    className="rounded-xl px-4 py-2 text-sm font-semibold shadow-md 
-                    bg-white text-sky-900 
-                    dark:bg-slate-800 dark:text-sky-200"
-                  >
+                  <div className="rounded-xl px-4 py-2 text-sm font-semibold shadow-sm bg-white text-[#0D4F8B]">
                     Why is this different from other weight programmes?
                   </div>
 
-                  <p
-                    className="mt-2 text-xs italic 
-                    text-slate-600 dark:text-slate-300"
-                  >
+                  <p className="mt-2 text-xs italic text-[#375C7A]">
                     Because it is effective. Clinical evidence supports it, and
                     the weekly plan is built for real life.
                   </p>
@@ -407,26 +361,16 @@ export default function HomePage() {
             <div className="space-y-10">
               {/* ITEM 1 */}
               <div className="flex items-start gap-4">
-                <div
-                  className="h-12 w-12 rounded-full flex items-center justify-center
-                  bg-sky-200/40 dark:bg-sky-900/40 text-2xl"
-                >
+                <div className="h-12 w-12 rounded-full flex items-center justify-center bg-[#E9F3FF] text-2xl">
                   ⏱️
                 </div>
 
                 <div>
-                  <div
-                    className="rounded-xl px-4 py-2 text-sm font-semibold shadow-md 
-                    bg-white text-sky-900 
-                    dark:bg-slate-800 dark:text-sky-200"
-                  >
+                  <div className="rounded-xl px-4 py-2 text-sm font-semibold shadow-sm bg-white text-[#0D4F8B]">
                     I don’t have time to exercise
                   </div>
 
-                  <p
-                    className="mt-2 text-xs italic 
-                    text-slate-600 dark:text-slate-300"
-                  >
+                  <p className="mt-2 text-xs italic text-[#375C7A]">
                     Light walking 30 minutes a few times a week is enough to
                     begin.
                   </p>
@@ -435,26 +379,16 @@ export default function HomePage() {
 
               {/* ITEM 2 */}
               <div className="flex items-start gap-4">
-                <div
-                  className="h-12 w-12 rounded-full flex items-center justify-center
-                  bg-sky-200/40 dark:bg-sky-900/40 text-2xl"
-                >
+                <div className="h-12 w-12 rounded-full flex items-center justify-center bg-[#E9F3FF] text-2xl">
                   ⚖️
                 </div>
 
                 <div>
-                  <div
-                    className="rounded-xl px-4 py-2 text-sm font-semibold shadow-md 
-                    bg-white text-sky-900 
-                    dark:bg-slate-800 dark:text-sky-200"
-                  >
+                  <div className="rounded-xl px-4 py-2 text-sm font-semibold shadow-sm bg-white text-[#0D4F8B]">
                     I’ve tried everything... nothing works
                   </div>
 
-                  <p
-                    className="mt-2 text-xs italic 
-                    text-slate-600 dark:text-slate-300"
-                  >
+                  <p className="mt-2 text-xs italic text-[#375C7A]">
                     Our structured routine resets behaviours and metabolic
                     signals safely.
                   </p>
@@ -466,13 +400,13 @@ export default function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="mx-auto max-w-6xl px-4 pb-14">
+      <section className="mx-auto max-w-6xl px-4 py-7 pb-14">
         <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
           <div>
-            <h2 className="text-xl font-semibold text-light-primary md:text-2xl dark:text-slate-50">
+            <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
               How Fityou works
             </h2>
-            <p className="mt-2 text-sm text-light-primary dark:text-slate-300">
+            <p className="mt-2 text-sm text-[#375C7A]">
               Fityou is designed more like an onboarding process than a
               challenge — with health screening built in.
             </p>
@@ -481,9 +415,9 @@ export default function HomePage() {
               {steps.map((step) => (
                 <div
                   key={step.title}
-                  className="rounded-2xl bg-[#d9e9ff] border border-[#b2cffd] p-4 shadow-sm text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200"
+                  className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
                     {step.title}
                   </p>
                   <p className="mt-1 text-sm">{step.text}</p>
@@ -493,8 +427,8 @@ export default function HomePage() {
           </div>
 
           {/* WHO IT'S FOR + MINI INFOGRAPHIC */}
-          <div className="rounded-3xl bg-[#d9e9ff] border border-[#b2cffd] p-5 text-sm text-slate-800 shadow-sm dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-700 dark:text-sky-300">
+          <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-5 text-sm text-[#375C7A] shadow-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
               WHO IT’S FOR
             </p>
             <p className="mt-2">
@@ -511,22 +445,22 @@ export default function HomePage() {
             {/* Simple “safe zone” ring graphic */}
             <div className="mt-4 flex items-center gap-4">
               <div className="relative h-20 w-20">
-                <div className="absolute inset-0 rounded-full border-4 border-emerald-400/70 dark:border-emerald-500/60" />
-                <div className="absolute inset-3 rounded-full border-4 border-sky-400/60 dark:border-sky-500/60" />
-                <div className="absolute inset-6 rounded-full bg-white/90 text-[10px] font-semibold text-emerald-700 flex items-center justify-center shadow-sm dark:bg-slate-900 dark:text-emerald-200">
+                <div className="absolute inset-0 rounded-full border-4 border-[#4CAF6A]" />
+                <div className="absolute inset-3 rounded-full border-4 border-[#0D4F8B]" />
+                <div className="absolute inset-6 rounded-full bg-white text-[10px] font-semibold text-[#255C3E] flex items-center justify-center shadow-sm">
                   Safe
                   <br />
                   zone
                 </div>
               </div>
-              <p className="text-[11px] text-slate-600 dark:text-slate-400">
+              <p className="text-[11px] text-[#60738C]">
                 The aim is not perfection — it&apos;s to keep you in a safe,
                 sustainable zone where routines are realistic and risks are
                 acknowledged early.
               </p>
             </div>
 
-            <p className="mt-4 text-[11px] text-slate-600 dark:text-slate-400">
+            <p className="mt-4 text-[11px] text-[#60738C]">
               Fityou does not replace medical advice.
             </p>
           </div>
@@ -536,13 +470,13 @@ export default function HomePage() {
       {/* CALCULATOR SECTION */}
       <section className="relative overflow-hidden py-24">
         {/* BACKGROUND WAVE */}
-        <div className="absolute inset-0 bg-gradient-to-b from-sky-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E9F3FF] to-white">
           <svg
-            className="absolute top-0 w-full opacity-70 dark:opacity-30"
+            className="absolute top-0 w-full opacity-80"
             viewBox="0 0 1440 320"
           >
             <path
-              fill="#e9f3ff"
+              fill="#E9F3FF"
               fillOpacity="1"
               d="M0,256L60,250.7C120,245,240,235,360,197.3C480,160,600,96,720,74.7C840,53,960,75,1080,112C1200,149,1320,203,1380,229.3L1440,256V0H0Z"
             />
@@ -552,31 +486,29 @@ export default function HomePage() {
         <div className="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
           {/* LEFT */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-900 dark:text-sky-200 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D4F8B] leading-snug">
               A proven result of{" "}
-              <span className="font-extrabold text-sky-900 dark:text-white">
+              <span className="font-extrabold">
                 21% weight loss
               </span>{" "}
               in 16 months. Curious as to how much you could lose?
             </h2>
 
-            <p className="mt-6 text-sm text-slate-600 dark:text-slate-300">
+            <p className="mt-6 text-sm text-[#375C7A]">
               Take the quiz. It’s free.
             </p>
 
             <div className="mt-6 flex flex-col gap-4 w-full max-w-sm">
               <Link
                 href="/quiz"
-                className="w-full bg-sky-600 hover:bg-sky-700 transition text-white font-semibold text-sm py-3 rounded-md text-center shadow-lg dark:shadow-none"
+                className="w-full bg-[#0D4F8B] hover:bg-[#0A3E70] transition text-white font-semibold text-sm py-3 rounded-md text-center shadow-md"
               >
                 Do I qualify for treatment?
               </Link>
 
               <Link
                 href="/program"
-                className="w-full border border-orange-200 dark:border-orange-400 bg-orange-50 dark:bg-orange-900/20 
-                hover:bg-orange-100 dark:hover:bg-orange-900/30 transition text-sky-900 dark:text-orange-200 
-                font-semibold text-sm py-3 rounded-md text-center"
+                className="w-full border border-[#F7CFA0] bg-[#FFF4E6] hover:bg-[#FFE5C7] transition text-[#0D4F8B] font-semibold text-sm py-3 rounded-md text-center"
               >
                 View our programme
               </Link>
@@ -584,17 +516,17 @@ export default function HomePage() {
           </div>
 
           {/* RIGHT – CALCULATOR */}
-          <div className="rounded-2xl p-8 shadow-xl backdrop-blur-xl bg-white dark:bg-slate-900/50 border border-sky-100 dark:border-slate-700">
+          <div className="rounded-2xl p-8 shadow-xl bg-white border border-[#D3E1F4]">
             {/* WEIGHT DROPDOWN */}
             <div>
-              <label className="text-sm font-medium text-sky-900 dark:text-sky-200">
+              <label className="text-sm font-medium text-[#0D4F8B]">
                 Your current weight
               </label>
               <div className="flex mt-1 gap-2">
                 <select
                   id="currentWeight"
-                  className="w-full border border-slate-300 dark:border-slate-600 rounded-md py-2 px-3 
-                  text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                  className="w-full border border-[#D3E1F4] rounded-md py-2 px-3 
+                  text-sm bg-white text-[#0D4F8B]"
                 >
                   {Array.from({ length: 131 }).map((_, i) => (
                     <option key={i}>{`${70 + i} kg`}</option>
@@ -605,15 +537,15 @@ export default function HomePage() {
 
             {/* HEIGHT */}
             <div className="mt-4">
-              <label className="text-sm font-medium text-sky-900 dark:text-sky-200">
+              <label className="text-sm font-medium text-[#0D4F8B]">
                 Your height
               </label>
 
               <div className="flex gap-2 mt-1">
                 <select
                   id="heightFeet"
-                  className="w-1/2 border border-slate-300 dark:border-slate-600 rounded-md py-2 px-3 
-                  text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                  className="w-1/2 border border-[#D3E1F4] rounded-md py-2 px-3 
+                  text-sm bg-white text-[#0D4F8B]"
                 >
                   {["4 ft", "5 ft", "6 ft", "7 ft"].map((h) => (
                     <option key={h}>{h}</option>
@@ -622,8 +554,8 @@ export default function HomePage() {
 
                 <select
                   id="heightInches"
-                  className="w-1/2 border border-slate-300 dark:border-slate-600 rounded-md py-2 px-3 
-                  text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                  className="w-1/2 border border-[#D3E1F4] rounded-md py-2 px-3 
+                  text-sm bg-white text-[#0D4F8B]"
                 >
                   {Array.from({ length: 12 }).map((_, i) => (
                     <option key={i}>{`${String(i).padStart(2, "0")} in`}</option>
@@ -658,8 +590,8 @@ export default function HomePage() {
                 document.getElementById("sixteenMonthsResult").innerText =
                   sixteenMonths;
               }}
-              className="mt-6 w-full bg-orange-100 dark:bg-orange-900/40 border border-orange-200 dark:border-orange-700 
-              hover:bg-orange-200 dark:hover:bg-orange-900/60 transition text-sky-900 dark:text-orange-200 
+              className="mt-6 w-full bg-[#FFF4E6] border border-[#F7CFA0] 
+              hover:bg-[#FFE5C7] transition text-[#0D4F8B] 
               font-semibold py-3 rounded-md text-sm"
             >
               Calculate
@@ -668,26 +600,26 @@ export default function HomePage() {
             {/* RESULTS */}
             <div className="mt-5 flex flex-col gap-4 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-sky-900 dark:text-sky-200">
+                <span className="text-[#0D4F8B]">
                   Your weight in 6 months:
                 </span>
                 <span
                   id="sixMonthsResult"
-                  className="w-12 h-9 rounded-md border border-orange-200 dark:border-orange-700 
-                  flex items-center justify-center text-sky-900 dark:text-orange-200"
+                  className="w-16 h-9 rounded-md border border-[#F7CFA0] 
+                  flex items-center justify-center text-[#0D4F8B]"
                 >
                   ?
                 </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sky-900 dark:text-sky-200">
+                <span className="text-[#0D4F8B]">
                   Your weight in 16 months:
                 </span>
                 <span
                   id="sixteenMonthsResult"
-                  className="w-12 h-9 rounded-md border border-orange-200 dark:border-orange-700 
-                  flex items-center justify-center text-sky-900 dark:text-orange-200"
+                  className="w-16 h-9 rounded-md border border-[#F7CFA0] 
+                  flex items-center justify-center text-[#0D4F8B]"
                 >
                   ?
                 </span>
@@ -699,10 +631,10 @@ export default function HomePage() {
 
       {/* PROGRAM HIGHLIGHTS + MINI “PROGRESS GRAPH” */}
       <section className="mx-auto max-w-6xl px-4 pb-14">
-        <div className="mt-5 bg-[#d9e9ff] border border-[#b2cffd] p-6 md:p-8 shadow-sm text-slate-800 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200">
+        <div className="mt-5 bg-[#E9F3FF] border border-[#BFD6F2] p-6 md:p-8 shadow-sm text-[#375C7A]">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
-              <h2 className="text-xl font-semibold md:text-2xl">
+              <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
                 What the Fityou program focuses on
               </h2>
               <p className="mt-2 max-w-xl text-sm">
@@ -713,7 +645,7 @@ export default function HomePage() {
 
             <Link
               href="/program"
-              className="rounded-full border border-sky-300 bg-sky-100 px-4 py-2 text-xs font-medium text-sky-700 hover:bg-sky-200 dark:border-sky-900 dark:bg-slate-800 dark:text-sky-300 dark:hover:bg-slate-700"
+              className="rounded-full border border-[#BFD6F2] bg-white px-4 py-2 text-xs font-medium text-[#0D4F8B] hover:bg-[#F4F7FC]"
             >
               View sample week plan →
             </Link>
@@ -724,21 +656,21 @@ export default function HomePage() {
               {highlights.map((h) => (
                 <div
                   key={h}
-                  className="flex gap-3 rounded-2xl bg-white/60 border border-[#b2cffd] p-4 text-xs text-slate-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                  className="flex gap-3 rounded-2xl bg-white border border-[#BFD6F2] p-4 text-xs text-[#375C7A]"
                 >
-                  <span className="mt-1 h-2 w-2 rounded-full bg-sky-500" />
+                  <span className="mt-1 h-2 w-2 rounded-full bg-[#0D4F8B]" />
                   <p>{h}</p>
                 </div>
               ))}
             </div>
 
             {/* MINI PROGRESS GRAPH CARD */}
-            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4 text-xs text-slate-700 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
+            <div className="rounded-2xl border border-[#D3E1F4] bg-white p-4 text-xs text-[#375C7A] shadow-sm">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#60738C]">
                 PROGRESS PREVIEW
               </p>
-              <p className="mt-1 text-sm font-semibold">Consistency curve</p>
-              <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">Consistency curve</p>
+              <p className="mt-1 text-[11px] text-[#60738C]">
                 Example of how a steady, low-pressure routine can build up over
                 a few weeks.
               </p>
@@ -746,20 +678,20 @@ export default function HomePage() {
               <div className="mt-3 flex h-24 items-end gap-2">
                 {readinessTrends.map((item) => (
                   <div key={item.label} className="flex-1">
-                    <div className="relative h-16 w-full overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
+                    <div className="relative h-16 w-full overflow-hidden rounded-xl bg-[#E9F3FF]">
                       <div
                         style={{ height: `${item.value}%` }}
-                        className="absolute bottom-0 left-0 w-full rounded-xl bg-gradient-to-t from-sky-500 to-emerald-400"
+                        className="absolute bottom-0 left-0 w-full rounded-xl bg-[#0D4F8B]"
                       />
                     </div>
-                    <p className="mt-1 text-[10px] text-center text-slate-500 dark:text-slate-400">
+                    <p className="mt-1 text-[10px] text-center text-[#60738C]">
                       {item.label}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <p className="mt-2 text-[10px] text-slate-500 dark:text-slate-400">
+              <p className="mt-2 text-[10px] text-[#60738C]">
                 This is illustrative — your actual pattern depends on your
                 inputs, context, and consistency.
               </p>
@@ -772,17 +704,17 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="flex flex-col justify-between md:flex-row md:items-end">
           <div>
-            <h2 className="text-xl font-semibold md:text-2xl text-light-primary dark:text-slate-50">
+            <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
               Built for real lives, not perfect ones
             </h2>
-            <p className="mt-2 max-w-xl text-sm text-light-primary dark:text-slate-300">
+            <p className="mt-2 max-w-xl text-sm text-[#375C7A]">
               Fityou is built for consistency, not perfection.
             </p>
           </div>
 
           <Link
             href="/pricing"
-            className="text-xs font-medium text-sky-700 hover:text-sky-900 dark:text-sky-300 dark:hover:text-sky-200"
+            className="text-xs font-medium text-[#0D4F8B] hover:underline"
           >
             Check pricing →
           </Link>
@@ -792,11 +724,11 @@ export default function HomePage() {
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="relative rounded-3xl bg-[#d9e9ff] border border-[#b2cffd] p-4 shadow-sm text-slate-800 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200"
+              className="relative rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
             >
-              <div className="absolute right-4 top-4 h-8 w-8 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 opacity-30 blur-sm" />
+              <div className="absolute right-4 top-4 h-8 w-8 rounded-full bg-[#0D4F8B] opacity-15 blur-sm" />
               <p>“{t.text}”</p>
-              <p className="mt-3 text-xs font-semibold text-slate-600 dark:text-slate-400">
+              <p className="mt-3 text-xs font-semibold text-[#60738C]">
                 {t.name}
               </p>
             </div>
@@ -806,8 +738,8 @@ export default function HomePage() {
 
       {/* WHY MEDICAL AWARENESS MATTERS */}
       <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="rounded-3xl bg-[#d9e9ff] border border-[#b2cffd] p-6 shadow-sm text-slate-800 md:p-10 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200">
-          <h2 className="text-xl font-semibold md:text-2xl">
+        <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-6 shadow-sm text-[#375C7A] md:p-10">
+          <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
             Why medical awareness matters before starting any weight program
           </h2>
 
@@ -832,12 +764,12 @@ export default function HomePage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-2xl bg-white/60 border border-[#b2cffd] p-5 text-sm text-slate-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200"
+                className="rounded-2xl bg-white border border-[#BFD6F2] p-5 text-sm text-[#375C7A]"
               >
-                <h3 className="font-semibold text-slate-900 dark:text-slate-50">
+                <h3 className="font-semibold text-[#0D4F8B]">
                   {item.title}
                 </h3>
-                <p className="mt-1 text-xs text-slate-700 dark:text-slate-300">
+                <p className="mt-1 text-xs text-[#60738C]">
                   {item.text}
                 </p>
               </div>
@@ -849,13 +781,13 @@ export default function HomePage() {
       {/* CLINICAL TRIALS SECTION */}
       <section className="relative overflow-hidden py-24">
         {/* WAVE BACKGROUND */}
-        <div className="absolute inset-0 bg-gradient-to-b from-sky-50 to-white dark:from-slate-900 dark:to-slate-950">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#E9F3FF] to-white">
           <svg
-            className="absolute top-0 w-full opacity-70 dark:opacity-30"
+            className="absolute top-0 w-full opacity-80"
             viewBox="0 0 1440 320"
           >
             <path
-              fill="#e9f3ff"
+              fill="#E9F3FF"
               d="M0,64L80,74.7C160,85,320,107,480,138.7C640,171,800,213,960,234.7C1120,256,1280,256,1360,256L1440,256V0H0Z"
             />
           </svg>
@@ -875,7 +807,7 @@ export default function HomePage() {
                   width="260"
                   height="380"
                   fill="white"
-                  fillOpacity="0.6"
+                  fillOpacity="0.9"
                 />
 
                 {/* Faded vertical lines */}
@@ -884,7 +816,7 @@ export default function HomePage() {
                   y1="40"
                   x2="90"
                   y2="340"
-                  stroke="#e8f0f8"
+                  stroke="#E9F3FF"
                   strokeWidth="2"
                 />
                 <line
@@ -892,14 +824,14 @@ export default function HomePage() {
                   y1="40"
                   x2="170"
                   y2="340"
-                  stroke="#e8f0f8"
+                  stroke="#E9F3FF"
                   strokeWidth="2"
                 />
 
                 {/* ORANGE CURVE */}
                 <path
                   d="M20 80 C 80 140, 140 180, 220 240"
-                  stroke="#edc7a6"
+                  stroke="#F5C8A4"
                   strokeWidth="3"
                   fill="none"
                 />
@@ -907,77 +839,78 @@ export default function HomePage() {
                 {/* BLUE CURVE */}
                 <path
                   d="M20 80 C 60 200, 120 260, 220 310"
-                  stroke="#0d4f8b"
+                  stroke="#0D4F8B"
                   strokeWidth="4"
                   fill="none"
                 />
 
                 {/* Data points */}
-                <circle cx="20" cy="80" r="5" fill="#0d4f8b" />
-                <circle cx="120" cy="220" r="5" fill="#0d4f8b" />
-                <circle cx="220" cy="310" r="5" fill="#0d4f8b" />
+                <circle cx="20" cy="80" r="5" fill="#0D4F8B" />
+                <circle cx="120" cy="220" r="5" fill="#0D4F8B" />
+                <circle cx="220" cy="310" r="5" fill="#0D4F8B" />
 
                 {/* Bottom labels */}
-                <text x="10" y="360" fontSize="12" fill="#60738c">
+                <text x="10" y="360" fontSize="12" fill="#60738C">
                   Day 1
                 </text>
-                <text x="95" y="360" fontSize="12" fill="#60738c">
+                <text x="95" y="360" fontSize="12" fill="#60738C">
                   Month 6
                 </text>
-                <text x="185" y="360" fontSize="12" fill="#60738c">
+                <text x="185" y="360" fontSize="12" fill="#60738C">
                   Month 16
                 </text>
               </svg>
 
               {/* TOP LABEL */}
-              <div className="absolute left-[75px] top-[115px] w-44 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-bold rounded-md shadow-lg">
+              <div className="absolute left-[75px] top-[115px] w-44 px-3 py-2 bg-[#0D4F8B] text-white text-xs font-bold rounded-md shadow-lg">
                 10% body weight
                 <br />
                 in 6 months²
-                <div className="absolute left-6 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-[#0d4f8b] border-l-transparent border-r-transparent" />
+                <div className="absolute left-6 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-[#0D4F8B] border-l-transparent border-r-transparent" />
               </div>
 
               {/* BOTTOM LABEL */}
-              <div className="absolute left-[90px] top-[260px] w-44 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-bold rounded-md shadow-lg">
+              <div className="absolute left-[90px] top-[260px] w-44 px-3 py-2 bg-[#0D4F8B] text-white text-xs font-bold rounded-md shadow-lg">
                 21% body weight
                 <br />
                 in 16 months²
-                <div className="absolute left-6 -top-3 w-0 h-0 border-l-8 border-r-8 border-b-8 border-b-[#0d4f8b] border-l-transparent border-r-transparent" />
+                <div className="absolute left-6 -top-3 w-0 h-0 border-l-8 border-r-8 border-b-8 border-b-[#0D4F8B] border-l-transparent border-r-transparent" />
               </div>
             </div>
           </div>
 
           {/* RIGHT – TEXT CONTENT */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-sky-900 dark:text-white leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D4F8B] leading-snug">
               Clinical trials show that with
               <br />
               our approach, you lose
               <br />
               <span className="relative inline-block">
-                <span className="relative z-10 text-sky-900 dark:text-white font-extrabold">
+                <span className="relative z-10 font-extrabold">
                   5 times more weight
                 </span>
-                <span className="absolute bottom-1 left-0 w-full h-2 bg-orange-200 dark:bg-orange-500/40 -z-0 rounded-full" />
+                <span className="absolute bottom-1 left-0 w-full h-2 bg-[#FBD1A2] -z-0 rounded-full" />
               </span>
               <br />
               than with diet &amp; exercise alone.
             </h2>
 
-            <p className="mt-4 text-sm text-slate-600 dark:text-slate-400 max-w-md">
+            <p className="mt-4 text-sm text-[#375C7A] max-w-md">
               Published clinical trial (2022): 2,539 adults over 72 weeks,
               comparing our programme vs placebo.
             </p>
           </div>
         </div>
       </section>
+      <StepsSection/>
 
       {/* WHAT FITYOU IS NOT */}
-      <section className="mx-auto max-w-6xl px-4 mt-2 pb-20">
-        <div className="bg-[#d9e9ff] border border-[#b2cffd] p-8 shadow-sm text-slate-800 md:p-10 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200">
-          <h2 className="text-xl font-semibold md:text-2xl">
+      {/* <section className="mx-auto max-w-6xl px-4 mt-2 pb-20">
+        <div className="bg-[#E9F3FF] border border-[#BFD6F2] p-8 shadow-sm text-[#375C7A] md:p-10">
+          <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
             What Fityou is{" "}
-            <span className="text-sky-700 dark:text-sky-300">not</span>
+            <span className="text-[#0D4F8B]">not</span>
           </h2>
 
           <ul className="mt-4 space-y-3 text-sm">
@@ -989,19 +922,21 @@ export default function HomePage() {
             <li>✘ Not pushing beyond safe limits</li>
           </ul>
 
-          <p className="mt-4 text-xs text-slate-600 dark:text-slate-400">
+          <p className="mt-4 text-xs text-[#60738C]">
             Fityou complements professional care — not replaces it.
           </p>
         </div>
-      </section>
+      </section> */}
+
+      <HealthGuide/>
 
       {/* WEEKLY STRUCTURE */}
       <section className="mx-auto max-w-6xl px-4 pb-20">
-        <h2 className="text-xl font-semibold text-light-primary md:text-2xl dark:text-slate-50">
+        <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
           Your weekly structure inside Fityou
         </h2>
 
-        <p className="mt-2 max-w-xl text-sm text-light-primary dark:text-slate-300">
+        <p className="mt-2 max-w-xl text-sm text-[#375C7A]">
           Each weekday has a clear, manageable purpose.
         </p>
 
@@ -1010,47 +945,47 @@ export default function HomePage() {
             {
               day: "Mon",
               focus: "Sleep reset",
-              color: "bg-indigo-50 dark:bg-indigo-950/40",
+              color: "bg-[#EEF0FF]",
             },
             {
               day: "Tue",
               focus: "Light movement",
-              color: "bg-sky-50 dark:bg-sky-950/40",
+              color: "bg-[#E9F3FF]",
             },
             {
               day: "Wed",
               focus: "Meal rhythm",
-              color: "bg-emerald-50 dark:bg-emerald-950/40",
+              color: "bg-[#E7F6EC]",
             },
             {
               day: "Thu",
               focus: "Evening structure",
-              color: "bg-yellow-50 dark:bg-yellow-950/30",
+              color: "bg-[#FFF8E5]",
             },
             {
               day: "Fri",
               focus: "Check-in & reflection",
-              color: "bg-orange-50 dark:bg-orange-950/30",
+              color: "bg-[#FFF4E6]",
             },
             {
               day: "Sat",
               focus: "Recovery routine",
-              color: "bg-slate-100 dark:bg-slate-800",
+              color: "bg-[#F3F5F9]",
             },
             {
               day: "Sun",
               focus: "Prep + reset",
-              color: "bg-purple-50 dark:bg-purple-950/40",
+              color: "bg-[#F5ECFF]",
             },
           ].map((w) => (
             <div
               key={w.day}
-              className={`rounded-2xl border border-[#b2cffd] p-4 text-xs dark:border-slate-700 ${w.color}`}
+              className={`rounded-2xl border border-[#BFD6F2] p-4 text-xs ${w.color}`}
             >
-              <p className="font-semibold text-slate-900 dark:text-slate-50">
+              <p className="font-semibold text-[#0D4F8B]">
                 {w.day}
               </p>
-              <p className="mt-1 text-slate-700 dark:text-slate-200">
+              <p className="mt-1 text-[#375C7A]">
                 {w.focus}
               </p>
             </div>
@@ -1077,12 +1012,12 @@ export default function HomePage() {
           ].map((box) => (
             <div
               key={box.title}
-              className="rounded-3xl bg-[#d9e9ff] border border-[#b2cffd] p-6 text-sm text-slate-800 shadow-sm dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200"
+              className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-6 text-sm text-[#375C7A] shadow-sm"
             >
-              <h3 className="font-semibold text-slate-900 dark:text-slate-50">
+              <h3 className="font-semibold text-[#0D4F8B]">
                 {box.title}
               </h3>
-              <p className="mt-2 text-xs text-slate-700 dark:text-slate-300">
+              <p className="mt-2 text-xs text-[#60738C]">
                 {box.text}
               </p>
             </div>
@@ -1092,8 +1027,8 @@ export default function HomePage() {
 
       {/* EVIDENCE */}
       <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="rounded-3xl bg-[#d9e9ff] border border-[#b2cffd] p-8 text-slate-800 shadow-sm dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200">
-          <h2 className="text-xl font-semibold md:text-2xl">
+        <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-8 text-[#375C7A] shadow-sm">
+          <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
             The approach is guided by behavioural science
           </h2>
 
@@ -1102,7 +1037,7 @@ export default function HomePage() {
             and appetite research.
           </p>
 
-          <ul className="mt-4 space-y-2 text-xs text-slate-700 dark:text-slate-400">
+          <ul className="mt-4 space-y-2 text-xs text-[#60738C]">
             <li>• Tiny habits &amp; low-friction behavior change</li>
             <li>• Consistency over intensity</li>
             <li>• Sleep &amp; circadian alignment</li>
@@ -1113,12 +1048,12 @@ export default function HomePage() {
 
       {/* SAFETY BOUNDARIES */}
       <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="rounded-3xl border border-red-200 bg-red-50/70 p-8 text-slate-800 shadow-sm dark:border-red-900 dark:bg-red-950/30 dark:text-slate-200">
-          <h2 className="text-xl font-semibold md:text-2xl">
+        <div className="rounded-3xl border border-[#F5A8A8] bg-[#FFECEC] p-8 text-[#375C7A] shadow-sm">
+          <h2 className="text-xl font-semibold md:text-2xl text-[#B52121]">
             Safety boundaries: when Fityou is not recommended
           </h2>
 
-          <ul className="mt-4 space-y-2 text-sm text-light-primary dark:text-red-200">
+          <ul className="mt-4 space-y-2 text-sm">
             <li>• Pregnancy or immediate postpartum recovery</li>
             <li>• Eating disorders or disordered patterns</li>
             <li>• Medical emergencies or heart issues</li>
@@ -1127,7 +1062,7 @@ export default function HomePage() {
             <li>• Doctor-advised restrictions</li>
           </ul>
 
-          <p className="mt-4 text-xs text-slate-600 dark:text-slate-300">
+          <p className="mt-4 text-xs text-[#60738C]">
             The quiz screens for these and recommends medical guidance.
           </p>
         </div>
@@ -1135,17 +1070,17 @@ export default function HomePage() {
 
       {/* FINAL CTA */}
       <section className="mx-auto max-w-4xl px-4 pb-20 text-center">
-        <h2 className="text-2xl font-bold text-light-primary md:text-3xl dark:text-slate-50">
+        <h2 className="text-2xl font-bold md:text-3xl text-[#0D4F8B]">
           Ready to see if Fityou is a safe fit for you?
         </h2>
 
-        <p className="mt-2 text-sm text-light-primary dark:text-slate-300">
+        <p className="mt-2 text-sm text-[#375C7A]">
           Start with the eligibility quiz — no pressure, just clarity.
         </p>
 
         <Link
           href="/quiz"
-          className="mt-6 inline-block rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-sky-500/40 hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400"
+          className="mt-6 inline-block rounded-full bg-[#0D4F8B] px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#0A3E70]"
         >
           Begin the free check →
         </Link>

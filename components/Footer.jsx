@@ -1,101 +1,132 @@
-// components/Footer.jsx
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Youtube, Linkedin, ArrowUp  } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 mt-20">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+    <footer className="bg-[#F7FAFC] border-t border-[#E2E8F0] font-laila mt-0">
+      <div className="max-w-7xl mx-auto px-6 py-14">
         
-        {/* TOP GRID */}
-        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
-          
-          {/* COLUMN 1: BRAND */}
+        {/* ================= TOP GRID ================= */}
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+
+          {/* BRAND */}
           <div>
-            <h3 className="text-lg font-bold text-slate-800 dark:text-white">
-              Fityou
-            </h3>
-            <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+            <h3 className="text-2xl font-semibold text-[#1A365D]">Fityou</h3>
+            <p className="mt-3 text-sm text-[#4A5568] leading-relaxed">
               Smarter, medically-aware weight management — built around your
               health profile, not shortcuts.
             </p>
 
             {/* SOCIAL ICONS */}
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-3">
               {[Facebook, Instagram, Youtube, Linkedin].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="
-                    p-2 rounded-full border border-slate-300 dark:border-slate-700 
-                    hover:bg-sky-100 dark:hover:bg-sky-900 transition
-                  "
+                  className="p-2 rounded-full border border-[#DCE7FB] hover:bg-[#EDF3FF] transition"
                 >
-                  <Icon className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                  <Icon className="h-5 w-5 text-[#2B6CB0]" />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* COLUMN 2: FITYOU MENU */}
+          {/* EXPLORE */}
           <div>
-            <h4 className="font-semibold text-slate-800 dark:text-white">Explore</h4>
-
-            <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/aktive-programme" className="hover:text-sky-600">Aktive Programme</Link></li>
-              <li><Link href="/how-it-works" className="hover:text-sky-600">How our service works</Link></li>
-              <li><Link href="/glp1-science" className="hover:text-sky-600">Science of GLP-1</Link></li>
-              <li><Link href="/health-guide" className="hover:text-sky-600">Health Guide</Link></li>
-              <li><Link href="/faq" className="hover:text-sky-600">FAQs</Link></li>
+            <h4 className="text-lg font-semibold text-[#1A365D]">Explore</h4>
+            <ul className="mt-4 space-y-2 text-sm text-[#4A5568]">
+              <li><Link href="/program" className="hover:text-[#2B6CB0]">Fityou Programme</Link></li>
+              <li><Link href="/how-it-works" className="hover:text-[#2B6CB0]">How our service works</Link></li>
+              <li><Link href="/glp1-science" className="hover:text-[#2B6CB0]">Science of GLP-1</Link></li>
+              <li><Link href="/health-guide" className="hover:text-[#2B6CB0]">Health Guide</Link></li>
+              <li><Link href="/faq" className="hover:text-[#2B6CB0]">FAQs</Link></li>
             </ul>
           </div>
 
-          {/* COLUMN 3: SUPPORT */}
+          {/* SUPPORT */}
           <div>
-            <h4 className="font-semibold text-slate-800 dark:text-white">Support</h4>
-
-            <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/contact" className="hover:text-sky-600">Contact Us</Link></li>
-              <li><Link href="/quiz" className="hover:text-sky-600">Eligibility quiz</Link></li>
-              <li><Link href="/program" className="hover:text-sky-600">Fityou Program</Link></li>
-              <li><Link href="/pricing" className="hover:text-sky-600">Pricing</Link></li>
+            <h4 className="text-lg font-semibold text-[#1A365D]">Support</h4>
+            <ul className="mt-4 space-y-2 text-sm text-[#4A5568]">
+              <li><Link href="/contact" className="hover:text-[#2B6CB0]">Contact Us</Link></li>
+              <li><Link href="/quiz" className="hover:text-[#2B6CB0]">Eligibility quiz</Link></li>
+              <li><Link href="/program" className="hover:text-[#2B6CB0]">Fityou Program</Link></li>
+              <li><Link href="/pricing" className="hover:text-[#2B6CB0]">Pricing</Link></li>
             </ul>
           </div>
 
-          {/* COLUMN 4: LEGAL */}
+          {/* LEGAL */}
           <div>
-            <h4 className="font-semibold text-slate-800 dark:text-white">Legal</h4>
-
-            <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-400">
-              <li><Link href="/terms" className="hover:text-sky-600">Terms & Conditions</Link></li>
-              <li><Link href="/privacy" className="hover:text-sky-600">Privacy Policy</Link></li>
-              <li><Link href="/safety" className="hover:text-sky-600">Safety Guidelines</Link></li>
+            <h4 className="text-lg font-semibold text-[#1A365D]">Legal</h4>
+            <ul className="mt-4 space-y-2 text-sm text-[#4A5568]">
+              <li><Link href="/terms" className="hover:text-[#2B6CB0]">Terms & Conditions</Link></li>
+              <li><Link href="/privacy" className="hover:text-[#2B6CB0]">Privacy Policy</Link></li>
+              <li><Link href="/safety" className="hover:text-[#2B6CB0]">Safety Guidelines</Link></li>
             </ul>
           </div>
-
         </div>
 
-        {/* BOTTOM ROW */}
-        <div className="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col md:flex-row items-center justify-between">
-          
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+        {/* ================= PAYMENT METHODS WITHOUT IMAGES ================= */}
+        {/* ================= PAYMENT METHODS ================= */}
+<div className="mt-12 border-t border-[#E2E8F0] pt-8">
+  <h4 className="text-sm font-semibold text-[#1A365D] mb-4">
+    Accepted Payment Methods
+  </h4>
+
+  <div className="flex flex-wrap items-center gap-6">
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/visa.png" alt="Visa" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/mastercard.png" alt="Mastercard" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/amex.png" alt="American Express" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/paypal.png" alt="PayPal" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/apple-pay.png" alt="Apple Pay" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/google-pay.png" alt="Google Pay" className="h-12 w-auto object-contain" />
+    </div>
+
+  </div>
+</div>
+
+
+        {/* ================= BOTTOM ROW ================= */}
+        <div className="mt-10 border-t border-[#E2E8F0] pt-6 flex flex-col md:flex-row items-center justify-between">
+          <p className="text-xs text-[#718096]">
             © {new Date().getFullYear()} Fityou. All rights reserved.
           </p>
 
           <Link
             href="/quiz"
-            className="
-              mt-4 md:mt-0 rounded-full bg-sky-600 px-5 py-2 text-xs font-semibold text-white 
-              shadow-sm hover:bg-sky-700 transition
-              dark:bg-sky-500 dark:hover:bg-sky-400
-            "
+            className="mt-4 md:mt-0 rounded-full bg-[#2B6CB0] px-6 py-2 text-xs 
+            font-semibold text-white shadow-sm hover:bg-[#245A96] transition"
           >
             Do I qualify?
           </Link>
-
         </div>
+        {/* ================= BACK TO TOP BUTTON ================= */}
+<button
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="fixed bottom-6 right-6 z-50 bg-[#2B6CB0] hover:bg-[#245A96] text-white p-3 rounded-full shadow-lg transition-all duration-300"
+  aria-label="Back to top"
+>
+  <ArrowUp className="w-5 h-5" />
+
+</button>
 
       </div>
     </footer>

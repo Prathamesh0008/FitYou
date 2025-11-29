@@ -29,40 +29,48 @@ export default function FaqPage() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <div className="min-h-screen transition-colors">
+    <div className="min-h-screen bg-white text-[#4A4A4A] font-laila">
+
+      {/* HERO */}
       <section className="mx-auto max-w-6xl px-4 pt-12 pb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-light-primary dark:text-slate-50">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1A1A1A]">
           Frequently asked questions
         </h1>
-        <p className="mt-3 max-w-2xl text-sm md:text-base text-light-primary dark:text-slate-300">
+
+        <p className="mt-3 max-w-2xl text-sm md:text-base text-[#4A4A4A]">
           A quick overview of what Fityou is, how it works, and how it keeps
           safety and realism at the center of the experience.
         </p>
       </section>
 
+      {/* FAQ Section */}
       <section className="mx-auto max-w-6xl px-4 pb-20 grid gap-8 md:grid-cols-[1.4fr,0.8fr] items-start">
-        {/* FAQ list */}
+
+        {/* FAQ List */}
         <div className="space-y-3">
           {faqs.map((item, idx) => {
             const isOpen = openIndex === idx;
+
             return (
               <div
                 key={item.q}
-                className="rounded-2xl border border-slate-200 bg-white p-4 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                className="rounded-2xl border border-[#E5E7EB] bg-white p-4 text-sm shadow-sm"
               >
                 <button
                   className="flex w-full items-center justify-between gap-4 text-left"
                   onClick={() => setOpenIndex(isOpen ? -1 : idx)}
                 >
-                  <span className="font-semibold  dark:text-slate-50">
+                  <span className="font-semibold text-[#1A1A1A]">
                     {item.q}
                   </span>
-                  <span className="text-xl text-slate-400 dark:text-slate-500">
+
+                  <span className="text-xl text-[#9CA3AF]">
                     {isOpen ? "−" : "+"}
                   </span>
                 </button>
+
                 {isOpen && (
-                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+                  <p className="mt-2 text-xs text-[#4A4A4A]">
                     {item.a}
                   </p>
                 )}
@@ -71,23 +79,27 @@ export default function FaqPage() {
           })}
         </div>
 
-        {/* Side card */}
-        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-800">
-          <h2 className="text-lg font-semibold text-light-primary dark:text-slate-50">
+        {/* Side Info Card */}
+        <div className="rounded-3xl border border-[#D6E4FF] bg-[#EAF3FF] p-6 text-sm shadow-sm">
+          <h2 className="text-lg font-semibold text-[#1A1A1A]">
             Still not sure if Fityou fits you?
           </h2>
-          <p className="mt-2 text-xs text-slate-600 dark:text-slate-300">
+
+          <p className="mt-2 text-xs text-[#4A4A4A]">
             The easiest starting point is the free eligibility quiz. It doesn’t
-            commit you to a plan — it just gives you a risk-aware snapshot of
+            commit you to a plan — it simply gives you a risk-aware snapshot of
             where you stand.
           </p>
-          <p className="mt-3 text-xs text-slate-600 dark:text-slate-300">
+
+          <p className="mt-3 text-xs text-[#4A4A4A]">
             If any of your answers suggest red flags, you’ll be nudged toward
             talking to a professional first, instead of being pushed into a
             routine that might be unsafe.
           </p>
         </div>
+
       </section>
+
     </div>
   );
 }

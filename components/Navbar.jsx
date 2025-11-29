@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
-import ThemeToggle from "./ThemeToggle";
 import { useState } from "react";
 
 import {
@@ -14,7 +13,7 @@ import {
   BookOpen,
   User2,
   Menu,
-  X
+  X,
 } from "lucide-react";
 
 // MENU ITEMS
@@ -24,7 +23,6 @@ const navLinks = [
   { href: "/faq", label: "FAQs", icon: HelpCircle },
   { href: "/glp1-science", label: "Science of GLP-1", icon: FlaskRound },
   { href: "/health-guide", label: "Health guide", icon: BookOpen },
-  // { href: "/program", label: "Program", icon: Cog },
   { href: "/pricing", label: "Pricing", icon: HelpCircle },
   { href: "/contact", label: "Contact", icon: BookOpen },
 ];
@@ -42,18 +40,20 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50  dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <header suppressHydrationWarning className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
 
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl 
-            bg-gradient-to-tr from-sky-500 to-indigo-600 text-xs font-bold text-white shadow-md">
-            FY
-          </div>
+          <div  className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0D4F8B] text-white font-semibold"
+>
+  FY
+</div>
+
+
           <div className="flex flex-col">
-            <span className="text-lg font-bold text-slate-900 dark:text-slate-50">Fityou</span>
-            <span className="text-[11px] tracking-[0.15em] uppercase text-slate-500 dark:text-slate-400">
+            <span className="text-lg font-bold text-[#1A1A1A]">Fityou</span>
+            <span className="text-[11px] tracking-[0.15em] uppercase text-[#6B7280]">
               Weight Management
             </span>
           </div>
@@ -65,97 +65,84 @@ export default function Navbar() {
           {/* CTA BUTTON */}
           <Link
             href="/quiz"
-            className="hidden sm:block rounded-lg bg-orange-300/60 hover:bg-orange-300 
-              px-4 py-1.5 text-sm font-semibold text-slate-900 transition">
+            className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
+              px-4 py-1.5 text-sm font-semibold text-[#1A1A1A] transition"
+          >
             Do I qualify?
           </Link>
 
           {/* User Icon */}
           <Link href={user ? "/dashboard" : "/login"}>
-            <User2 className="w-6 h-6 text-sky-800 dark:text-sky-300" />
+            <User2 className="w-6 h-6 text-[#3A86FF]" />
           </Link>
 
           {/* Hamburger */}
           <button
             onClick={() => setOpen(true)}
-            className="p-2 rounded-md border border-slate-300 dark:border-slate-700">
-            <Menu className="w-6 h-6 text-sky-800 dark:text-sky-300" />
+            className="p-2 rounded-md border border-[#D6E4FF]"
+          >
+            <Menu className="w-6 h-6 text-[#3A86FF]" />
           </button>
         </div>
       </nav>
 
       {/* SLIDE-IN MENU */}
-      <div
-        className={`fixed top-0 right-0 h-full w-72 bg-slate-900    dark:bg-slate-900 shadow-xl z-[999]
-        transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
-      >
-        <div className="flex items-center justify-between px-4 py-7  dark:border-slate-700">
-          <span className="font-semibold text-slate-900 dark:text-slate-100">Menu</span>
+     {/* SLIDE-IN MENU */}
+<div
+  className={`fixed top-0 right-0 h-full w-72 bg-white z-[999] border-l border-[#E5E7EB]
+  transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
+>
+  {/* CLOSE BUTTON */}
+  <div className="flex justify-end px-6 py-6">
+    <button onClick={() => setOpen(false)}>
+      <X className="w-7 h-7 text-[#0D4F8B]" />
+    </button>
+  </div>
 
-          <button onClick={() => setOpen(false)}>
-            <X className="w-6 h-6 text-slate-700 dark:text-slate-300" />
-          </button>
-        </div>
+  {/* LINKS */}
+  <div className="flex flex-col px-6 space-y-6 mt-2">
+    {navLinks.map(({ href, label, icon: Icon }) => {
+      const active = pathname === href;
 
-        {/* LINKS */}
-        <div className="flex flex-col p-4 space-y-3 bg-slate-900">
-          {navLinks.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className={`flex items-center gap-3 px-2 py-2 rounded-lg text-sm transition
-                ${pathname === href
-                  ? "bg-slate-900 dark:bg-sky-900/30 text-light-primary dark:text-sky-300"
-                  : " dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-300"
-                }`}
-            >
-              <Icon size={18} strokeWidth={1.6} />
-              {label}
-            </Link>
-          ))}
-        </div>
-
-        {/* FOOTER BUTTONS INSIDE MENU */}
-        <div className="mt-6 border-t  dark:border-slate-700 p-4 flex flex-col gap-3">
-
-          {/* Theme Toggle */}
-          <ThemeToggle />
-
-          {/* Auth Buttons */}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white font-semibold">
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2 text-sm font-semibold">
-                Log in
-              </Link>
-
-              <Link
-                href="/register"
-                onClick={() => setOpen(false)}
-                className="rounded-lg bg-sky-600 px-4 py-2 text-sm text-white font-semibold">
-                Get started
-              </Link>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* BACKDROP */}
-      {open && (
-        <div
+      return (
+        <Link
+          key={href}
+          href={href}
           onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[998]"
-        />
-      )}
+          className={`flex items-center gap-4 text-[16px] font-medium transition
+            ${active ? "text-[#0D4F8B]" : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"}
+          `}
+        >
+          <Icon size={22} strokeWidth={1.6} className="text-[#0D4F8B]" />
+          {label}
+        </Link>
+      );
+    })}
+  </div>
+
+  {/* DIVIDER */}
+  <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
+
+  {/* BOTTOM LINKS */}
+  <div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium text-[#0D4F8B]">
+    <Link href={user ? "/dashboard" : "/login"} onClick={() => setOpen(false)}>
+      Your account
+    </Link>
+
+    <Link href="/contact" onClick={() => setOpen(false)}>
+      Contact us
+    </Link>
+  </div>
+</div>
+
+{/* BACKDROP */}
+{open && (
+  <div
+    onClick={() => setOpen(false)}
+    className="fixed inset-0 bg-black/20 z-[998]"
+  />
+)}
+
     </header>
   );
 }

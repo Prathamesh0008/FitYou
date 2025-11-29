@@ -1,37 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ClipboardList, HeartPulse, Activity, ChevronRight, ChevronLeft } from "lucide-react";
+import Lottie from "lottie-react";
+
+import {
+  ClipboardList,
+  HeartPulse,
+  Activity,
+  ChevronRight,
+  ChevronLeft,
+} from "lucide-react";
+
+const doctorAvatar = "/doctor/doctor.png"; // 👉 Add any doctor image inside /public/doctor/
 
 const steps = [
   {
     id: "basics",
     title: "Basic details",
     icon: ClipboardList,
-    description: "We start with simple inputs to estimate readiness and baseline safety.",
+    doctorMessage:
+      "Before I guide you safely, I need a few basic details. Could you share these with me?",
     fields: [
-      { name: "age", label: "Age", type: "number", placeholder: "Years" },
-      { name: "height", label: "Height (cm)", type: "number", placeholder: "e.g. 168" },
-      { name: "weight", label: "Weight (kg)", type: "number", placeholder: "e.g. 72" },
+      {
+        name: "age",
+        label: "How old are you?",
+        type: "number",
+        placeholder: "Enter your age",
+        doctorHint: "Your age helps me understand your baseline safely.",
+      },
+      {
+        name: "height",
+        label: "What is your height (cm)?",
+        type: "number",
+        placeholder: "e.g., 168",
+        doctorHint: "This helps me calculate your BMI accurately.",
+      },
+      {
+        name: "weight",
+        label: "What is your weight (kg)?",
+        type: "number",
+        placeholder: "e.g., 72",
+        doctorHint: "Knowing this helps me assess safe limits.",
+      },
     ],
   },
   {
     id: "health",
     title: "Recent health",
     icon: HeartPulse,
-    description: "These questions help us filter any red flags related to activity risk.",
+    doctorMessage:
+      "Thanks! Now a couple of important health-related questions. This helps me look for red flags.",
     fields: [
       {
         name: "recentEvents",
-        label: "Any recent major medical events (surgery, heart issues, etc.)?",
+        label: "Any recent medical events?",
         type: "textarea",
+        doctorHint: "Even small procedures matter — feel free to describe briefly.",
       },
       {
         name: "symptoms",
-        label: "Do you currently experience chest pain, fainting, or dizziness with activity?",
+        label: "Do you experience chest pain / dizziness?",
         type: "select",
         options: ["No", "Sometimes", "Often"],
+        doctorHint:
+          "These symptoms are important to assess safe activity levels.",
       },
     ],
   },
@@ -39,30 +72,44 @@ const steps = [
     id: "context",
     title: "Lifestyle & context",
     icon: Activity,
-    description: "Your habits give us a good picture of your daily load and stress.",
+    doctorMessage:
+      "Great! Now just a little about your day-to-day lifestyle so I can personalise recommendations.",
     fields: [
       {
         name: "sleep",
-        label: "Average sleep per night",
+        label: "How much do you sleep?",
         type: "select",
-        options: ["Less than 5 hours", "5–7 hours", "7–9 hours", "More than 9 hours"],
+        options: ["<5 hours", "5–7 hours", "7–9 hours", "9+ hours"],
+        doctorHint:
+          "Sleep affects appetite, hormones, recovery — everything!",
       },
       {
         name: "movement",
-        label: "Current weekly movement level",
+        label: "Your weekly activity level?",
         type: "select",
         options: ["Very low", "Some walking", "Active most days"],
+        doctorHint:
+          "No judgement — this just helps me set safe expectations.",
       },
     ],
   },
 ];
 
 export default function QuizPage() {
+  const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
   const [form, setForm] = useState({});
-  const router = useRouter();
+  const [marathonAnim, setMarathonAnim] = useState(null);
+
+  useEffect(() => {
+    fetch("/lottie/Marathon.json")
+      .then((res) => res.json())
+      .then((data) => setMarathonAnim(data));
+  }, []);
 
   const step = steps[stepIndex];
+  const progress = (stepIndex + 1) / steps.length;
+  const percent = Math.round(progress * 100);
 
   const handleChange = (name, value) => {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -74,8 +121,8 @@ export default function QuizPage() {
     } else {
       const params = new URLSearchParams();
       if (form.height && form.weight) {
-        params.set("height", String(form.height));
-        params.set("weight", String(form.weight));
+        params.set("height", form.height);
+        params.set("weight", form.weight);
       }
       router.push(`/quiz/result?${params.toString()}`);
     }
@@ -86,65 +133,100 @@ export default function QuizPage() {
   };
 
   return (
-    <div className="min-h-screen transition-colors pb-24">
+    <div className="min-h-screen bg-[#F7FAFF] text-[#1A1A1A] font-laila pb-24">
 
-      {/* TOP INTRO SECTION */}
-      <section className="mx-auto max-w-3xl px-4 pt-12 pb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600 dark:text-sky-300">
-          Eligibility Quiz
+      {/* HEADER */}
+      <section className="mx-auto max-w-3xl px-4 pt-12 pb-6 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
+          Talking to your Fityou doctor
         </p>
-        <h1 className="mt-2 text-3xl font-bold text-light-primary dark:text-slate-50">
-          Check if Fityou is a safe starting point.
+
+        <h1 className="mt-2 text-3xl font-bold">
+          Let’s begin your safe-start consultation.
         </h1>
-        <p className="mt-3 text-sm text-light-primary dark:text-slate-300 max-w-2xl">
-          These questions help us understand whether structured routines are likely safe for you,
-          or if you may benefit from consulting a medical professional first.
-        </p>
       </section>
 
-      {/* PROGRESS BAR */}
-      <section className="mx-auto max-w-3xl px-4 pb-4">
-        <div className="relative w-full h-2 bg-slate-200/60 dark:bg-slate-800 rounded-full overflow-hidden">
+      {/* PROGRESS BAR + RUNNER */}
+      <section className="mx-auto max-w-3xl mt-5 px-4 pb-10">
+        <div className="relative w-full">
           <div
-            className="h-full bg-sky-500 dark:bg-sky-400 transition-all duration-500"
-            style={{ width: `${((stepIndex + 1) / steps.length) * 100}%` }}
-          />
-        </div>
-
-        <p className="mt-2 text-xs text-light-primary dark:text-slate-400">
-          Step {stepIndex + 1} of {steps.length}
-        </p>
-      </section>
-
-      {/* MAIN CARD */}
-      <section className="mx-auto max-w-3xl px-4 pb-16">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-md dark:border-slate-800 dark:bg-slate-900">
-
-          {/* ICON + TITLE */}
-          <div className="flex items-center gap-3">
-            <step.icon className="w-6 h-6 text-sky-600 dark:text-sky-300" />
-            <h2 className="text-lg font-semibold text-light-primary dark:text-slate-50">
-              {step.title}
-            </h2>
+            className="absolute top-[2px] text-[10px] font-bold text-white px-2 py-[1px] bg-[#3A86FF] rounded-full transition-all duration-500 z-30"
+            style={{ left: `calc(${percent}% - 18px)` }}
+          >
+            {percent}%
           </div>
 
-          <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
-            {step.description}
-          </p>
+          {/* Runner */}
+          <div
+            className="absolute -top-12 h-20 w-20 transition-all duration-500 z-20"
+            style={{ left: `calc(${percent}% - 32px)` }}
+          >
+            {marathonAnim && (
+              <Lottie
+                animationData={marathonAnim}
+                loop
+                style={{ height: "70px", width: "70px" }}
+              />
+            )}
+          </div>
 
-          <div className="mt-6 space-y-5">
+          {/* Track */}
+          <div className="relative w-full h-4 bg-[#E5E7EB] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#3A86FF] transition-all duration-500"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+
+          <p className="mt-3 text-xs text-[#4A4A4A] text-right">
+            Step {stepIndex + 1} of {steps.length}
+          </p>
+        </div>
+      </section>
+
+      {/* DOCTOR CHAT UI */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
+
+        {/* Doctor bubble */}
+        <div className="flex items-start gap-3 mb-6">
+          <img
+            src={doctorAvatar}
+            alt="doctor"
+            className="h-10 w-10 rounded-full border"
+          />
+          <div className="bg-white px-4 py-3 rounded-2xl shadow-md text-xs border border-[#E5E7EB] max-w-[80%]">
+            {step.doctorMessage}
+          </div>
+        </div>
+
+        {/* FORM CARD */}
+        <div className="rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-md">
+
+          <div className="flex items-center gap-3 mb-3">
+            <step.icon className="w-6 h-6 text-[#3A86FF]" />
+            <h2 className="text-lg font-semibold">{step.title}</h2>
+          </div>
+
+          {/* FIELDS */}
+          <div className="space-y-6">
             {step.fields.map((field) => (
               <div key={field.name}>
-                <label className="block text-xs font-medium text-slate-600 dark:text-slate-300">
-                  {field.label}
-                </label>
 
+                {/* Label */}
+                <p className="text-xs font-medium text-[#0D4F8B] mb-1">
+                  {field.label}
+                </p>
+
+                {/* Doctor hint */}
+                <p className="text-[10px] text-[#6B7280] mb-2 italic">
+                  {field.doctorHint}
+                </p>
+
+                {/* Input */}
                 {field.type === "textarea" && (
                   <textarea
-                    rows={4}
-                    className="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs
-                    text-slate-900 outline-none focus:border-sky-500 dark:border-slate-700
-                    dark:bg-slate-800 dark:text-slate-50"
+                    rows={3}
+                    className="w-full rounded-xl border border-[#D6DFF5] bg-[#F8FAFF] px-3 py-2 text-xs shadow-inner"
                     value={form[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
                   />
@@ -152,15 +234,13 @@ export default function QuizPage() {
 
                 {field.type === "select" && (
                   <select
-                    className="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs
-                    text-slate-900 outline-none focus:border-sky-500 dark:border-slate-700
-                    dark:bg-slate-800 dark:text-slate-50"
+                    className="w-full rounded-xl border border-[#D6DFF5] bg-[#F8FAFF] px-3 py-2 text-xs shadow-inner"
                     value={form[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
                   >
-                    <option value="">Select an option</option>
+                    <option value="">Choose an option</option>
                     {field.options.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
+                      <option key={opt}>{opt}</option>
                     ))}
                   </select>
                 )}
@@ -169,13 +249,21 @@ export default function QuizPage() {
                   <input
                     type="number"
                     placeholder={field.placeholder}
-                    className="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs
-                    text-slate-900 outline-none focus:border-sky-500 dark:border-slate-700
-                    dark:bg-slate-800 dark:text-slate-50"
+                    className="w-full rounded-xl border border-[#D6DFF5] bg-[#F8FAFF] px-3 py-2 text-xs shadow-inner"
                     value={form[field.name] || ""}
                     onChange={(e) => handleChange(field.name, e.target.value)}
                   />
                 )}
+
+                {/* USER REPLY BUBBLE */}
+                {form[field.name] && (
+                  <div className="flex justify-end mt-2">
+                    <div className="bg-[#E0F2FE] text-[#0369A1] px-3 py-2 rounded-2xl text-[11px] shadow-sm">
+                      You: {form[field.name]}
+                    </div>
+                  </div>
+                )}
+
               </div>
             ))}
           </div>
@@ -183,39 +271,29 @@ export default function QuizPage() {
           {/* BUTTONS */}
           <div className="mt-8 flex items-center justify-between">
             <button
-              type="button"
               onClick={back}
               disabled={stepIndex === 0}
-              className="flex items-center gap-1 rounded-full border border-slate-200 px-4 py-2 text-xs 
-              font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 
-              dark:text-slate-200 dark:hover:bg-slate-800"
+              className="flex items-center gap-1 rounded-full border border-[#C9DFFF] px-4 py-2 text-xs disabled:opacity-40"
             >
               <ChevronLeft size={14} /> Back
             </button>
 
             <button
-              type="button"
               onClick={next}
-              className="flex items-center gap-1 rounded-full bg-sky-600 px-5 py-2 text-xs 
-              font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400"
+              className="flex items-center gap-1 rounded-full bg-[#3A86FF] px-5 py-2 text-xs font-semibold text-white"
             >
-              {stepIndex === steps.length - 1 ? "View results" : "Next"}
+              {stepIndex === steps.length ? "Finish" : "Next"}
               <ChevronRight size={14} />
             </button>
           </div>
         </div>
 
-        <p className="mt-5 text-[11px] text-slate-500 dark:text-slate-400">
-          If you're unsure about any question, answer conservatively.  
-          When in doubt, always prioritise safety.
-        </p>
       </section>
 
-      {/* STICKY SAFETY BANNER */}
-      <div className="fixed bottom-0 left-0 w-full bg-sky-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 px-4 py-3 text-center text-[11px] text-slate-600 dark:text-slate-300 shadow-lg">
-        This quiz is not a medical diagnosis. If you feel unwell, seek professional help.
+      {/* FOOTER WARNING */}
+      <div className="fixed bottom-0 left-0 w-full bg-[#EAF3FF] border-t border-[#D6E4FF] px-4 py-3 text-center text-[11px] shadow-lg">
+        Your answers help your doctor guide you safely — but this is not a diagnosis.
       </div>
-
     </div>
   );
 }

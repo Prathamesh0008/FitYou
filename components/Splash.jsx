@@ -6,7 +6,7 @@ export default function Splash() {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setHide(true), 2000); // visible for 2 seconds
+    const timer = setTimeout(() => setHide(true), 1000); // visible for 2 seconds
     return () => clearTimeout(timer);
   }, []);
 

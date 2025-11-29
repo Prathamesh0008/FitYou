@@ -25,68 +25,76 @@ export default function QuizResultPage() {
   const bmi = calculateBmi(weight, height);
   const bmiLabel = getBmiLabel(bmi);
 
-  const showCaution =
-    !bmi || bmi < 18.5 || bmi >= 30; // conservative boundaries
+  const showCaution = !bmi || bmi < 18.5 || bmi >= 30;
 
   return (
-    <div className="min-h-screen transition-colors">
+    <div className="min-h-screen bg-[#F7FAFF] text-[#0D4F8B] font-laila">
+
+      {/* HEADER */}
       <section className="mx-auto max-w-3xl px-4 pt-12 pb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600 dark:text-sky-300">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
           Quiz Result
         </p>
-        <h1 className="mt-2 text-3xl font-bold text-light-primary dark:text-slate-50">
+
+        <h1 className="mt-2 text-3xl font-bold">
           Your eligibility snapshot.
         </h1>
-        <p className="mt-3 text-sm text-light-primary dark:text-slate-300">
+
+        <p className="mt-3 text-sm text-[#375C7A] max-w-xl">
           This is not a diagnosis. It’s a simple risk-oriented summary based on
           the limited information you shared.
         </p>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 pb-20 space-y-6">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6  text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="text-lg font-semibold dark:text-slate-50">
+      {/* RESULT BLOCK */}
+      <section className="mx-auto max-w-3xl px-4 pb-20 space-y-8">
+
+        {/* BASIC INDICATORS */}
+        <div className="rounded-3xl border border-[#D3E1F4] bg-white p-6 text-sm shadow-sm">
+          <h2 className="text-lg font-semibold text-[#0D4F8B]">
             Basic indicators
           </h2>
 
           <div className="mt-4 grid gap-4 md:grid-cols-3 text-xs">
-            <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 dark:bg-slate-800 dark:border-slate-700">
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Height
-              </p>
-              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
+
+            {/* HEIGHT CARD */}
+            <div className="rounded-2xl bg-[#F4F7FC] border border-[#D3E1F4] p-3">
+              <p className="text-[11px] text-[#60738C]">Height</p>
+              <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">
                 {height ? `${height} cm` : "Not provided"}
               </p>
             </div>
-            <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 dark:bg-slate-800 dark:border-slate-700">
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Weight
-              </p>
-              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
+
+            {/* WEIGHT CARD */}
+            <div className="rounded-2xl bg-[#F4F7FC] border border-[#D3E1F4] p-3">
+              <p className="text-[11px] text-[#60738C]">Weight</p>
+              <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">
                 {weight ? `${weight} kg` : "Not provided"}
               </p>
             </div>
-            <div className="rounded-2xl bg-slate-50 border border-slate-200 p-3 dark:bg-slate-800 dark:border-slate-700">
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Approx. BMI
-              </p>
-              <p className="mt-1 text-sm font-semibold  dark:text-slate-50">
+
+            {/* BMI CARD */}
+            <div className="rounded-2xl bg-[#F4F7FC] border border-[#D3E1F4] p-3">
+              <p className="text-[11px] text-[#60738C]">Approx. BMI</p>
+              <p className="mt-1 text-sm font-semibold text-[#0D4F8B]">
                 {bmi ?? "—"}
               </p>
-              <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-[11px] text-[#60738C]">
                 {bmiLabel}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <h2 className="text-lg font-semibold  dark:text-slate-50">
+        {/* SUGGESTION BLOCK */}
+        <div className="rounded-3xl border border-[#D3E1F4] bg-white p-6 text-sm shadow-sm">
+          <h2 className="text-lg font-semibold text-[#0D4F8B]">
             Our suggestion based on this snapshot
           </h2>
 
+          {/* CAUTION BLOCK */}
           {showCaution ? (
-            <div className="mt-3 rounded-2xl bg-red-50/70 border border-red-200 p-4 text-xs text-red-900 dark:bg-red-950/30 dark:border-red-900 dark:text-red-100">
+            <div className="mt-3 rounded-2xl bg-[#FFECEC] border border-[#F5A8A8] p-4 text-xs text-[#8A2626]">
               <p className="font-semibold">Caution recommended.</p>
               <p className="mt-1">
                 Based on your approximate BMI and the limited data provided, it’s
@@ -95,7 +103,7 @@ export default function QuizResultPage() {
               </p>
             </div>
           ) : (
-            <div className="mt-3 rounded-2xl bg-emerald-50/70 border border-emerald-200 p-4 text-xs text-emerald-900 dark:bg-emerald-950/30 dark:border-emerald-900 dark:text-emerald-100">
+            <div className="mt-3 rounded-2xl bg-[#E7F6EC] border border-[#CBE9D5] p-4 text-xs text-[#255C3E]">
               <p className="font-semibold">Low-level risk based on this data.</p>
               <p className="mt-1">
                 From this limited snapshot, you appear to be in a general range
@@ -106,22 +114,27 @@ export default function QuizResultPage() {
             </div>
           )}
 
-          <p className="mt-3 text-[11px] text-slate-500 dark:text-slate-400">
+          <p className="mt-3 text-[11px] text-[#60738C]">
             This tool uses very simple rules and cannot see your full medical
             picture. When in doubt, prioritise professional advice over any app
             or routine.
           </p>
 
+          {/* BUTTONS */}
           <div className="mt-4 flex flex-wrap gap-3 text-xs">
+
+            {/* PRIMARY BUTTON */}
             <Link
               href="/program"
-              className="rounded-full bg-sky-600 px-5 py-2 text-xs font-semibold text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400"
+              className="rounded-full bg-[#0D4F8B] px-5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-[#0A3E70]"
             >
               View how the program works →
             </Link>
+
+            {/* SECONDARY */}
             <Link
               href="/pricing"
-              className="rounded-full border border-slate-200 px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="rounded-full border border-[#D3E1F4] px-4 py-2 text-xs font-medium text-[#375C7A] hover:bg-[#F4F7FC]"
             >
               Continue later
             </Link>

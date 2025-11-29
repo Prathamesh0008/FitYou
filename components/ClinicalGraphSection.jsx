@@ -74,7 +74,8 @@ export default function ClinicalGraphSection() {
             </svg>
 
             {/* Top balloon */}
-            <div className="absolute left-[70px] top-[125px] w-48 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-semibold rounded-md shadow-lg">
+            <div className="balloon absolute left-[70px] top-[125px] w-48 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-semibold rounded-md shadow-lg">
+
               10% body weight<br />in 6 months²
               <div className="absolute left-6 top-full w-0 h-0 
                 border-l-8 border-r-8 border-t-8 
@@ -82,7 +83,8 @@ export default function ClinicalGraphSection() {
             </div>
 
             {/* Bottom balloon */}
-            <div className="absolute left-[85px] top-[275px] w-48 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-semibold rounded-md shadow-lg">
+           <div className="balloon absolute left-[85px] top-[275px] w-48 px-3 py-2 bg-[#0d4f8b] text-white text-xs font-semibold rounded-md shadow-lg">
+
               21% body weight<br />in 16 months²
               <div className="absolute left-6 -top-3 w-0 h-0 
                 border-l-8 border-r-8 border-b-8 
@@ -116,39 +118,87 @@ export default function ClinicalGraphSection() {
       </div>
 
       {/* Animations */}
-      <style jsx>{`
-        .animate-graph {
-          opacity: 1 !important;
-          transform: translateY(0) !important;
-        }
-        .path-orange, .path-blue {
-          stroke-dasharray: 650;
-          stroke-dashoffset: 650;
-          animation: draw 2.6s ease forwards;
-        }
-        .animate-graph .path-orange { animation-delay: .2s; }
-        .animate-graph .path-blue { animation-delay: .5s; }
+     <style jsx>{`
+  .animate-graph {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 
-        @keyframes draw {
-          to { stroke-dashoffset: 0; }
-        }
-        .dot-1, .dot-2, .dot-3 {
-          opacity: 0;
-          transform: scale(.5);
-          animation: pop .5s ease forwards;
-        }
-        .animate-graph .dot-1 { animation-delay: 1.3s }
-        .animate-graph .dot-2 { animation-delay: 1.7s }
-        .animate-graph .dot-3 { animation-delay: 2.1s }
+  /* Curve draw animation */
+  .path-orange,
+  .path-blue {
+    stroke-dasharray: 650;
+    stroke-dashoffset: 650;
+    animation: draw 2.6s ease forwards;
+  }
 
-        @keyframes pop {
-          to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes fadeUp {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+  .animate-graph .path-orange { animation-delay: 0.2s; }
+  .animate-graph .path-blue { animation-delay: 0.5s; }
+
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* LIVE WAVE MOVEMENT after drawing */
+  .animate-graph .path-orange,
+  .animate-graph .path-blue {
+    animation:
+      draw 2.6s ease forwards,
+      wave 3s ease-in-out 2.6s infinite alternate;
+  }
+
+  @keyframes wave {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-4px); }
+  }
+
+  /* DOT POP + PULSE */
+  .dot-1, .dot-2, .dot-3 {
+    opacity: 0;
+    transform: scale(.5);
+  }
+
+  .animate-graph .dot-1 { animation: pop 0.5s ease forwards 1.3s, pulse 2s ease-in-out infinite 2s; }
+  .animate-graph .dot-2 { animation: pop 0.5s ease forwards 1.7s, pulse 2s ease-in-out infinite 2.3s; }
+  .animate-graph .dot-3 { animation: pop 0.5s ease forwards 2.1s, pulse 2s ease-in-out infinite 2.6s; }
+
+  @keyframes pop {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  /* FLOATING GRAPH CARD */
+  .animate-graph div.relative {
+    animation: floatBox 5s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatBox {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-10px); }
+  }
+
+  /* BALLOONS BOUNCE */
+  .animate-graph .balloon {
+    animation: balloonFloat 4s ease-in-out infinite alternate;
+  }
+
+  @keyframes balloonFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-6px); }
+  }
+
+  /* Right text fade-in */
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+`}</style>
+
     </section>
   );
 }

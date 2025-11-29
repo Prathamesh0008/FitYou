@@ -15,6 +15,14 @@ html {
   /* font-family: "Outfit", sans-serif; */
   background-color: #dce5f6;
 }
+:root {
+  --font-laila: 'Laila', sans-serif;
+}
+
+.font-laila {
+  font-family: var(--font-laila);
+}
+
 
 html.dark {
   background-color: #020617; /* slate-950 */
