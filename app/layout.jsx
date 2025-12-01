@@ -38,11 +38,11 @@ export default function RootLayout({ children }) {
           <RouteLoader />
           <Navbar />
 
-          <PageTransition>
+          {/* <PageTransition> */}
             <main>
               {children}
             </main>
-          </PageTransition>
+          {/* </PageTransition> */}
 
           <Footer />
         </AuthProvider>

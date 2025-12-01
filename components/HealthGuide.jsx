@@ -46,28 +46,32 @@ export default function HealthGuide() {
         </h2>
 
         {/* GRID */}
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          {articles.slice(0, visibleCount).map((item, i) => (
-            <Link
-              key={i}
-              href={item.href}
-              className="group rounded-2xl bg-white p-3 shadow-sm hover:shadow-md transition"
-            >
-              <div className="overflow-hidden rounded-xl">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={400}
-                  height={260}
-                  className="rounded-xl w-full h-[180px] object-cover group-hover:scale-[1.03] transition"
-                />
-              </div>
-              {/* <p className="mt-4 text-[15px] font-semibold text-[#0A2A5B] leading-tight">
-                {item.title}
-              </p> */}
-            </Link>
-          ))}
-        </div>
+      {/* GRID */}
+<div className="grid gap-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+  {articles.slice(0, visibleCount).map((item, i) => (
+    <Link
+      key={i}
+      href={item.href}
+      className="group rounded-2xl bg-white p-3 shadow-sm hover:shadow-md transition"
+    >
+      <div className="overflow-hidden rounded-xl">
+        <Image
+          src={item.image}
+          alt={item.title}
+          width={400}
+          height={260}
+          className="rounded-xl w-full h-[180px] object-cover group-hover:scale-[1.03] transition"
+        />
+      </div>
+
+      {/* Optional title */}
+      {/* <p className="mt-4 text-[13px] font-semibold text-[#0A2A5B] leading-tight">
+        {item.title}
+      </p> */}
+    </Link>
+  ))}
+</div>
+
 
         {/* BUTTON — ONLY ONE SHOWS */}
         <div className="mt-12 flex justify-center">

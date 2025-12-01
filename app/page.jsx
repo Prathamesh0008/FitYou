@@ -1,6 +1,8 @@
 "use client";
 
+import BrainTrickSection from "@/components/BrainTrickSection";
 import HealthGuide from "@/components/HealthGuide";
+import ScienceSection from "@/components/ScienceSection";
 import Splash from "@/components/Splash";
 import StepsSection from "@/components/StepsSection";
 import Link from "next/link";
@@ -61,6 +63,8 @@ export default function HomePage() {
   return (
     <main className="min-h-screen relative overflow-hidden bg-[#F7FAFF] text-[#0D4F8B] font-laila">
       <Splash />
+      <ScienceSection/>
+      <BrainTrickSection/>
 
       {/* HERO */}
       <section className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-12 md:flex-row md:items-center md:pt-20">
@@ -401,71 +405,70 @@ export default function HomePage() {
 
       {/* HOW IT WORKS */}
       <section className="mx-auto max-w-6xl px-4 py-7 pb-14">
-        <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
-          <div>
-            <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
-              How Fityou works
-            </h2>
-            <p className="mt-2 text-sm text-[#375C7A]">
-              Fityou is designed more like an onboarding process than a
-              challenge — with health screening built in.
-            </p>
+  <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
+    {/* LEFT SIDE */}
+    <div>
+      <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
+        How Fityou works
+      </h2>
+      <p className="mt-2 text-sm text-[#375C7A]">
+        Fityou is designed more like an onboarding process than a challenge — with health screening built in.
+      </p>
 
-            <div className="mt-5 space-y-4">
-              {steps.map((step) => (
-                <div
-                  key={step.title}
-                  className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
-                    {step.title}
-                  </p>
-                  <p className="mt-1 text-sm">{step.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* WHO IT'S FOR + MINI INFOGRAPHIC */}
-          <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-5 text-sm text-[#375C7A] shadow-sm">
+      <div className="mt-5 space-y-4">
+        {steps.map((step) => (
+          <div
+            key={step.title}
+            className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
-              WHO IT’S FOR
+              {step.title}
             </p>
-            <p className="mt-2">
-              Fityou is for adults who want structured, safe improvement — not
-              extreme transformations.
-            </p>
+            <p className="mt-1 text-sm">{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
 
-            <ul className="mt-4 space-y-2 text-xs">
-              <li>✓ You want more structure, not noise</li>
-              <li>✓ You’re okay with small, consistent steps</li>
-              <li>✓ You’re willing to answer basic health questions</li>
-            </ul>
+    {/* RIGHT SIDE */}
+    <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-5 text-sm text-[#375C7A] shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
+        WHO IT’S FOR
+      </p>
+      <p className="mt-2">
+        Fityou is for adults who want structured, safe improvement — not extreme transformations.
+      </p>
 
-            {/* Simple “safe zone” ring graphic */}
-            <div className="mt-4 flex items-center gap-4">
-              <div className="relative h-20 w-20">
-                <div className="absolute inset-0 rounded-full border-4 border-[#4CAF6A]" />
-                <div className="absolute inset-3 rounded-full border-4 border-[#0D4F8B]" />
-                <div className="absolute inset-6 rounded-full bg-white text-[10px] font-semibold text-[#255C3E] flex items-center justify-center shadow-sm">
-                  Safe
-                  <br />
-                  zone
-                </div>
-              </div>
-              <p className="text-[11px] text-[#60738C]">
-                The aim is not perfection — it&apos;s to keep you in a safe,
-                sustainable zone where routines are realistic and risks are
-                acknowledged early.
-              </p>
-            </div>
+      <ul className="mt-4 space-y-2 text-xs">
+        <li>✓ You want more structure, not noise</li>
+        <li>✓ You’re okay with small, consistent steps</li>
+        <li>✓ You’re willing to answer basic health questions</li>
+      </ul>
 
-            <p className="mt-4 text-[11px] text-[#60738C]">
-              Fityou does not replace medical advice.
-            </p>
+      {/* SAFE ZONE FIXED RESPONSIVE */}
+      <div className="mt-4 flex items-center gap-4 flex-wrap sm:flex-nowrap">
+        <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0">
+          <div className="absolute inset-0 rounded-full border-4 border-[#4CAF6A]" />
+          <div className="absolute inset-3 rounded-full border-4 border-[#0D4F8B]" />
+          <div className="absolute inset-5 sm:inset-6 rounded-full bg-white text-[9px] sm:text-[10px] font-semibold text-[#255C3E] flex items-center justify-center shadow-sm">
+            Safe
+            <br />
+            zone
           </div>
         </div>
-      </section>
+
+        <p className="text-[11px] text-[#60738C] flex-1 min-w-[180px]">
+          The aim is not perfection — it's to keep you in a safe, sustainable zone where routines are realistic and risks are acknowledged early.
+        </p>
+      </div>
+
+      <p className="mt-4 text-[11px] text-[#60738C]">
+        Fityou does not replace medical advice.
+      </p>
+    </div>
+  </div>
+</section>
+
 
       {/* CALCULATOR SECTION */}
       <section className="relative overflow-hidden py-24">
@@ -931,7 +934,7 @@ export default function HomePage() {
       <HealthGuide/>
 
       {/* WEEKLY STRUCTURE */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
+      <section className="mx-auto mt-5 max-w-6xl px-4 pb-20">
         <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
           Your weekly structure inside Fityou
         </h2>

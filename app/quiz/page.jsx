@@ -192,7 +192,7 @@ export default function QuizPage() {
           <img
             src={doctorAvatar}
             alt="doctor"
-            className="h-10 w-10 rounded-full border"
+            className="h-20 w-25 rounded-full border"
           />
           <div className="bg-white px-4 py-3 rounded-2xl shadow-md text-xs border border-[#E5E7EB] max-w-[80%]">
             {step.doctorMessage}
