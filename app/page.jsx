@@ -2,9 +2,11 @@
 
 import BrainTrickSection from "@/components/BrainTrickSection";
 import HealthGuide from "@/components/HealthGuide";
+import NewsSection from "@/components/NewsSection";
 import ScienceSection from "@/components/ScienceSection";
 import Splash from "@/components/Splash";
 import StepsSection from "@/components/StepsSection";
+import WhyItWorks from "@/components/WhyItWorks";
 import Link from "next/link";
 
 const benefits = [
@@ -61,7 +63,7 @@ const readinessTrends = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen relative overflow-hidden bg-[#F7FAFF] text-[#0D4F8B] font-laila">
+    <main className="min-h-screen relative overflow-hidden  text-[#0D4F8B] font-laila">
       <Splash />
       <ScienceSection/>
       <BrainTrickSection/>
@@ -631,10 +633,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <NewsSection/>
 
       {/* PROGRAM HIGHLIGHTS + MINI “PROGRESS GRAPH” */}
       <section className="mx-auto max-w-6xl px-4 pb-14">
-        <div className="mt-5 bg-[#E9F3FF] border border-[#BFD6F2] p-6 md:p-8 shadow-sm text-[#375C7A]">
+        <div className="mt-5 bg-[#F7FAFF] p-6 md:p-8 shadow-sm text-[#375C7A]">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
@@ -702,9 +705,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <WhyItWorks/>
 
       {/* TESTIMONIALS */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
+      <section className="mt-5 mx-auto max-w-6xl px-4 pb-16">
         <div className="flex flex-col justify-between md:flex-row md:items-end">
           <div>
             <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
@@ -932,6 +936,7 @@ export default function HomePage() {
       </section> */}
 
       <HealthGuide/>
+      
 
       {/* WEEKLY STRUCTURE */}
       <section className="mx-auto mt-5 max-w-6xl px-4 pb-20">
@@ -995,6 +1000,7 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      
 
       {/* MINI UI PREVIEWS */}
       <section className="mx-auto max-w-6xl px-4 pb-20">

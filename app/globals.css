@@ -29,14 +29,14 @@ html.dark {
 }
 
 /* Light mode text */
-.text-light-primary {
+/* .text-light-primary {
   color: #1a1f36;
 }
 
 /* Dark mode override */
-html.dark .text-light-primary {
-  color: #f8fafc; /* slate-50 */
-}
+/* html.dark .text-light-primary {
+  color: #f8fafc; 
+}  */
 
 /* ------------------------------------------ */
 /* 4) LOADING BARS / ANIMATIONS               */
@@ -71,3 +71,6 @@ html.dark .text-light-primary {
     opacity: 1;
   }
 }
+
+
+
