@@ -1,3 +1,58 @@
+// import "./globals.css";
+// import Navbar from "@/components/Navbar";
+// import Footer from "@/components/Footer";
+// import { AuthProvider } from "@/components/AuthProvider";
+// import RouteLoader from "@/components/RouteLoader";
+// import PageTransition from "@/components/PageTransition";
+// import { Laila } from "next/font/google";
+
+// export const metadata = {
+//   title: "Fityou",
+//   description: "Safer weight management with medical awareness.",
+// };
+
+// // Load Laila font
+// const laila = Laila({
+//   subsets: ["latin"],
+//   weight: ["300", "400", "500", "600", "700"],
+//   variable: "--font-laila",
+// });
+
+// export default function RootLayout({ children }) {
+//   return (
+//     <html
+//       lang="en"
+//       suppressHydrationWarning
+//       className={laila.variable} // Apply font variable
+//     >
+//       <body
+//         className="
+//           font-laila 
+//           min-h-screen 
+//           bg-white 
+//           text-[#1A1A1A] 
+//           transition-all
+//         "
+//       >
+//         <AuthProvider>
+//           <RouteLoader />
+//           <Navbar />
+
+//           {/* <PageTransition> */}
+//             <main>
+//               {children}
+//             </main>
+//           {/* </PageTransition> */}
+
+//           <Footer />
+//         </AuthProvider>
+//       </body>
+//     </html>
+//   );
+// }
+
+// app/layout.jsx
+// app/layout.jsx
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -23,7 +78,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={laila.variable} // Apply font variable
+      className={laila.variable}
     >
       <body
         className="
@@ -39,9 +94,7 @@ export default function RootLayout({ children }) {
           <Navbar />
 
           {/* <PageTransition> */}
-            <main>
-              {children}
-            </main>
+          <main>{children}</main>
           {/* </PageTransition> */}
 
           <Footer />

@@ -1,214 +1,603 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import boxImage from "@/public/how/box.png";
+import StepsSection from "@/components/StepsSection";
 
 export default function HowItWorksPage() {
+  const bluePillsRef = useRef([]);
+  const peachPillsRef = useRef([]);
+
+  useEffect(() => {
+    const items = [...bluePillsRef.current, ...peachPillsRef.current].filter(
+      Boolean
+    );
+    if (!items.length || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          const index = Number(el.dataset.index || "0");
+          el.style.transitionDelay = `${index * 0.12}s`;
+
+          if (entry.isIntersecting) {
+            el.classList.add("how-is-visible");
+          } else {
+            el.classList.remove("how-is-visible");
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white text-[#4A4A4A] font-laila">
+    <>
+      <main className="max-w-[1180px] mx-auto px-4  pb-32 text-[#103b7a]">
+        {/* SECTION 1 – Hero */}
+        <section className="flex items-center mt-10 mb-20 max-lg:flex-col max-lg:text-center">
 
-      {/* HERO */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-12 md:pt-20">
-        <div className="grid gap-8 md:grid-cols-[1.4fr,1fr] items-center">
+  {/* Left block */}
+  <div className="w-[40%] max-lg:w-full">
+    <h1 className="text-[69px] leading-tight font-semibold text-[#103b7a] mb-8 max-md:text-[52px]">
+      How our
+      <br />
+      service
+      <br />
+      works
+    </h1>
 
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#3A86FF]">
-              HOW FITYOU WORKS
-            </p>
+    <p className="text-[18px] leading-relaxed mb-8 max-w-[480px]">
+      The essentials on how to start losing weight
+      <br />
+      with our scientifically proven treatment.
+    </p>
 
-            <h1 className="mt-3 text-3xl md:text-4xl font-bold text-[#1A1A1A]">
-              Simple, structured, and medically aware from day one.
-            </h1>
+    <button
+      type="button"
+      className="inline-block bg-[#85b7c4] text-[#07324e] rounded-md px-20 py-4 text-[18px] font-semibold hover:brightness-105 transition"
+    >
+      Start consultation
+    </button>
+  </div>
 
-            <p className="mt-4 text-sm md:text-[15px] text-[#4A4A4A] max-w-xl">
-              Fityou isn’t a crash transformation program. It’s a guided system
-              that screens basic health risks, then walks you into better routines
-              one week at a time.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/quiz"
-                className="rounded-full bg-[#3A86FF] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#2D6FD8]"
-              >
-                Start the free health quiz
-              </Link>
-
-              <Link
-                href="/program"
-                className="text-sm font-medium text-[#3A86FF] hover:text-[#265FCC]"
-              >
-                See inside the program →
-              </Link>
-            </div>
-          </div>
-
-          {/* 3 Guided Phases */}
-          <div className="rounded-3xl bg-white border border-[#E5E7EB] p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-[#1A1A1A]">
-              In 3 guided phases
-            </h2>
-
-            <ol className="mt-3 space-y-3 text-xs text-[#4A4A4A]">
-              {[
-                {
-                  num: "1",
-                  title: "Screen risks first",
-                  text: "Quick questions on symptoms, medication, energy and recent changes — to decide whether you should even start.",
-                },
-                {
-                  num: "2",
-                  title: "Build “safety-first” routines",
-                  text: "Light, realistic targets across sleep, movement and food rhythm. No overtraining, no crash diets.",
-                },
-                {
-                  num: "3",
-                  title: "Adjust based on your signals",
-                  text: "You log what you can. The system nudges adjustments instead of punishing you for missed days.",
-                },
-              ].map((item) => (
-                <li key={item.num} className="flex gap-3">
-                  <span className="mt-[2px] inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#EAF3FF] text-[11px] font-semibold text-[#3A86FF]">
-                    {item.num}
-                  </span>
-
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">{item.title}</p>
-                    <p>{item.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-        </div>
-      </section>
-
-      {/* TIMELINE SECTION */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-
-          <h2 className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
-            Your first 4 weeks inside Fityou
-          </h2>
-
-          <p className="mt-2 text-sm text-[#4A4A4A] max-w-2xl">
-            The program is built so that even a busy, imperfect week can still
-            move you forward, instead of resetting you to zero.
-          </p>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-4 text-xs">
-            {[
-              {
-                label: "Week 1",
-                focus: "Risk screen & baseline",
-                points: [
-                  "Complete health quiz",
-                  "Understand your flags",
-                  "Get simple non-intense targets",
-                ],
-              },
-              {
-                label: "Week 2",
-                focus: "Sleep & timing",
-                points: [
-                  "Set wake/sleep anchors",
-                  "Adjust late-night habits",
-                  "Start tracking 1–2 signals",
-                ],
-              },
-              {
-                label: "Week 3",
-                focus: "Movement & meals",
-                points: [
-                  "Light, low-pressure movement",
-                  "Stabilise meal rhythm",
-                  "Notice energy dips",
-                ],
-              },
-              {
-                label: "Week 4",
-                focus: "Reflection & tweaks",
-                points: [
-                  "Review fatigue & cravings",
-                  "Dial up or down intensity",
-                  "Plan the next 4 weeks",
-                ],
-              },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl border border-[#D6E4FF] bg-[#EAF3FF] p-4"
-              >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
-                  {item.label}
-                </p>
-
-                <p className="mt-1 text-sm font-semibold text-[#1A1A1A]">
-                  {item.focus}
-                </p>
-
-                <ul className="mt-2 space-y-1 text-[#4A4A4A]">
-                  {item.points.map((p) => (
-                    <li key={p}>• {p}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* SAFETY & LIMITS */}
-      <section className="mx-auto max-w-6xl px-4 pb-20 grid gap-6 md:grid-cols-[1.3fr,1fr]">
-
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-
-          <h2 className="text-lg md:text-xl font-semibold text-[#1A1A1A]">
-            Built with boundaries, not just ambition
-          </h2>
-
-          <p className="mt-2 text-sm text-[#4A4A4A]">
-            Many programs only focus on how fast you can push. Fityou also cares
-            about when you should pause.
-          </p>
-
-          <ul className="mt-4 space-y-2 text-sm text-[#4A4A4A]">
-            <li>• If your answers suggest high risk, we recommend medical advice first.</li>
-            <li>• If you report worrying changes, the program suggests slowing down.</li>
-            <li>• If you feel worse, not better, you’re encouraged to stop and seek help.</li>
-          </ul>
-
-          <p className="mt-4 text-[11px] text-[#6B7280]">
-            Fityou is an educational and behavioural support experience. It does
-            not diagnose, treat, or replace medical care.
-          </p>
-        </div>
-
-        {/* Right Summary Card */}
-        <div className="rounded-3xl bg-[#EAF3FF] border border-[#D6E4FF] p-6 text-sm text-[#1A1A1A]">
-
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
-            QUICK SUMMARY
-          </p>
-
-          <ul className="mt-3 space-y-2 text-xs">
-            <li>✓ Start only after a simple health screen</li>
-            <li>✓ Weekly themes that don’t overwhelm you</li>
-            <li>✓ Designed around real-life constraints</li>
-            <li>✓ Clear messaging when you should slow down</li>
-          </ul>
-
-          <Link
-            href="/register"
-            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#3A86FF] px-4 py-2 text-xs font-semibold text-white hover:bg-[#2D6FD8]"
-          >
-            Create your account →
-          </Link>
-        </div>
-
-      </section>
-
+  {/* Right block — now only ONE IMAGE */}
+  <div className="w-[40%] max-lg:w-full flex justify-start max-lg:justify-center mt-4 lg:mt-0">
+    <div className="max-w-[560px] w-full">
+      <Image
+        src="/how/box.png"   // ⭐ your single combined PNG
+        alt="How Fityou service works illustration"
+        width={560}
+        height={560}
+        className="w-full h-auto"
+        priority
+      />
     </div>
+  </div>
+
+</section>
+
+        {/* SECTION 2 – your steps component */}
+        <StepsSection />
+
+        {/* SECTION 3 – Achieving your goals + 3 blue pills */}
+        <section className="mb-20">
+  <h2 className="text-[40px] font-semibold text-center mb-6">
+    Achieving your goals is as
+    <br />
+    easy as 1–2–3
+  </h2>
+  <p className="text-2xl font-semibold text-center mb-10">
+    What do you need to do?
+  </p>
+
+  <div className="space-y-4">
+
+    {/* ITEM 1 */}
+    <div
+      className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-5 flex items-center gap-5 text-[16px] leading-relaxed bg-[#d9f0f4]"
+      ref={(el) => (bluePillsRef.current[0] = el)}
+      data-index={0}
+    >
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Professional Injection Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m15 4 5 5" />
+          <path d="m17 2 3 3" />
+          <path d="M12 7 3 16l5 5 9-9" />
+          <path d="M16 11 9 4 4 9" />
+        </svg>
+      </div>
+      <p>
+        Take one injection weekly. It will reduce your appetite; you will eat
+        less without feeling hungry.
+      </p>
+    </div>
+
+    {/* ITEM 2 */}
+    <div
+      className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-5 flex items-center gap-5 text-[16px] leading-relaxed bg-[#d9f0f4]"
+      ref={(el) => (bluePillsRef.current[1] = el)}
+      data-index={1}
+    >
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Professional Clock Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+      </div>
+      <p>
+        Eat sensibly. No need to count calories. Our meal plans can help.
+      </p>
+    </div>
+
+    {/* ITEM 3 */}
+    <div
+      className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-5 flex items-center gap-5 text-[16px] leading-relaxed bg-[#d9f0f4]"
+      ref={(el) => (bluePillsRef.current[2] = el)}
+      data-index={2}
+    >
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Professional Dumbbell Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6.5 6.5 9 9m6 6 2.5 2.5" />
+          <path d="M21 21l-2.5-2.5m0 0L15 15m-6-6L4.5 4.5M4.5 4.5 3 3" />
+        </svg>
+      </div>
+      <p>
+        Be active. No gym visits. Our fitness plan helps with light exercise,
+        3 times a week.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+        {/* SECTION 4 – How to start? + 3 peach pills */}
+        <section className="mb-20">
+          <h2 className="text-[32px] font-semibold text-center mb-8">
+            How to start?
+          </h2>
+
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-5 text-[16px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[0] = el)}
+            data-index={0}
+          >
+            <p>
+              Medical consultation: answer the medical questions to see if our
+              treatment is safe for you.
+            </p>
+          </div>
+
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-5 text-[16px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[1] = el)}
+            data-index={1}
+          >
+            <p>
+              Based on your results, we create a personalised Fityou programme
+              for you.
+            </p>
+          </div>
+
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-5 text-[16px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[2] = el)}
+            data-index={2}
+          >
+            <p>
+              If our doctors approve you for treatment, you will receive your
+              injections’ first month&apos;s supply in a few days.
+            </p>
+          </div>
+
+          <div className="text-center mt-10">
+            <button className="how-btn-primary bg-[#85b7c4] text-[#07324e] rounded-md px-18 py-4 text-[18px] font-semibold hover:brightness-105 transition">
+              Start consultation
+            </button>
+            <p className="mt-4 text-[16px]">See if you qualify. It&apos;s free.</p>
+          </div>
+        </section>
+      </main>
+
+      {/* Page-specific global styles for animation only */}
+      <style jsx global>{`
+        .how-pill-anim {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .how-pill-anim.how-is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
+    </>
   );
 }
+
+
+
+// "use client";
+
+// import { useEffect, useRef } from "react";
+// import Image from "next/image";
+// import boxImage from "@/public/how/box.png";
+// import StepsSection from "@/components/StepsSection";
+
+// export default function HowItWorksPage() {
+//   const bluePillsRef = useRef([]);
+//   const peachPillsRef = useRef([]);
+
+//   useEffect(() => {
+//     const items = [...bluePillsRef.current, ...peachPillsRef.current].filter(
+//       Boolean
+//     );
+//     if (!items.length || typeof IntersectionObserver === "undefined") return;
+
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         entries.forEach((entry) => {
+//           const el = entry.target;
+//           const index = Number(el.dataset.index || "0");
+//           el.style.transitionDelay = `${index * 0.12}s`;
+
+//           if (entry.isIntersecting) {
+//             el.classList.add("how-is-visible");
+//           } else {
+//             el.classList.remove("how-is-visible"); // replay when re-enter
+//           }
+//         });
+//       },
+//       { threshold: 0.25 }
+//     );
+
+//     items.forEach((el) => observer.observe(el));
+//     return () => observer.disconnect();
+//   }, []);
+
+//   return (
+//     <>
+//       <main className="how-wrapper">
+//         {/* SECTION 1 – How our service works (hero) */}
+//         <section className="how-service-section">
+//           <div className="how-service-left">
+//             <h1 className="how-hero-title">
+//               How our
+//               <br />
+//               service
+//               <br />
+//               works
+//             </h1>
+
+//             <p className="how-service-text">
+//               The essentials on how to start losing weight
+//               <br />
+//               with our scientifically proven treatment.
+//             </p>
+
+//             <button type="button" className="how-btn-primary">
+//               Start consultation
+//             </button>
+//           </div>
+
+//           <div className="how-service-right">
+//             <div className="how-hero-image-wrap">
+//               <Image
+//                 src={boxImage}
+//                 alt="Fityou starter box"
+//                 placeholder="blur"
+//                 style={{ width: "100%", height: "auto" }}
+//               />
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* SECTION 2 – Your existing component */}
+//         <StepsSection />
+
+//         {/* SECTION 3 – Achieving your goals + 3 blue pills (animated) */}
+//         <section className="how-section-spacing">
+//           <h2 className="how-main-heading">
+//             Achieving your goals is as
+//             <br />
+//             easy as 1–2–3
+//           </h2>
+//           <p className="how-subheading">What do you need to do?</p>
+
+//           <div>
+//             <div
+//               className="how-pill how-pill-anim"
+//               ref={(el) => (bluePillsRef.current[0] = el)}
+//               data-index={0}
+//             >
+//               <div className="how-pill-icon">
+//                 <span role="img" aria-label="Injection">
+//                   💉
+//                 </span>
+//               </div>
+//               <p>
+//                 Take one injection weekly. It will reduce your appetite; you
+//                 will eat less without feeling hungry.
+//               </p>
+//             </div>
+
+//             <div
+//               className="how-pill how-pill-anim"
+//               ref={(el) => (bluePillsRef.current[1] = el)}
+//               data-index={1}
+//             >
+//               <div className="how-pill-icon">
+//                 <span role="img" aria-label="Clock">
+//                   ⏱️
+//                 </span>
+//               </div>
+//               <p>
+//                 Eat sensibly. No need to count calories. Our meal plans can
+//                 help.
+//               </p>
+//             </div>
+
+//             <div
+//               className="how-pill how-pill-anim"
+//               ref={(el) => (bluePillsRef.current[2] = el)}
+//               data-index={2}
+//             >
+//               <div className="how-pill-icon">
+//                 <span role="img" aria-label="Dumbbell">
+//                   🏋️
+//                 </span>
+//               </div>
+//               <p>
+//                 Be active. No gym visits. Our fitness plan helps with light
+//                 exercise, 3 times a week.
+//               </p>
+//             </div>
+//           </div>
+//         </section>
+
+//         {/* SECTION 4 – How to start? + 3 peach pills (animated) */}
+//         <section className="how-section-spacing">
+//           <h2 className="how-peach-title">How to start?</h2>
+
+//           <div
+//             className="how-pill-peach how-pill-anim"
+//             ref={(el) => (peachPillsRef.current[0] = el)}
+//             data-index={0}
+//           >
+//             <p>
+//               Medical consultation: answer the medical questions to see if our
+//               treatment is safe for you.
+//             </p>
+//           </div>
+
+//           <div
+//             className="how-pill-peach how-pill-anim"
+//             ref={(el) => (peachPillsRef.current[1] = el)}
+//             data-index={1}
+//           >
+//             <p>
+//               Based on your results, we create a personalised Fityou programme
+//               for you.
+//             </p>
+//           </div>
+
+//           <div
+//             className="how-pill-peach how-pill-anim"
+//             ref={(el) => (peachPillsRef.current[2] = el)}
+//             data-index={2}
+//           >
+//             <p>
+//               If our doctors approve you for treatment, you will receive your
+//               injections’ first month&apos;s supply in a few days.
+//             </p>
+//           </div>
+
+//           <div className="how-final-cta">
+//             <button className="how-btn-primary">Start consultation</button>
+//             <p className="how-final-note">
+//               See if you qualify. It&apos;s free.
+//             </p>
+//           </div>
+//         </section>
+//       </main>
+
+//       {/* Page‑specific styles */}
+//       <style jsx global>{`
+//         .how-wrapper {
+//           max-width: 1180px;
+//           margin: 0 auto;
+//           padding: 80px 16px 120px;
+//           color: #103b7a;
+//         }
+
+//         .how-service-section {
+//           display: flex;
+//           align-items: center;
+//           gap: 32px;
+//           margin-top: 40px;
+//           margin-bottom: 80px;
+//         }
+
+//         .how-service-left {
+//           flex: 1;
+//         }
+
+//         .how-hero-title {
+//           font-size: 69px;
+//           line-height: 1.1;
+//           font-weight: 600;
+//           color: #103b7a;
+//           margin-bottom: 32px;
+//         }
+
+//         .how-service-text {
+//           font-size: 18px;
+//           line-height: 1.7;
+//           margin-bottom: 32px;
+//         }
+
+//         .how-btn-primary {
+//           background-color: #85b7c4;
+//           color: #07324e;
+//           border: none;
+//           border-radius: 6px;
+//           padding: 18px 72px;
+//           font-size: 18px;
+//           font-weight: 600;
+//           cursor: pointer;
+//         }
+
+//         .how-service-right {
+//           flex: 1;
+//           display: flex;
+//           justify-content: flex-end;
+//         }
+
+//         .how-hero-image-wrap {
+//           max-width: 420px;
+//           width: 100%;
+//         }
+
+//         .how-main-heading {
+//           font-size: 40px;
+//           font-weight: 600;
+//           text-align: center;
+//           margin-bottom: 26px;
+//         }
+
+//         .how-subheading {
+//           font-size: 24px;
+//           font-weight: 600;
+//           text-align: center;
+//           margin-bottom: 38px;
+//         }
+
+//         .how-section-spacing {
+//           margin-bottom: 80px;
+//         }
+
+//         .how-peach-title {
+//           text-align: center;
+//           font-size: 32px;
+//           font-weight: 600;
+//           margin-bottom: 32px;
+//         }
+
+//         .how-pill,
+//         .how-pill-peach {
+//           max-width: 980px;
+//           margin-left: auto;
+//           margin-right: auto;
+//           margin-bottom: 18px;
+//           border-radius: 30px;
+//           padding: 22px 34px;
+//           display: flex;
+//           align-items: center;
+//           gap: 18px;
+//           font-size: 16px;
+//           line-height: 1.6;
+//         }
+
+//         .how-pill {
+//           background-color: #d9f0f4;
+//         }
+
+//         .how-pill-peach {
+//           background-color: #ffd4aa;
+//         }
+
+//         .how-pill-icon {
+//           width: 34px;
+//           height: 34px;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           font-size: 24px;
+//         }
+
+//         .how-final-cta {
+//           text-align: center;
+//           margin-top: 40px;
+//         }
+
+//         .how-final-note {
+//           margin-top: 16px;
+//           font-size: 16px;
+//         }
+
+//         /* Scroll animation just for the 3+3 pill blocks */
+//         .how-pill-anim {
+//           opacity: 0;
+//           transform: translateY(40px);
+//           transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+//         }
+
+//         .how-pill-anim.how-is-visible {
+//           opacity: 1;
+//           transform: translateY(0);
+//         }
+
+//         @media (max-width: 900px) {
+//           .how-service-section {
+//             flex-direction: column;
+//             text-align: center;
+//           }
+
+//           .how-service-right {
+//             justify-content: center;
+//           }
+
+//           .how-hero-title {
+//             font-size: 52px;
+//           }
+
+//           .how-pill,
+//           .how-pill-peach {
+//             padding: 18px 20px;
+//           }
+//         }
+//       `}</style>
+//     </>
+//   );
+// }
+
+
