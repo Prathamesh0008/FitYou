@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import LoginModal from "./LoginModal";
+import OtpModal from "./OtpModal";
+import SuccessModal from "./SuccessModal";
 
 import {
   Compass,
@@ -31,25 +35,52 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+
   const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [otpOpen, setOtpOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+
+  // OPEN OTP MODAL
+  useEffect(() => {
+    const handler = () => setOtpOpen(true);
+    window.addEventListener("open-otp", handler);
+    return () => window.removeEventListener("open-otp", handler);
+  }, []);
+
+  // OTP SUCCESS → SHOW TICK → REDIRECT
+  useEffect(() => {
+    const handler = () => {
+      setSuccessOpen(true);
+
+      setTimeout(() => {
+        setSuccessOpen(false);
+        router.push("/dashboard");
+      }, 1200);
+    };
+
+    window.addEventListener("otp-success", handler);
+    return () => window.removeEventListener("otp-success", handler);
+  }, []);
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    router.push("/");
     setOpen(false);
   };
 
   return (
-    <header suppressHydrationWarning className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
+    <header
+      suppressHydrationWarning
+      className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila"
+    >
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-
+        
         {/* LOGO */}
         <Link href="/" className="flex items-center gap-2">
-          <div  className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0D4F8B] text-white font-semibold"
->
-  FY
-</div>
-
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0D4F8B] text-white font-semibold">
+            FY
+          </div>
 
           <div className="flex flex-col">
             <span className="text-lg font-bold text-[#1A1A1A]">Fityou</span>
@@ -62,7 +93,7 @@ export default function Navbar() {
         {/* RIGHT SIDE BUTTONS */}
         <div className="flex items-center gap-4">
 
-          {/* CTA BUTTON */}
+          {/* CTA */}
           <Link
             href="/quiz"
             className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
@@ -71,12 +102,21 @@ export default function Navbar() {
             Do I qualify?
           </Link>
 
-          {/* User Icon */}
-          <Link href={user ? "/dashboard" : "/login"}>
-            <User2 className="w-6 h-6 text-[#3A86FF]" />
-          </Link>
+          {/* USER ICON – OPEN LOGIN MODAL */}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="text-sm text-red-500 hover:underline"
+            >
+              Logout
+            </button>
+          ) : (
+            <button onClick={() => setLoginOpen(true)}>
+              <User2 className="w-6 h-6 text-[#3A86FF]" />
+            </button>
+          )}
 
-          {/* Hamburger */}
+          {/* HAMBURGER */}
           <button
             onClick={() => setOpen(true)}
             className="p-2 rounded-md border border-[#D6E4FF]"
@@ -87,60 +127,77 @@ export default function Navbar() {
       </nav>
 
       {/* SLIDE-IN MENU */}
-     {/* SLIDE-IN MENU */}
-<div
-  className={`fixed top-0 right-0 h-full w-72 bg-white z-[999] border-l border-[#E5E7EB]
-  transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
->
-  {/* CLOSE BUTTON */}
-  <div className="flex justify-end px-6 py-6">
-    <button onClick={() => setOpen(false)}>
-      <X className="w-7 h-7 text-[#0D4F8B]" />
-    </button>
-  </div>
+      <div
+        className={`fixed top-0 right-0 h-full w-72 bg-white z-[999] border-l border-[#E5E7EB]
+          transition-transform duration-300 ${
+            open ? "translate-x-0" : "translate-x-full"
+          }`}
+      >
+        <div className="flex justify-end px-6 py-6">
+          <button onClick={() => setOpen(false)}>
+            <X className="w-7 h-7 text-[#0D4F8B]" />
+          </button>
+        </div>
 
-  {/* LINKS */}
-  <div className="flex flex-col px-6 space-y-6 mt-2">
-    {navLinks.map(({ href, label, icon: Icon }) => {
-      const active = pathname === href;
+        <div className="flex flex-col px-6 space-y-6 mt-2">
+          {navLinks.map(({ href, label, icon: Icon }) => {
+            const active = pathname === href;
 
-      return (
-        <Link
-          key={href}
-          href={href}
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className={`flex items-center gap-4 text-[16px] font-medium transition
+                  ${
+                    active
+                      ? "text-[#0D4F8B]"
+                      : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
+                  }
+                `}
+              >
+                <Icon size={22} strokeWidth={1.6} className="text-[#0D4F8B]" />
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
+
+        <div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium text-[#0D4F8B]">
+          <Link
+            href={user ? "/dashboard" : "#"}
+            onClick={() => {
+              if (!user) setLoginOpen(true);
+              setOpen(false);
+            }}
+          >
+            Your account
+          </Link>
+
+          <Link href="/contact" onClick={() => setOpen(false)}>
+            Contact us
+          </Link>
+        </div>
+      </div>
+
+      {/* BACKDROP */}
+      {open && (
+        <div
           onClick={() => setOpen(false)}
-          className={`flex items-center gap-4 text-[16px] font-medium transition
-            ${active ? "text-[#0D4F8B]" : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"}
-          `}
-        >
-          <Icon size={22} strokeWidth={1.6} className="text-[#0D4F8B]" />
-          {label}
-        </Link>
-      );
-    })}
-  </div>
+          className="fixed inset-0 bg-black/20 z-[998]"
+        />
+      )}
 
-  {/* DIVIDER */}
-  <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
-
-  {/* BOTTOM LINKS */}
-  <div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium text-[#0D4F8B]">
-    <Link href={user ? "/dashboard" : "/login"} onClick={() => setOpen(false)}>
-      Your account
-    </Link>
-
-    <Link href="/contact" onClick={() => setOpen(false)}>
-      Contact us
-    </Link>
-  </div>
-</div>
-
-{/* BACKDROP */}
-{open && (
-  <div
-    onClick={() => setOpen(false)}
-    className="fixed inset-0 bg-black/20 z-[998]"
-  />
+      {/* MODALS */}
+    {/* MODALS (Client-side only to prevent hydration errors) */}
+{typeof window !== "undefined" && (
+  <>
+    <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+    <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
+    <SuccessModal open={successOpen} />
+  </>
 )}
 
     </header>
