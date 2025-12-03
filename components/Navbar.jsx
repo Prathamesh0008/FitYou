@@ -40,7 +40,7 @@ export default function Navbar() {
   };
 
   return (
-    <header suppressHydrationWarning className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
+    <header suppressHydrationWarning className="sticky top-0 z-50 bg-[#F2F7FA]  border-[#E5E7EB] font-laila">
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
 
         {/* LOGO */}

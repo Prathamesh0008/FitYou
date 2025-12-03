@@ -7,15 +7,15 @@ import { Syringe, Dumbbell, Stethoscope } from "lucide-react";
 
 export default function ScienceSection() {
   return (
-    <section className="bg-[#F2F7FA] py-20">
+    <section className="bg-[#F2F7FA] py-10">
       <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
 
         {/* LEFT COLUMN */}
         {/* LEFT COLUMN */}
-<div className="flex flex-col gap-5">
+<div className="flex flex-col gap-4">
 
   {/* TOP IMAGES ROW */}
-  <div className="hidden md:flex gap-6">
+  <div className="hidden md:flex gap-2">
     <div className="w-1/2">
       <Image
         src="/guide/newlady.jpg"

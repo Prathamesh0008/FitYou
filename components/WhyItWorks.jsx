@@ -3,108 +3,122 @@
 import Image from "next/image";
 
 export default function WhyItWorks() {
-  const items = [
-    {
-      icon: "/why/bibimbap.png",
-      title: "I love food too much to go on a diet",
-      text: "You can still enjoy the foods you love – but you’ll feel full and satisfied just after a small amount.",
-    },
-    {
-      icon: "/why/clock.png",
-      title: "I don’t have time to exercise",
-      text: "Can you do light exercise, like walking, for 30 minutes a few times a week? Yes? Then that’s all you need!",
-    },
-    {
-      icon: "/why/reach.png",
-      title: "It’s too difficult to stay motivated",
-      text: "Our injection takes away the struggle of sticking to a diet, and our team is available for support.",
-    },
-    {
-      icon: "/why/weighing-machine.png",
-      title: "I've tried everything… nothing works",
-      text: "Our injection does the hard work for you. It changes your metabolism and your body’s reaction to food.",
-    },
-    {
-      icon: "/why/think-different.png",
-      title: "Why is this different from other weight loss plans?",
-      text: `Because it is effective. Clinical trials say so, and so do the best doctors in the world. Plus, our programme is prescribed by renowned doctors.`,
-    },
-  ];
-
   return (
-    <section className="relative bg-[#1E618A] text-white pb-40 pt-46 overflow-hidden">
+    <section className="relative bg-[#1E618A] text-white pb-56 pt-52 overflow-hidden">
 
-      {/* 🔵 DEEP CLEAN WAVE */}
+      {/* TOP CURVE */}
       <svg
-        className="absolute top-0 left-0 w-full h-[240px]"
+        className="absolute top-0 left-0 w-full h-[260px]"
         viewBox="0 0 1440 240"
         preserveAspectRatio="none"
       >
         <path
           fill="#ffffff"
-          d="M0,140 C300,260 900,40 1440,160 L1440,0 L0,0 Z"
+          d="M0,120 C300,260 900,0 1440,140 L1440,0 L0,0 Z"
+        />
+      </svg>
+      <svg
+        className="absolute bottom-0 left-0 w-full h-[200px]"
+        viewBox="0 0 1440 240"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="#ffffff"
+          d="M0,0 C300,160 900,80 1440,200 L1440,240 L0,240 Z"
         />
       </svg>
 
-      {/* CONTENT */}
-      <div className="relative max-w-6xl mx-auto px-6">
-
-        {/* TITLE */}
-        <h2 className="text-center text-3xl md:text-4xl font-bold leading-snug mb-20">
+      {/* TITLE */}
+      <div className="relative text-center max-w-3xl mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-semibold leading-snug">
           Simple, smart, and scientific.
           <br />
           Our weight loss programme works where others fail.
         </h2>
+      </div>
 
-        {/* GRID */}
-        <div className="grid md:grid-cols-2 gap-20">
+      {/* FLOATING BUBBLES CONTAINER */}
+      <div className="relative max-w-6xl mx-auto mt-20 h-[650px]">
 
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className={`flex flex-col ${
-                index % 2 === 1 ? "md:items-end text-right" : "text-left"
-              }`}
-            >
-              {/* ICON + BUBBLE CONTAINER */}
-              <div className="flex items-start gap-3 relative">
+        {/* 1 — Left Top */}
+        <Bubble
+          icon="/why/bibimbap.png"
+          title="I love food too much to go on a diet"
+          text="You can still enjoy the foods you love – but you’ll feel full and satisfied just after a small amount."
+          pos="left-4 md:left-10 top-10 md:top-20"
+        />
 
-                {/* ICON */}
-                <div className="w-16 h-16 relative z-10">
-                  <Image
-                    src={item.icon}
-                    width={64}
-                    height={64}
-                    alt="icon"
-                    className="object-contain"
-                  />
-                </div>
+        {/* 2 — Right Top */}
+        <Bubble
+          icon="/why/clock.png"
+          title="I don’t have time to exercise"
+          text="Can you do light exercise, like walking, for 30 minutes a few times a week? Yes? Then that’s all you need!"
+          pos="right-4 md:right-20 top-32 md:top-24"
+        />
 
-                {/* COMMENT BUBBLE */}
-                <div className="relative bg-white text-[#0D336A] rounded-3xl shadow-lg px-6 py-4 max-w-sm">
-                  <p className="font-semibold text-[16px]">
-                    {item.title}
-                  </p>
+        {/* 3 — Left Middle */}
+        <Bubble
+          icon="/why/reach.png"
+          title="It’s too difficult to stay motivated"
+          text="Our injection takes away the struggle of sticking to a diet, and our team is available for support."
+          pos="left-4 md:left-20 top-64 md:top-72"
+        />
 
-                  {/* BUBBLE TAIL */}
-                  <div
-                    className={`absolute w-4 h-4 bg-white rotate-45 top-6 ${
-                      index % 2 === 1 ? "-left-2" : "-left-2"
-                    }`}
-                  ></div>
-                </div>
-              </div>
+        {/* 4 — Right Middle */}
+        <Bubble
+          icon="/why/weighing-machine.png"
+          title="I've tried everything… nothing works"
+          text="Our injection does the hard work for you. It changes your metabolism and your body’s reaction to food."
+          pos="right-4 md:right-16 top-[340px] md:top-[380px]"
+        />
 
-              {/* DESCRIPTION */}
-              <p className="mt-4 text-sm italic text-[#D6E6EE] max-w-sm leading-relaxed">
-                {item.text}
-              </p>
+        {/* 5 — Center Bottom */}
+        <Bubble
+          icon="/why/think-different.png"
+          title="Why is this different from other weight loss plans?"
+          text="Because it is effective. Clinical trials say so, and so do the best doctors in the world."
+          pos="left-1/2 -translate-x-1/2 top-[480px] md:top-[500px]"
+        />
+      </div>
+    </section>
+  );
+}
 
-            </div>
-          ))}
+/* BUBBLE COMPONENT */
+function Bubble({ icon, title, text, pos }) {
+  return (
+    <div
+      className={`absolute w-[320px] ${pos} transition-all`}
+    >
+      <div className="flex items-start gap-3">
+        
+        {/* ICON */}
+        <div className="h-14 w-18  rounded-full bg-[#E9F3FF] flex items-center justify-center shadow-md">
+          <Image
+            src={icon}
+            width={45}
+            height={50}
+            alt=""
+            className="object-contain"
+          />
+        </div>
+
+        {/* TEXT BUBBLE */}
+        <div className="bg-white text-[#0D336A] rounded-2xl px-4 py-3 shadow-md relative">
+          <p className="font-semibold text-sm leading-snug">{title}</p>
+
+          {/* TAIL */}
+          <div
+  className="absolute -left-2 top-4 w-4 h-4 bg-white rounded-bl-3xl rounded-tr-3xl rotate-[-35deg] "
+></div>
 
         </div>
       </div>
-    </section>
+
+      {/* SUBTEXT */}
+      <p className="mt-2 text-xs italic text-[#D6E6EE] leading-snug">
+        {text}
+      </p>
+    </div>
   );
 }
