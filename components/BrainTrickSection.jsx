@@ -11,7 +11,7 @@ export default function BrainTrickSection() {
 
         {/* LEFT BLOCK */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold leading-snug text-[#0A2A5B] mb-6">
+          <h2 className="text-3xl md:text-4xl  leading-snug text-[#0A2A5B] mb-6">
             What if you could trick<br />
             your brain, thinking<br />
             you’re full?
@@ -36,7 +36,7 @@ export default function BrainTrickSection() {
 
         {/* RIGHT BLOCK */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold leading-snug text-[#0A2A5B] mb-6">
+          <h2 className="text-3xl md:text-4xl  leading-snug text-[#0A2A5B] mb-6">
             The good news:<br />
             Our treatment gives your<br />
             brain the ‘full’ signal

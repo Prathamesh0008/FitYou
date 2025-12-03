@@ -206,3 +206,163 @@
           </div>
         </div>
       </section>
+      <section className="relative overflow-hidden py-44">
+              {/* BACKGROUND WAVE */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#E9F3FF] to-white">
+                <svg
+                  className="absolute top-0 w-full opacity-80"
+                  viewBox="0 0 1440 320"
+                >
+                  <path
+                    fill="#ffff"
+                    fillOpacity="1"
+                    d="M0,256L60,250.7C120,245,240,235,360,197.3C480,160,600,96,720,74.7C840,53,960,75,1080,112C1200,149,1320,203,1380,229.3L1440,256V0H0Z"
+                  />
+                </svg>
+              </div>
+      
+              <div className="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+                {/* LEFT */}
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-[#0D4F8B] leading-snug">
+                    A proven result of{" "}
+                    <span className="font-extrabold">
+                      21% weight loss
+                    </span>{" "}
+                    in 16 months. Curious as to how much you could lose?
+                  </h2>
+      
+                  <p className="mt-6 text-sm text-[#375C7A]">
+                    Take the quiz. It’s free.
+                  </p>
+      
+                  <div className="mt-6 flex flex-col gap-4 w-full max-w-sm">
+                    <Link
+                      href="/quiz"
+                      className="w-full bg-[#0D4F8B] hover:bg-[#0A3E70] transition text-white font-semibold text-sm py-3 rounded-md text-center shadow-md"
+                    >
+                      Do I qualify for treatment?
+                    </Link>
+      
+                    <Link
+                      href="/program"
+                      className="w-full border border-[#F7CFA0] bg-[#FFF4E6] hover:bg-[#FFE5C7] transition text-[#0D4F8B] font-semibold text-sm py-3 rounded-md text-center"
+                    >
+                      View our programme
+                    </Link>
+                  </div>
+                </div>
+      
+                {/* RIGHT – CALCULATOR */}
+                <div className="rounded-2xl p-8 shadow-xl bg-white border border-[#D3E1F4]">
+                  {/* WEIGHT DROPDOWN */}
+                  <div>
+                    <label className="text-sm font-medium text-[#0D4F8B]">
+                      Your current weight
+                    </label>
+                    <div className="flex mt-1 gap-2">
+                      <select
+                        id="currentWeight"
+                        className="w-full border border-[#D3E1F4] rounded-md py-2 px-3 
+                        text-sm bg-white text-[#0D4F8B]"
+                      >
+                        {Array.from({ length: 131 }).map((_, i) => (
+                          <option key={i}>{`${70 + i} kg`}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+      
+                  {/* HEIGHT */}
+                  <div className="mt-4">
+                    <label className="text-sm font-medium text-[#0D4F8B]">
+                      Your height
+                    </label>
+      
+                    <div className="flex gap-2 mt-1">
+                      <select
+                        id="heightFeet"
+                        className="w-1/2 border border-[#D3E1F4] rounded-md py-2 px-3 
+                        text-sm bg-white text-[#0D4F8B]"
+                      >
+                        {["4 ft", "5 ft", "6 ft", "7 ft"].map((h) => (
+                          <option key={h}>{h}</option>
+                        ))}
+                      </select>
+      
+                      <select
+                        id="heightInches"
+                        className="w-1/2 border border-[#D3E1F4] rounded-md py-2 px-3 
+                        text-sm bg-white text-[#0D4F8B]"
+                      >
+                        {Array.from({ length: 12 }).map((_, i) => (
+                          <option key={i}>{`${String(i).padStart(2, "0")} in`}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+      
+                  {/* CALCULATE */}
+                  <button
+                    onClick={() => {
+                      const weight = Number(
+                        document
+                          .getElementById("currentWeight")
+                          .value.split(" ")[0]
+                      );
+                      const feet = Number(
+                        document.getElementById("heightFeet").value.split(" ")[0]
+                      );
+                      const inch = Number(
+                        document.getElementById("heightInches").value.split(" ")[0]
+                      );
+      
+                      const heightCm = feet * 30.48 + inch * 2.54;
+                      if (!weight || !heightCm) return alert("Please fill all fields");
+      
+                      const sixMonths = (weight * 0.88).toFixed(1);
+                      const sixteenMonths = (weight * 0.79).toFixed(1);
+      
+                      document.getElementById("sixMonthsResult").innerText =
+                        sixMonths;
+                      document.getElementById("sixteenMonthsResult").innerText =
+                        sixteenMonths;
+                    }}
+                    className="mt-6 w-full bg-[#FFF4E6] border border-[#F7CFA0] 
+                    hover:bg-[#FFE5C7] transition text-[#0D4F8B] 
+                    font-semibold py-3 rounded-md text-sm"
+                  >
+                    Calculate
+                  </button>
+      
+                  {/* RESULTS */}
+                  <div className="mt-5 flex flex-col gap-4 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#0D4F8B]">
+                        Your weight in 6 months:
+                      </span>
+                      <span
+                        id="sixMonthsResult"
+                        className="w-16 h-9 rounded-md border border-[#F7CFA0] 
+                        flex items-center justify-center text-[#0D4F8B]"
+                      >
+                        ?
+                      </span>
+                    </div>
+      
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#0D4F8B]">
+                        Your weight in 16 months:
+                      </span>
+                      <span
+                        id="sixteenMonthsResult"
+                        className="w-16 h-9 rounded-md border border-[#F7CFA0] 
+                        flex items-center justify-center text-[#0D4F8B]"
+                      >
+                        ?
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
