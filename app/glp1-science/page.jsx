@@ -142,6 +142,10 @@ export default function Glp1SciencePage() {
           text-decoration: underline;
           opacity: 0.8;
         }
+          [id] {
+  scroll-margin-top: 120px;
+}
+
       `}</style>
 
       <div className="min-h-screen bg-[#F7FAFF] font-laila text-[#375C7A]">
@@ -181,67 +185,30 @@ export default function Glp1SciencePage() {
         </section>
 
         {/* ---------- FULL EDGE-TO-EDGE TOPIC NAVIGATION ---------- */}
-        <section className="w-full pb-14">
-          <div className="w-full bg-[#D9EEF5] rounded-none px-6 md:px-12 py-10">
-            <div className="grid md:grid-cols-2 gap-10 text-[15px] font-medium leading-relaxed max-w-[1500px] mx-auto">
-              <ul className="space-y-4 list-disc pl-5">
-                <li>
-                  <a href="#what-is-glp1" className="toc-link">
-                    What are GLP-1 medications?
-                  </a>
-                </li>
-                <li>
-                  <a href="#science" className="toc-link">
-                    The science of GLP-1: How does it work?
-                  </a>
-                </li>
-                <li>
-                  <a href="#tablets-vs-injections" className="toc-link">
-                    Tablets vs injections
-                  </a>
-                </li>
-                <li>
-                  <a href="#importance" className="toc-link">
-                    Importance of doses
-                  </a>
-                </li>
-                <li>
-                  <a href="#routine" className="toc-link">
-                    How you can make the most out of GLP-1
-                  </a>
-                </li>
-              </ul>
+       <section className="pb-14">
+  <div className="max-w-6xl mx-auto bg-[#D9EEF5] rounded-3xl px-8 md:px-12 py-10">
+    <div className="grid md:grid-cols-2 gap-10 text-[15px] font-medium leading-relaxed">
+      
+      <ul className="space-y-4 list-disc pl-5">
+        <li><a href="#what-is-glp1" className="toc-link">What are GLP-1 medications?</a></li>
+        <li><a href="#science" className="toc-link">The science of GLP-1: How does it work?</a></li>
+        <li><a href="#tablets-vs-injections" className="toc-link">Tablets vs injections</a></li>
+        <li><a href="#importance" className="toc-link">Importance of doses</a></li>
+        <li><a href="#routine" className="toc-link">How you can make the most out of GLP-1</a></li>
+      </ul>
 
-              <ul className="space-y-4 list-disc pl-5">
-                <li>
-                  <a href="#discovery" className="toc-link">
-                    The discovery of GLP-1
-                  </a>
-                </li>
-                <li>
-                  <a href="#proven" className="toc-link">
-                    Is GLP-1 scientifically proven?
-                  </a>
-                </li>
-                <li>
-                  <a href="#how-long" className="toc-link">
-                    How long does it take to start working?
-                  </a>
-                </li>
-                <li>
-                  <a href="#benefits" className="toc-link">
-                    What are the benefits?
-                  </a>
-                </li>
-                <li>
-                  <a href="#slow-progress" className="toc-link">
-                    What if it doesn’t work?
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
+      <ul className="space-y-4 list-disc pl-5">
+        <li><a href="#discovery" className="toc-link">The discovery of GLP-1</a></li>
+        <li><a href="#proven" className="toc-link">Is GLP-1 scientifically proven?</a></li>
+        <li><a href="#how-long" className="toc-link">How long does it take to start working?</a></li>
+        <li><a href="#benefits" className="toc-link">What are the benefits?</a></li>
+        <li><a href="#slow-progress" className="toc-link">What if it doesn’t work?</a></li>
+      </ul>
+
+    </div>
+  </div>
+</section>
+
 
         {/* ---------------- SECTION 2: WHAT IS GLP-1 ---------------- */}
         <section
@@ -928,7 +895,7 @@ export default function Glp1SciencePage() {
           <div className="max-w-[650px]">
             <p className="text-[15px] text-[#375C7A] leading-[1.7]">
               Staying active helps regulate your hunger rhythm, improves mood, and
-              supports your body's natural energy balance. Start with light,
+              supports your bodys natural energy balance. Start with light,
               enjoyable activities and gradually build up your routine.
             </p>
           </div>
