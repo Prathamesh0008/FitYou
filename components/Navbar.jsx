@@ -20,7 +20,6 @@ import {
   X,
 } from "lucide-react";
 
-// MENU ITEMS
 const navLinks = [
   { href: "/program", label: "FitYou Programme", icon: Compass },
   { href: "/how-it-works", label: "How our service works", icon: Cog },
@@ -41,9 +40,11 @@ export default function Navbar() {
   const [otpOpen, setOtpOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
-  // OPEN OTP MODAL
+  // OPEN OTP ON EVENT
   useEffect(() => {
-    const handler = () => setOtpOpen(true);
+    const handler = () => {
+      setTimeout(() => setOtpOpen(true), 50); // FIX: ensures modal always opens
+    };
     window.addEventListener("open-otp", handler);
     return () => window.removeEventListener("open-otp", handler);
   }, []);
@@ -55,7 +56,7 @@ export default function Navbar() {
 
       setTimeout(() => {
         setSuccessOpen(false);
-        router.push("/dashboard");
+        router.push("/");
       }, 1200);
     };
 
@@ -70,10 +71,7 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      suppressHydrationWarning
-      className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila"
-    >
+    <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         
         {/* LOGO */}
@@ -102,19 +100,16 @@ export default function Navbar() {
             Do I qualify?
           </Link>
 
-          {/* USER ICON – OPEN LOGIN MODAL */}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="text-sm text-red-500 hover:underline"
-            >
-              Logout
-            </button>
-          ) : (
-            <button onClick={() => setLoginOpen(true)}>
-              <User2 className="w-6 h-6 text-[#3A86FF]" />
-            </button>
-          )}
+      {user ? (
+  <button onClick={() => router.push("/profile")}>
+    <User2 className="w-6 h-6 text-[#3A86FF]" />
+  </button>
+) : (
+  <button onClick={() => setLoginOpen(true)}>
+    <User2 className="w-6 h-6 text-[#3A86FF]" />
+  </button>
+)}
+
 
           {/* HAMBURGER */}
           <button
@@ -128,7 +123,7 @@ export default function Navbar() {
 
       {/* SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-white z-[999] border-l border-[#E5E7EB]
+        className={`fixed top-0 right-0 h-full w-82 bg-white z-[999] border-l border-[#E5E7EB]
           transition-transform duration-300 ${
             open ? "translate-x-0" : "translate-x-full"
           }`}
@@ -165,21 +160,44 @@ export default function Navbar() {
 
         <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
 
-        <div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium text-[#0D4F8B]">
-          <Link
-            href={user ? "/dashboard" : "#"}
-            onClick={() => {
-              if (!user) setLoginOpen(true);
-              setOpen(false);
-            }}
-          >
-            Your account
-          </Link>
+        {/* SIDEBAR BOTTOM LINKS */}
+<div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium">
 
-          <Link href="/contact" onClick={() => setOpen(false)}>
-            Contact us
-          </Link>
-        </div>
+  {/* PROFILE BUTTON */}
+  <button
+    onClick={() => {
+      if (!user) setLoginOpen(true);
+      else router.push("/profile");
+      setOpen(false);
+    }}
+    className="text-left text-[#0D4F8B]"
+  >
+    Your Profile
+  </button>
+
+  {/* LOGOUT BUTTON (ONLY WHEN LOGGED IN) */}
+  {user && (
+    <button
+      onClick={() => {
+        handleLogout();
+        setOpen(false);
+      }}
+      className="text-left text-red-500"
+    >
+      Logout
+    </button>
+  )}
+
+  {/* CONTACT */}
+  <Link
+    href="/contact"
+    onClick={() => setOpen(false)}
+    className="text-[#0D4F8B]"
+  >
+    Contact us
+  </Link>
+</div>
+
       </div>
 
       {/* BACKDROP */}
@@ -191,15 +209,9 @@ export default function Navbar() {
       )}
 
       {/* MODALS */}
-    {/* MODALS (Client-side only to prevent hydration errors) */}
-{typeof window !== "undefined" && (
-  <>
-    <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
-    <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
-    <SuccessModal open={successOpen} />
-  </>
-)}
-
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
+      <SuccessModal open={successOpen} />
     </header>
   );
 }

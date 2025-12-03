@@ -23,14 +23,34 @@
 //     return Response.json({ user: null });
 //   }
 // }
+// ************************************************************************************************
+// import { cookies } from "next/headers";
+// import { NextResponse } from "next/server";
 
-import { cookies } from "next/headers";
+// export async function GET() {
+//   const email = cookies().get("token")?.value || null;
+
+//   return NextResponse.json({
+//     user: email ? { email } : null,
+//   });
+// }
+
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
-export async function GET() {
-  const email = cookies().get("token")?.value || null;
+export async function GET(req) {
+  try {
+    const cookie = req.cookies.get("fityou_token")?.value;
 
-  return NextResponse.json({
-    user: email ? { email } : null,
-  });
+    if (!cookie) {
+      return NextResponse.json({ user: null });
+    }
+
+    const decoded = jwt.verify(cookie, "MY_SECRET_KEY");
+
+    return NextResponse.json({ user: { email: decoded.email } });
+  } catch (err) {
+    return NextResponse.json({ user: null });
+  }
 }
+

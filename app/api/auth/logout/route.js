@@ -6,16 +6,17 @@
 //   return res;
 // }
 
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+// ***********************************************************************************************************
+// import { cookies } from "next/headers";
+// import { NextResponse } from "next/server";
 
-export async function POST() {
-  const response = NextResponse.json({ success: true });
+// export async function POST() {
+//   const response = NextResponse.json({ success: true });
 
-  response.cookies.set("token", "", {
-    expires: new Date(0),
-    path: "/",
-  });
+//   response.cookies.set("token", "", {
+//     expires: new Date(0),
+//     path: "/",
+//   });
 
-  return response;
-}
+//   return response;
+// }

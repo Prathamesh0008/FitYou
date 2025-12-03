@@ -8,6 +8,41 @@ export default function LoginModal({ open, onClose }) {
 
   const [email, setEmail] = useState("");
 
+  const sendOtp = async () => {
+    if (!email) return alert("Enter your email");
+
+    try {
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      // IMPORTANT: Backend returns { success: true }, not data.ok
+      if (!data.success) {
+        alert("Failed to send OTP");
+        return;
+      }
+
+      // Store email globally for OtpModal
+      window.currentEmail = email;
+
+      // Close this modal
+      onClose();
+
+      // Open OTP modal
+    setTimeout(() => {
+  window.dispatchEvent(new Event("open-otp"));
+}, 20);
+
+    } catch (error) {
+      console.error("OTP Error:", error);
+      alert("Failed to send OTP.");
+    }
+  };
+
   return (
     <>
       {/* DARK OVERLAY */}
@@ -85,33 +120,7 @@ export default function LoginModal({ open, onClose }) {
               bg-[#8DBFC9] hover:bg-[#7EB4C0]
               text-[#0B2340] text-[16px] font-medium
             "
-            onClick={async () => {
-              if (!email) return alert("Enter your email");
-
-              try {
-                const res = await fetch("/api/send-otp", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email }),
-                });
-
-                const data = await res.json();
-
-                if (!data.success) {
-                  alert("Failed to send OTP");
-                  return;
-                }
-
-                // Save email globally for OTP Modal
-                window.currentEmail = email;
-
-                onClose();
-                window.dispatchEvent(new Event("open-otp"));
-              } catch (error) {
-                console.error("OTP Error:", error);
-                alert("Failed to send OTP.");
-              }
-            }}
+            onClick={sendOtp}
           >
             Send code
           </button>
