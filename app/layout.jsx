@@ -51,8 +51,7 @@
 //   );
 // }
 
-// app/layout.jsx
-// app/layout.jsx
+
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -75,11 +74,8 @@ const laila = Laila({
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={laila.variable}
-    >
+    <html lang="en" suppressHydrationWarning className={laila.variable}>
+      <head>{/* extra <link> or <meta> tags can go here if needed */}</head>
       <body
         className="
           font-laila 
@@ -103,3 +99,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
