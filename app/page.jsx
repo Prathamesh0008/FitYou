@@ -1077,6 +1077,19 @@ export default function HomePage() {
           Ready to see if Fityou is a safe fit for you?
         </h2>
 
+
+{steps.map((step, index) => (
+  <div
+    key={`how-steps-${index}`}
+    className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
+       >
+    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
+       {step.title}
+        </p>
+        <p className="mt-1 text-sm">{step.text}</p>
+         </div>
+         ))}
+
         <p className="mt-2 text-sm text-[#375C7A]">
           Start with the eligibility quiz — no pressure, just clarity.
         </p>

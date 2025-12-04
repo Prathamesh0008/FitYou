@@ -4,80 +4,69 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function StepsSection() {
-  
-  // Your step data (unchanged — just structured cleanly)
+  // Steps list
   const steps = [
     {
       id: 1,
-      title: "Step 1 — Assessment",
-      description:
-        "We start with your medical profile to understand weight goals and eligibility.",
-      icon: "/steps/step1.png",
+      title: "Tell us about yourself",
+      description: "Share your height, weight, and basic health details.",
     },
     {
       id: 2,
-      title: "Step 2 — Approval",
-      description:
-        "A qualified doctor reviews your profile and approves your personalised treatment.",
-      icon: "/steps/step2.png",
+      title: "Doctor reviews your case",
+      description: "A FitYou partner doctor checks your information.",
     },
     {
       id: 3,
-      title: "Step 3 — Treatment",
-      description:
-        "Begin your guided FitYou GLP-1 treatment with full support and tracking.",
-      icon: "/steps/step3.png",
+      title: "Get your personalised plan",
+      description: "Receive your customised FitYou treatment program.",
     },
     {
       id: 4,
-      title: "Step 4 — Support",
-      description:
-        "Weekly follow-ups, lifestyle guidance and ongoing support every step of your journey.",
-      icon: "/steps/step4.png",
+      title: "Start your transformation",
+      description: "Begin the journey with ongoing support from our team.",
     },
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-7 pb-14">
-      <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
+    <section className="bg-[#F7FAFF] py-20 px-6">
+      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
         
-        {/* LEFT TEXT CONTENT */}
+        {/* LEFT SIDE CONTENT */}
         <div>
-          <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
+          <h2 className="text-2xl md:text-3xl font-semibold text-[#0D4F8B] mb-6">
             How FitYou Works
           </h2>
 
-          <p className="mt-2 text-sm text-[#375C7A]">
-            FitYou is designed like a guided health onboarding — not just a treatment.
-          </p>
-
-          <div className="mt-5 space-y-4">
-            {steps.map((step) => (
+          <div className="space-y-4">
+            {steps.map((step, index) => (
               <div
-                key={step.id}
-                className="rounded-2xl bg-[#E9F3FF] border border-[#BFD6F2] p-4 shadow-sm text-[#375C7A]"
+                key={`steps-section-${index}`}   // 🔥 UNIQUE FIX
+                className="rounded-2xl bg-[#E9F3FF] border border-[#C7D9EE] p-4 shadow-sm transition hover:shadow-md"
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
                   {step.title}
                 </p>
-                <p className="mt-1 text-sm">{step.description}</p>
+                <p className="mt-1 text-sm text-[#375C7A]">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
 
           <Link
             href="/quiz"
-            className="inline-block mt-6 bg-[#0D4F8B] text-white text-sm font-semibold px-6 py-3 rounded-full shadow hover:bg-[#09355E] transition"
+            className="inline-block mt-6 bg-[#0D4F8B] text-white font-semibold px-6 py-3 rounded-full shadow hover:bg-[#09355E] transition"
           >
             Start Now
           </Link>
         </div>
 
-        {/* RIGHT SIDE IMAGES OR CONTENT */}
+        {/* RIGHT SIDE IMAGE */}
         <div className="flex justify-center items-center">
           <Image
             src="/steps/main-illustration.png"
-            alt="Steps Illustration"
+            alt="Steps illustration"
             width={400}
             height={400}
             className="rounded-xl shadow-lg object-cover"
