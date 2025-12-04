@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useRef, useEffect } from "react";
 
 export default function NewsSection() {
+  const scrollRef = useRef(null);
+
   const articles = [
     {
       title: "Ground-breaking weight loss injection gets approved in India",
@@ -29,66 +32,95 @@ export default function NewsSection() {
       date: "21 March 2025",
       logo: "/news/firstpost-logo.jpg",
     },
-    
   ];
 
+  // SEAMLESS AUTO SCROLL FOR DESKTOP
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const isDesktop = window.innerWidth >= 768;
+    if (!isDesktop) return;
+
+    let speed = 0.7;
+
+    const scroll = () => {
+      container.scrollLeft += speed;
+
+      // When reached middle → reset back
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
+      }
+
+      requestAnimationFrame(scroll);
+    };
+
+    const pause = () => (speed = 0);
+    const resume = () => (speed = 0.7);
+
+    container.addEventListener("mouseenter", pause);
+    container.addEventListener("mouseleave", resume);
+
+    scroll();
+  }, []);
+
   return (
-   <section className="bg-[#FBF6EE] py-20 font-laila relative">
+    <section className="bg-[#FBF6EE] py-20 font-laila">
       <div className="max-w-6xl mx-auto px-4">
 
-        <h2 className="text-xl md:text-4xl  text-[#0D336A] mb-12 text-left leading-snug">
-          The breakthrough in weight loss medication<br />
+        {/* TITLE */}
+        <h2 className="text-[40px] text-[#0D336A] font-bold leading-tight mb-12">
+          The breakthrough in weight loss medication <br />
           has hit the news big time.
         </h2>
 
-        {/* SCROLL WRAPPER */}
-        <div className="relative">
-          
-          {/* Fade Overlays (left & right) */}
-          <div className="absolute left-0 top-0 w-12 h-full bg-gradient-to-r from-[#FBF6EE] to-transparent pointer-events-none"></div>
-          <div className="absolute right-0 top-0 w-12 h-full bg-gradient-to-l from-[#FBF6EE] to-transparent pointer-events-none"></div>
+        {/* SCROLLER */}
+        <div
+          ref={scrollRef}
+          className="
+            flex gap-6 
+            overflow-x-auto 
+            scrollbar-none 
+            md:overflow-x-hidden
+            pb-4 
+            snap-x
+          "
+        >
+          {/* DUPLICATED LIST FOR INFINITE LOOP */}
+          {[...articles, ...articles].map((item, i) => (
+            <div
+              key={i}
+              className="
+                bg-white 
+                rounded-2xl 
+                border border-[#E4E8EE]
+                shadow-sm
+                p-6
+                min-w-[300px]
+                max-w-[300px]
+                h-[240px]
+                flex flex-col justify-between
+                snap-start
+              "
+            >
+              <p className="text-[#0D336A] text-[17px] font-medium leading-snug">
+                {item.title}
+              </p>
 
-          <div
-            className="
-              flex gap-6 
-              overflow-x-auto 
-              scrollbar-none
-              snap-x snap-mandatory 
-              pb-4
-            "
-          >
-            {articles.map((item, i) => (
-              <div
-                key={i}
-                className="
-                  snap-start
-                  bg-white 
-                  rounded-2xl 
-                  border 
-                  border-[#E4E8EE]
-                  shadow-sm
-                  p-6
-                  w-[300px]
-                  flex flex-col justify-between
-                "
-              >
-                <p className="text-[#0D336A] text-[17px] leading-relaxed font-medium">
-                  {item.title}
-                </p>
+              <p className="text-[13px] text-[#375C7A] mt-4">
+                {item.date}
+              </p>
 
-                <p className="text-[12px] text-[#375C7A] mt-6">{item.date}</p>
-
-                <div className="relative w-[140px] h-[40px] mt-4">
-                  <Image
-                    src={item.logo}
-                    alt="Publisher Logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
+              <div className="relative w-[130px] h-[32px] mt-4">
+                <Image
+                  src={item.logo}
+                  alt="Publisher Logo"
+                  fill
+                  className="object-contain"
+                />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
       </div>

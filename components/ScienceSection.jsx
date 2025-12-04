@@ -69,7 +69,7 @@ export default function ScienceSection() {
         {/* RIGHT COLUMN */}
         <div className="flex flex-col justify-center">
 
-          <h2 className="text-[42px] md:text-[64px] font-bold leading-tight text-[#0D4F8B]">
+          <h2 className="text-[42px] md:text-[64px] font-semibold leading-tight text-[#0D4F8B]">
             Let science help<br />
             you lose weight,<br />
             and keep it off

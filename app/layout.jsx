@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
-import PageTransition from "@/components/PageTransition";
+// import PageTransition from "@/components/PageTransition";
 import { Laila } from "next/font/google";
 // import FloatingButton from "@/components/chatbot/FloatingButton";
 
