@@ -347,11 +347,28 @@ setStepIndex(i => Math.max(0, i - 1));
 
   // build URL for result page
   const redirectToResult = () => {
-    const params = new URLSearchParams();
-    if (answers.heightCm) params.set("height", answers.heightCm);
-    if (answers.weightKg) params.set("weight", answers.weightKg);
-    router.push(`/recommendations?${params.toString()}`);
-  };
+  const params = new URLSearchParams();
+
+  // send height, weight, and BMI
+  if (answers.heightCm) params.set("height", answers.heightCm);
+  if (answers.weightKg) params.set("weight", answers.weightKg);
+
+  // calculate BMI here and send it
+  const heightM = Number(answers.heightCm) / 100;
+  const bmi = (Number(answers.weightKg) / (heightM * heightM)).toFixed(1);
+  params.set("bmi", bmi);
+
+  // send target weight directly
+  if (answers.targetWeightGoal)
+    params.set("target", answers.targetWeightGoal);
+
+  // send calories (used in “you consume more calories” section)
+  if (answers.calories)
+    params.set("calories", answers.calories);
+
+  router.push(`/recommendations?${params.toString()}`);
+};
+
 
   // 🔵 NEW: instead of redirecting immediately, show review animation
   const goToResult = () => {
