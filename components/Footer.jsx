@@ -1,25 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, Instagram, Youtube, Linkedin, ArrowUp } from "lucide-react";
+import { Facebook, Instagram, Youtube, Linkedin, ArrowUp  } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-[#F7FAFC] border-t border-[#E2E8F0] font-laila mt-0">
-      {/* Make footer content wrapper relative so button can position inside it */}
-      <div className="max-w-7xl mx-auto px-6 py-14 relative">
-
-        {/* ================= BACK TO TOP BUTTON (TOP RIGHT) ================= */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="absolute  top-2 right-0 flex flex-col items-center translate-y-[-50%]"
-        >
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#2B6CB0] border border-[#CBD5E0] shadow-sm">
-            <ArrowUp className="w-4 h-4 text-white " />
-          </div>
-          <span className="text-[11px] text-[#1A365D] mt-1">To top</span>
-        </button>
-
+      <div className="max-w-7xl mx-auto px-6 py-14">
+        
         {/* ================= TOP GRID ================= */}
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
 
@@ -77,24 +65,44 @@ export default function Footer() {
               <li><Link href="/safety" className="hover:text-[#2B6CB0]">Safety Guidelines</Link></li>
             </ul>
           </div>
-
         </div>
 
+        {/* ================= PAYMENT METHODS WITHOUT IMAGES ================= */}
         {/* ================= PAYMENT METHODS ================= */}
-        <div className="mt-12 border-t border-[#E2E8F0] pt-8">
-          <h4 className="text-sm font-semibold text-[#1A365D] mb-4">
-            Accepted Payment Methods
-          </h4>
+<div className="mt-12 border-t border-[#E2E8F0] pt-8">
+  <h4 className="text-sm font-semibold text-[#1A365D] mb-4">
+    Accepted Payment Methods
+  </h4>
 
-          <div className="flex flex-wrap items-center gap-6">
-            <div className="h-12"><img src="/payments/visa.png" alt="Visa" className="h-12 w-auto object-contain" /></div>
-            <div className="h-12"><img src="/payments/mastercard.png" alt="Mastercard" className="h-12 w-auto object-contain" /></div>
-            <div className="h-12"><img src="/payments/amex.png" alt="American Express" className="h-12 w-auto object-contain" /></div>
-            <div className="h-12"><img src="/payments/paypal.png" alt="PayPal" className="h-12 w-auto object-contain" /></div>
-            <div className="h-12"><img src="/payments/apple-pay.png" alt="Apple Pay" className="h-12 w-auto object-contain" /></div>
-            <div className="h-12"><img src="/payments/google-pay.png" alt="Google Pay" className="h-12 w-auto object-contain" /></div>
-          </div>
-        </div>
+  <div className="flex flex-wrap items-center gap-6">
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/visa.png" alt="Visa" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/mastercard.png" alt="Mastercard" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/amex.png" alt="American Express" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/paypal.png" alt="PayPal" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/apple-pay.png" alt="Apple Pay" className="h-12 w-auto object-contain" />
+    </div>
+
+    <div className="h-12 relative w-auto">
+      <img src="/payments/google-pay.png" alt="Google Pay" className="h-12 w-auto object-contain" />
+    </div>
+
+  </div>
+</div>
+
 
         {/* ================= BOTTOM ROW ================= */}
         <div className="mt-10 border-t border-[#E2E8F0] pt-6 flex flex-col md:flex-row items-center justify-between">
@@ -104,14 +112,25 @@ export default function Footer() {
 
           <Link
             href="/quiz"
-            className="mt-4 md:mt-0 rounded-full bg-[#FFD49C] px-6 py-2 text-xs 
-            font-semibold text-[#245A96] shadow-sm hover:bg-[#e2c49d] transition"
+            className="mt-4 md:mt-0 rounded-full bg-[#2B6CB0] px-6 py-2 text-xs 
+            font-semibold text-white shadow-sm hover:bg-[#245A96] transition"
           >
             Do I qualify?
           </Link>
         </div>
+        {/* ================= BACK TO TOP BUTTON ================= */}
+<button
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="fixed bottom-6 right-6 z-50 bg-[#2B6CB0] hover:bg-[#245A96] text-white p-3 rounded-full shadow-lg transition-all duration-300"
+  aria-label="Back to top"
+>
+  <ArrowUp className="w-5 h-5" />
+
+</button>
 
       </div>
     </footer>
   );
 }
+
+

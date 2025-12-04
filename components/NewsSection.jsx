@@ -1,4 +1,3 @@
-//FitYou\components\NewsSection.jsx
 "use client";
 
 import { useRef, useEffect } from "react";
@@ -14,7 +13,8 @@ export default function NewsSection() {
       logo: "/news/reuters-logo.jpg",
     },
     {
-      title: "Revolutionary weight loss injection hits India; good news for obese people",
+      title:
+        "Revolutionary weight loss injection hits India; good news for obese people",
       date: "15 April 2025",
       logo: "/news/business-standard-logo.jpg",
     },
@@ -29,12 +29,14 @@ export default function NewsSection() {
       logo: "/news/indian-express.jpg",
     },
     {
-      title: "Weight loss injection launches in India: Is it the answer to obesity?",
+      title:
+        "Weight loss injection launches in India: Is it the answer to obesity?",
       date: "21 March 2025",
       logo: "/news/firstpost-logo.jpg",
     },
   ];
 
+  // AUTO SCROLL (marquee-style)
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -42,35 +44,45 @@ export default function NewsSection() {
     let speed = 0.6;
     let animationFrame;
 
-    function autoScroll() {
+    const autoScroll = () => {
       container.scrollLeft += speed;
 
-      // When fully scrolled → reset seamlessly
+      // Seamless loop using duplicated list
       if (container.scrollLeft >= container.scrollWidth / 2) {
         container.scrollLeft = 0;
       }
 
       animationFrame = requestAnimationFrame(autoScroll);
-    }
+    };
 
     animationFrame = requestAnimationFrame(autoScroll);
 
-    // Pause on manual scroll
-    const stop = () => (speed = 0);
-    const start = () => (speed = 0.6);
+    const pause = () => {
+      speed = 0;
+    };
 
-    container.addEventListener("mouseenter", stop);
-    container.addEventListener("mouseleave", start);
-    container.addEventListener("touchstart", stop);
-    container.addEventListener("touchend", start);
+    const resume = () => {
+      speed = 0.6;
+    };
 
-    return () => cancelAnimationFrame(animationFrame);
+    container.addEventListener("mouseenter", pause);
+    container.addEventListener("mouseleave", resume);
+    container.addEventListener("touchstart", pause, { passive: true });
+    container.addEventListener("touchend", resume, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      container.removeEventListener("mouseenter", pause);
+      container.removeEventListener("mouseleave", resume);
+      container.removeEventListener("touchstart", pause);
+      container.removeEventListener("touchend", resume);
+    };
   }, []);
 
   return (
     <section className="bg-[#FBF6EE] py-20 font-laila">
       <div className="max-w-6xl mx-auto px-4">
-
+        {/* TITLE */}
         <h2 className="text-[40px] text-[#0D336A] font-bold mb-12 leading-tight">
           The breakthrough in weight loss medication <br />
           has hit the news big time.
@@ -80,37 +92,35 @@ export default function NewsSection() {
         <div
           ref={scrollRef}
           className="
-            flex gap-6 
+            flex 
+            gap-6 
             overflow-x-scroll 
             scrollbar-none 
             pb-4
-            whitespace-nowrap 
           "
-          style={{ scrollBehavior: "auto" }}
         >
-          {/* DOUBLE LIST FOR PERFECT LOOP */}
+          {/* DUPLICATED LIST FOR LOOP */}
           {[...articles, ...articles].map((item, i) => (
             <div
               key={i}
               className="
                 bg-white 
-                inline-block
-                align-top
                 rounded-2xl 
                 border border-[#E4E8EE]
                 shadow-sm
                 p-6
                 w-[300px]
-                h-[240px]
+                shrink-0
+                flex
+                flex-col
+                justify-between
               "
             >
               <p className="text-[#0D336A] text-[17px] font-medium leading-snug">
                 {item.title}
               </p>
 
-              <p className="text-[13px] text-[#375C7A] mt-4">
-                {item.date}
-              </p>
+              <p className="text-[13px] text-[#375C7A] mt-4">{item.date}</p>
 
               <div className="relative w-[130px] h-[32px] mt-4">
                 <Image
@@ -123,7 +133,6 @@ export default function NewsSection() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

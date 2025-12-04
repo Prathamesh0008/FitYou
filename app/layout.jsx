@@ -3,16 +3,15 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
-// import PageTransition from "@/components/PageTransition";
-
+import PageTransition from "@/components/PageTransition";
 import { Laila } from "next/font/google";
-// import FloatingButton from "@/components/chatbot/FloatingButton";
 
 export const metadata = {
   title: "Fityou",
   description: "Safer weight management with medical awareness.",
 };
 
+// Load Laila font
 const laila = Laila({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -21,28 +20,29 @@ const laila = Laila({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning className={laila.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={laila.variable} // Apply font variable
+    >
       <body
         className="
-          font-laila
-          min-h-screen
-          bg-white
-          text-[#1A1A1A]
+          font-laila 
+          min-h-screen 
+          bg-white 
+          text-[#1A1A1A] 
           transition-all
         "
       >
         <AuthProvider>
           <RouteLoader />
-
           <Navbar />
 
-          {/* If you want page transitions, enable this */}
           {/* <PageTransition> */}
-          <main>{children}</main>
+            <main>
+              {children}
+            </main>
           {/* </PageTransition> */}
-
-          {/* If you want chatbot, enable this */}
-          {/* <FloatingButton /> */}
 
           <Footer />
         </AuthProvider>
@@ -50,3 +50,6 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+
+

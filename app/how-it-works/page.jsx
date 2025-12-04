@@ -1,214 +1,362 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import boxImage from "@/public/how/box.png";
+import StepsSection from "@/components/StepsSection";
+
+
 
 export default function HowItWorksPage() {
+  const bluePillsRef = useRef([]);
+  const peachPillsRef = useRef([]);
+
+  useEffect(() => {
+    const items = [...bluePillsRef.current, ...peachPillsRef.current].filter(
+      Boolean
+    );
+    if (!items.length || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          const index = Number(el.dataset.index || "0");
+          el.style.transitionDelay = `${index * 0.12}s`;
+
+          if (entry.isIntersecting) {
+            el.classList.add("how-is-visible");
+          } else {
+            el.classList.remove("how-is-visible");
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white text-[#4A4A4A] font-laila">
-
-      {/* HERO */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-12 md:pt-20">
-        <div className="grid gap-8 md:grid-cols-[1.4fr,1fr] items-center">
-
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#3A86FF]">
-              HOW FITYOU WORKS
-            </p>
-
-            <h1 className="mt-3 text-3xl md:text-4xl font-bold text-[#1A1A1A]">
-              Simple, structured, and medically aware from day one.
+    <>
+      <main className="max-w-[1180px] mx-auto px-4 pb-32 text-[#103b7a]">
+        {/* SECTION 1 – Hero */}
+        <section className="flex items-center mt-10 mb-20 max-lg:flex-col">
+          {/* Left block */}
+          <div className="w-[40%] max-lg:w-full">
+            <h1 className="text-[69px] leading-tight font-normal text-[#103b7a] mb-8 max-md:text-[40px]">
+              {/* desktop: 3 lines, mobile: single bold line */}
+              <span className="hidden md:inline font-semibold">
+                How our
+                <br />
+                service
+                <br />
+                works
+              </span>
+               {/* mobile heading with larger font size */}
+              <span className="inline md:hidden block w-full text-left font-semibold text-[47px]">
+                How our service works
+              </span>
             </h1>
 
-            <p className="mt-4 text-sm md:text-[15px] text-[#4A4A4A] max-w-xl">
-              Fityou isn’t a crash transformation program. It’s a guided system
-              that screens basic health risks, then walks you into better routines
-              one week at a time.
+            <p className="text-[18px] leading-relaxed mb-8 max-w-[480px] text-left font-normal">
+              The essentials on how to start losing weight
+              <br />
+              with our scientifically proven treatment.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/quiz"
-                className="rounded-full bg-[#3A86FF] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#2D6FD8]"
+            {/* DESKTOP/TABLET BUTTON – stays exactly where it was, hidden on mobile */}
+            <div className="w-full flex max-lg:justify-center max-sm:hidden">
+              <button
+                type="button"
+                className="inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition"
               >
-                Start the free health quiz
-              </Link>
-
-              <Link
-                href="/program"
-                className="text-sm font-medium text-[#3A86FF] hover:text-[#265FCC]"
-              >
-                See inside the program →
-              </Link>
+                Start consultation
+              </button>
             </div>
           </div>
 
-          {/* 3 Guided Phases */}
-          <div className="rounded-3xl bg-white border border-[#E5E7EB] p-5 shadow-sm">
-            <h2 className="text-sm font-semibold text-[#1A1A1A]">
-              In 3 guided phases
-            </h2>
-
-            <ol className="mt-3 space-y-3 text-xs text-[#4A4A4A]">
-              {[
-                {
-                  num: "1",
-                  title: "Screen risks first",
-                  text: "Quick questions on symptoms, medication, energy and recent changes — to decide whether you should even start.",
-                },
-                {
-                  num: "2",
-                  title: "Build “safety-first” routines",
-                  text: "Light, realistic targets across sleep, movement and food rhythm. No overtraining, no crash diets.",
-                },
-                {
-                  num: "3",
-                  title: "Adjust based on your signals",
-                  text: "You log what you can. The system nudges adjustments instead of punishing you for missed days.",
-                },
-              ].map((item) => (
-                <li key={item.num} className="flex gap-3">
-                  <span className="mt-[2px] inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#EAF3FF] text-[11px] font-semibold text-[#3A86FF]">
-                    {item.num}
-                  </span>
-
-                  <div>
-                    <p className="font-semibold text-[#1A1A1A]">{item.title}</p>
-                    <p>{item.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+          {/* Right block — image */}
+          <div className="w-[40%] max-lg:w-full flex justify-start max-lg:justify-center mt-8 lg:mt-0">
+            <div className="max-w-[560px] w-full">
+              <Image
+                src={boxImage}
+                alt="How Fityou service works illustration"
+                width={560}
+                height={560}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
 
-        </div>
-      </section>
+          {/* MOBILE BUTTON – only visible on small screens, placed below image */}
+          <div className="w-full flex justify-center sm:hidden mt-6">
+            <button
+              type="button"
+              className="inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition"
+            >
+              Start consultation
+            </button>
+          </div>
+        </section>
 
-      {/* TIMELINE SECTION */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
+        {/* SECTION 2 – your steps component */}
+        <div className="mb-16">
+       <StepsSection />
+       </div>
 
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-
-          <h2 className="text-xl md:text-2xl font-semibold text-[#1A1A1A]">
-            Your first 4 weeks inside Fityou
+        {/* SECTION 3 – Achieving your goals + 3 blue pills */}
+        <section className="mb-20">
+          <h2 className="text-[40px] font-normal mb-6">
+            {/* desktop: original text block, mobile: 2 lines as requested */}
+            <span className="hidden md:block text-center">
+              Achieving your goals is as
+              <br />
+              easy as 1–2–3
+            </span>
+            <span className="block md:hidden w-full text-left">
+              <span className="block">Achieving your goals</span>
+              <span className="block">is as easy as 1–2–3</span>
+            </span>
           </h2>
 
-          <p className="mt-2 text-sm text-[#4A4A4A] max-w-2xl">
-            The program is built so that even a busy, imperfect week can still
-            move you forward, instead of resetting you to zero.
+          <p className="text-3xl font-semibold text-center max-lg:text-left mb-10">
+            What do you need to do?
           </p>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-4 text-xs">
-            {[
-              {
-                label: "Week 1",
-                focus: "Risk screen & baseline",
-                points: [
-                  "Complete health quiz",
-                  "Understand your flags",
-                  "Get simple non-intense targets",
-                ],
-              },
-              {
-                label: "Week 2",
-                focus: "Sleep & timing",
-                points: [
-                  "Set wake/sleep anchors",
-                  "Adjust late-night habits",
-                  "Start tracking 1–2 signals",
-                ],
-              },
-              {
-                label: "Week 3",
-                focus: "Movement & meals",
-                points: [
-                  "Light, low-pressure movement",
-                  "Stabilise meal rhythm",
-                  "Notice energy dips",
-                ],
-              },
-              {
-                label: "Week 4",
-                focus: "Reflection & tweaks",
-                points: [
-                  "Review fatigue & cravings",
-                  "Dial up or down intensity",
-                  "Plan the next 4 weeks",
-                ],
-              },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="rounded-2xl border border-[#D6E4FF] bg-[#EAF3FF] p-4"
-              >
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
-                  {item.label}
-                </p>
-
-                <p className="mt-1 text-sm font-semibold text-[#1A1A1A]">
-                  {item.focus}
-                </p>
-
-                <ul className="mt-2 space-y-1 text-[#4A4A4A]">
-                  {item.points.map((p) => (
-                    <li key={p}>• {p}</li>
-                  ))}
-                </ul>
+          <div className="space-y-4">
+            {/* ITEM 1 */}
+            <div
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              ref={(el) => (bluePillsRef.current[0] = el)}
+              data-index={0}
+            >
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Professional Injection Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m15 4 5 5" />
+                  <path d="m17 2 3 3" />
+                  <path d="M12 7 3 16l5 5 9-9" />
+                  <path d="M16 11 9 4 4 9" />
+                </svg>
               </div>
-            ))}
+              <p className="font-normal">
+                Take one injection weekly. It will reduce your appetite; you
+                will eat less without feeling hungry.
+              </p>
+            </div>
+
+            {/* ITEM 2 */}
+            <div
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              ref={(el) => (bluePillsRef.current[1] = el)}
+              data-index={1}
+            >
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Professional Clock Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg>
+              </div>
+              <p className="font-normal">
+                Eat sensibly. No need to count calories. Our meal plans can
+                help.
+              </p>
+            </div>
+
+            {/* ITEM 3 */}
+            <div
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              ref={(el) => (bluePillsRef.current[2] = el)}
+              data-index={2}
+            >
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Professional Dumbbell Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6.5 6.5 9 9m6 6 2.5 2.5" />
+                  <path d="M21 21l-2.5-2.5m0 0L15 15m-6-6L4.5 4.5M4.5 4.5 3 3" />
+                </svg>
+              </div>
+              <p className="font-normal">
+                Be active. No gym visits. Our fitness plan helps with light
+                exercise, 3 times a week.
+              </p>
+            </div>
           </div>
+        </section>
 
-        </div>
+       {/* SECTION 4 – How to start? + 3 peach pills */}
+<section className="mb-20">
+  <h2 className="text-[32px] font-normal text-center max-lg:text-left mb-8">
+    How to start?
+  </h2>
 
-      </section>
-
-      {/* SAFETY & LIMITS */}
-      <section className="mx-auto max-w-6xl px-4 pb-20 grid gap-6 md:grid-cols-[1.3fr,1fr]">
-
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-
-          <h2 className="text-lg md:text-xl font-semibold text-[#1A1A1A]">
-            Built with boundaries, not just ambition
-          </h2>
-
-          <p className="mt-2 text-sm text-[#4A4A4A]">
-            Many programs only focus on how fast you can push. Fityou also cares
-            about when you should pause.
-          </p>
-
-          <ul className="mt-4 space-y-2 text-sm text-[#4A4A4A]">
-            <li>• If your answers suggest high risk, we recommend medical advice first.</li>
-            <li>• If you report worrying changes, the program suggests slowing down.</li>
-            <li>• If you feel worse, not better, you’re encouraged to stop and seek help.</li>
-          </ul>
-
-          <p className="mt-4 text-[11px] text-[#6B7280]">
-            Fityou is an educational and behavioural support experience. It does
-            not diagnose, treat, or replace medical care.
-          </p>
-        </div>
-
-        {/* Right Summary Card */}
-        <div className="rounded-3xl bg-[#EAF3FF] border border-[#D6E4FF] p-6 text-sm text-[#1A1A1A]">
-
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
-            QUICK SUMMARY
-          </p>
-
-          <ul className="mt-3 space-y-2 text-xs">
-            <li>✓ Start only after a simple health screen</li>
-            <li>✓ Weekly themes that don’t overwhelm you</li>
-            <li>✓ Designed around real-life constraints</li>
-            <li>✓ Clear messaging when you should slow down</li>
-          </ul>
-
-          <Link
-            href="/register"
-            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#3A86FF] px-4 py-2 text-xs font-semibold text-white hover:bg-[#2D6FD8]"
-          >
-            Create your account →
-          </Link>
-        </div>
-
-      </section>
-
+  <div
+    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+    ref={(el) => (peachPillsRef.current[0] = el)}
+    data-index={0}
+  >
+    <div className="flex items-center gap-5">
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Icon 1 – clipboard */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="5" y="3" width="14" height="18" rx="2" />
+          <path d="M9 3h6v4H9z" />
+          <path d="M9 11h6" />
+          <path d="M9 15h3" />
+        </svg>
+      </div>
+      <p className="font-normal">
+        Medical consultation: answer the medical questions to see if our
+        treatment is safe for you.
+      </p>
     </div>
+  </div>
+
+  <div
+    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+    ref={(el) => (peachPillsRef.current[1] = el)}
+    data-index={1}
+  >
+    <div className="flex items-center gap-5">
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Icon 2 – phone / plan */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="7" y="2" width="10" height="20" rx="2" />
+          <circle cx="12" cy="18" r="0.8" />
+          <path d="M10 6h4" />
+          <path d="M10 9h4" />
+        </svg>
+      </div>
+      <p className="font-normal">
+        Based on your results, we create a personalised Fityou programme
+        for you.
+      </p>
+    </div>
+  </div>
+
+  <div
+    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+    ref={(el) => (peachPillsRef.current[2] = el)}
+    data-index={2}
+  >
+    <div className="flex items-center gap-5">
+      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+        {/* Icon 3 – home / delivery */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#103b7a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 11 12 3l9 8" />
+          <path d="M5 10v9h5v-5h4v5h5v-9" />
+        </svg>
+      </div>
+      <p className="font-normal">
+        If our doctors approve you for treatment, you will receive your
+        injections’ first month&apos;s supply in a few days.
+      </p>
+    </div>
+  </div>
+
+  <div className="text-center mt-10">
+    <button className="how-btn-primary inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition">
+      Start consultation
+    </button>
+    <p className="mt-4 text-[16px] font-normal">
+      See if you qualify. It&apos;s free.
+    </p>
+  </div>
+</section>
+
+      </main>
+
+      {/* Page-specific global styles for animation only */}
+      <style jsx global>{`
+        .how-pill-anim {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .how-pill-anim.how-is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
+    </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
