@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default function FAQ({ items }) {
   const [active, setActive] = useState(null);
@@ -12,9 +12,7 @@ export default function FAQ({ items }) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 mt-16">
-      <h2 className="text-[32px] md:text-[38px] font-semibold text-[#0D4F8B] mb-6">
-        FAQs
-      </h2>
+      <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6">FAQs</h2>
 
       <div className="space-y-3">
         {items.map((item, index) => {
@@ -23,24 +21,32 @@ export default function FAQ({ items }) {
           return (
             <div
               key={index}
-              className="bg-white border border-[#D9E6EC] rounded-lg shadow-sm"
+              className={`rounded-xl border ${
+                isOpen ? "bg-[#F4FAFD] border-[#C7DFEC]" : "bg-[#F7FBFF] border-[#D9E6EC]"
+              } shadow-sm transition-all`}
             >
-              {/* HEADER ROW */}
+              {/* HEADER */}
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center gap-4 px-5 py-4 text-left"
+                className="w-full flex items-center gap-4 px-5 py-5 text-left"
               >
-                {/* LEFT ICON (PLUS / X) */}
+                {/* SMOOTH ROTATING PLUS ICON */}
                 <span
-                  className={`text-[#0D4F8B] transition-transform duration-300 ${
-                    isOpen ? "rotate-45" : "rotate-0"
-                  }`}
+                  className={`
+                    text-[#0D4F8B]
+                    transform transition-transform duration-[450ms] ease-in-out
+                    ${isOpen ? "rotate-45" : "rotate-0"}
+                  `}
                 >
-                  <Plus className="w-5 h-5" />
+                  <Plus className="w-10 h-10" />
                 </span>
 
-                {/* QUESTION TEXT */}
-                <span className="text-[#0D4F8B] text-[16px] font-medium">
+                {/* QUESTION */}
+                <span
+                  className={`text-[18px] transition duration-300 ${
+                    isOpen ? "text-[#002074] font-semibold" : "text-[#0D4F8B] font-medium"
+                  }`}
+                >
                   {item.question}
                 </span>
               </button>
@@ -48,12 +54,14 @@ export default function FAQ({ items }) {
               {/* ANSWER */}
               <div
                 className={`overflow-hidden transition-all duration-300 ${
-                  isOpen ? "max-h-[500px] py-4 px-5" : "max-h-0 px-5"
+                  isOpen ? "max-h-[500px] px-5 pb-5" : "max-h-0 px-5 pb-0"
                 }`}
               >
-                <p className="text-[#375C7A] text-[15px] leading-[1.7] pb-4">
+                <p className="text-[#375C7A] text-[16px] leading-[1.7] mt-1">
                   {item.answer}
                 </p>
+                {/* STRAIGHT LINE */}
+<div className="w-full border-b border-[#D2E2EB] mt-4"></div>
               </div>
             </div>
           );

@@ -3,18 +3,31 @@
 import Image from "next/image";
 import { useRef } from "react";
 import FAQ from "@/components/FAQ";
+import BackButton from "@/components/BackButton";
+
 
 export default function WegovyDosageSchedulePage() {
   // ------------------ REFS ------------------
+  // const keyTakeawaysRef = useRef(null);
+  // const dosageChartRef = useRef(null);
+  // const missedDoseRef = useRef(null);
+  // const tipsRef = useRef(null);
+  // const weightLossRef = useRef(null);
+  // const whatIsRef = useRef(null);
+  // const doctorDecidesRef = useRef(null);
+  // const sideEffectsRef = useRef(null);
+  // const pauseDoseRef = useRef(null);
   const keyTakeawaysRef = useRef(null);
-  const dosageChartRef = useRef(null);
-  const missedDoseRef = useRef(null);
-  const tipsRef = useRef(null);
-  const weightLossRef = useRef(null);
-  const whatIsRef = useRef(null);
-  const doctorDecidesRef = useRef(null);
-  const sideEffectsRef = useRef(null);
-  const pauseDoseRef = useRef(null);
+const dosageChartRef = useRef(null);
+const missedDoseRef = useRef(null);
+const tipsRef = useRef(null);
+const weightLossRef = useRef(null);
+
+const howWorkRef = useRef(null);
+const doctorDecidesRef = useRef(null);
+const sideEffectsRef = useRef(null);
+const pauseDoseRef = useRef(null);  // For final thoughts
+
 
   // Smooth scroll function
  const scrollToSection = (ref) => {
@@ -31,19 +44,24 @@ export default function WegovyDosageSchedulePage() {
 
 
   return (
-    <div className="bg-white font-laila pb-20">
+    <div className="bg-white font-laila pb-20 text-[18px]">
+      <div className="max-w-6xl mx-auto px-4 pt-6">
+  <BackButton />
+</div>
+
 
       {/* ------------------ HERO SECTION ------------------ */}
        <section className="max-w-6xl mx-auto px-4 pt-10 pb-16 grid md:grid-cols-2 gap-12">
+        
 
         {/* LEFT SIDE — IMAGE + CHART */}
         <div className="flex justify-center">
           <div className="rounded-2xl overflow-hidden bg-white shadow-sm ">
             <Image
-              src="/guide/wegovy-dosage-schedule-new.jpg" // ← replace with your image path
+              src="/guide/wegovy-dosage-hero-img.jpg" // ← replace with your image path
               alt="Mounjaro Dosage Chart"
               width={650}
-              height={520}
+              height={580}
               className="w-full h-auto object-contain"
             />
           </div>
@@ -60,22 +78,21 @@ export default function WegovyDosageSchedulePage() {
             text-[34px]
             md:text-[42px]
           ">
-            Mounjaro dosage<br />
-            chart for weight loss
+            Wegovy Dosage Guide for Beginners<br />
+             Weekly Weight Loss Injection Plan
           </h1>
 
           {/* Sub-text */}
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-6">
-            If you are starting Mounjaro (Tirzepatide), chances are you are
-            feeling hopeful and confused at the same time.
+             Learn the complete Wegovy dosage schedule for safe weight loss.
           </p>
 
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-            It’s easy to wonder, “Am I doing this right?”
+            You explains weekly injections, results, side effects
           </p>
 
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-            We’re here to help you figure out just that.
+            & dosing tips for beginners in India.
           </p>
 
         </div>
@@ -88,75 +105,50 @@ export default function WegovyDosageSchedulePage() {
 
     <h2 className="text-lg font-semibold text-[#0D4F8B] mb-4">In this article:</h2>
 
-    <div className="grid md:grid-cols-2 gap-6 text-[#0D4F8B] text-[15px] leading-[1.8]">
+    <div className="grid md:grid-cols-2 gap-6 text-[#0D4F8B] text-[18px] leading-[1.8]">
 
-      <ul className="space-y-2">
+      {/* LEFT COLUMN */}
+      <ul className="space-y-3">
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(keyTakeawaysRef)}
-        >
-          Key takeaways
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(keyTakeawaysRef)}>
+          Key Takeaways
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(dosageChartRef)}
-        >
-          Dosage chart explained
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(dosageChartRef)}>
+          Wegovy Dosage Schedule
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(missedDoseRef)}
-        >
-          What to do if you miss a dose?
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(missedDoseRef)}>
+          Missed Dose
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(tipsRef)}
-        >
-          Tips to make progress easier
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(tipsRef)}>
+          Wegovy Results & Tips
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(weightLossRef)}
-        >
-          Progress timeline
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(weightLossRef)}>
+          Week-by-Week Progress
         </li>
 
       </ul>
 
-      <ul className="space-y-2">
+      {/* RIGHT COLUMN */}
+      <ul className="space-y-3">
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(whatIsRef)}
-        >
-          How does it work?
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(howWorkRef)}>
+          How Wegovy Works
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(doctorDecidesRef)}
-        >
-          How experts decide your pace
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(doctorDecidesRef)}>
+          How Doctors Choose Your Dose
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(sideEffectsRef)}
-        >
-          Managing challenges smoothly
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(sideEffectsRef)}>
+          Side Effects
         </li>
 
-        <li
-          className="cursor-pointer underline"
-          onClick={() => scrollToSection(pauseDoseRef)}
-        >
-          When to pause or reduce pace?
+        <li className="cursor-pointer underline" onClick={() => scrollToSection(pauseDoseRef)}>
+          Final Thoughts
         </li>
 
       </ul>
@@ -169,82 +161,153 @@ export default function WegovyDosageSchedulePage() {
 
 
 
+
       {/* ------------------ ARTICLE BODY SECTIONS ------------------ */}
       <section className="max-w-4xl mx-auto px-4 space-y-20">
 
 
         {/* ------------------ KEY TAKEAWAYS ------------------ */}
         <div ref={keyTakeawaysRef}>
-          <h2 className="text-4xl  text-[#0D4F8B] mb-6">Key takeaways:</h2>
+          <h2 className="text-4xl  text-[#0D4F8B] mb-6">Key takeaways:(Quick Summary)</h2>
 
           <div className="bg-[#E6F2F7] p-6 rounded-xl mb-8 leading-[1.8] text-[#0D4F8B]">
-            <ul className="list-disc pl-6 space-y-2 text-[15px]">
-              <li>Your appetite rhythm changes gradually — consistency is the key driver.</li>
-              <li>Small routine improvements (sleep, hydration, meal timing) create big long-term impact.</li>
-              <li>Progress is smoother when habits increase slowly, not forcefully.</li>
+            <ul className="list-disc pl-6 space-y-2 text-[18px]">
+              <li>Wegovy is a once-weekly weight loss medication approved in India for people who are overweight or obese.</li>
+              <li>It comes in five dose strengths: 0.25 mg, 0.5 mg, 1.0 mg, 1.7 mg, and 2.4 mg.</li>
+              <li>Its active ingredient, Semaglutide, helps you eat less, feel full sooner, and improve metabolic balance.</li>
+              <li>The dose is increased gradually to minimise side effects and ensure long-term weight loss success.</li>
             </ul>
           </div>
 
-          <p className="text-[#375C7A] text-[15px] leading-[1.8] mb-4">
-            Your body adapts to healthy routines in stages. Understanding this natural pace 
-            helps reduce frustration and builds confidence.
+          <p className="text-[#375C7A] text-[18px] leading-[1.8] mb-4">
+            Fit You follows a medically-guided dosing plan to help you lose weight safely and effectively.
           </p>
         </div>
+
+
+        
+<div ref={pauseDoseRef} className="max-w-4xl mx-auto px-4 mt-16">
+
+  <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+   Wegovy Dosage for Weight Loss: Weekly Injection Guide for Beginners
+  </h2>
+
+  <p className="text-[16px] md:text-[18px] text-[#375C7A] leading-[1.8] mb-6">
+    If you’re exploring the best medicine to lose weight in India, you’ve likely heard of Wegovy, one of the most effective weight loss medications globally. At Fit You, we help people start their Wegovy journey with confidence by giving them a clear, medically-approved roadmap.
+  </p>
+
+  <p className="text-[18px] md:text-[18px] text-[#375C7A] leading-[1.8] mb-6">
+    This beginner-friendly guide explains how Wegovy works, how the dosage increases, what results to expect each week, and how to manage side effects while staying on track with your lose weight treatment.
+  </p>
+
+</div>
 
 
 
         {/* ------------------ HOW IT WORKS ------------------ */}
-        <div ref={whatIsRef} className="max-w-3xl mx-auto">
+        <div ref={howWorkRef} className="max-w-3xl mx-auto">
           <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6">
-            What is Wegovy? How does it work?
+            What Is Wegovy? How Does It Help You Lose Weight?
+
           </h2>
 
-          <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-6">
-            Wegovy helps regulate appetite, reduce hunger spikes, and stabilise eating patterns.
-            It works with your body to create slow, steady improvements.
+          <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+            Wegovy (Semaglutide) is a once-weekly prescription weight loss injection developed by Novo Nordisk. It is clinically proven to help people reduce weight by targeting the body’s natural appetite and metabolic pathways.
           </p>
 
-          <h3 className="text-[18px] font-semibold text-[#0D4F8B] mb-4">What this means is:</h3>
+          <h3 className="text-[18px] font-semibold text-[#0D4F8B] mb-4">How Wegovy Works Inside Your Body</h3>
 
-          <ul className="space-y-3 text-[16px] text-[#375C7A] leading-[1.7]">
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> It helps reduce sudden hunger spikes.</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> You stay full for longer due to slower stomach emptying.</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Better control over emotional or habit-based eating.</li>
+          <ul className="space-y-3 text-[18px] text-[#375C7A] leading-[1.7]">
+            <li>Wegovy contains Semaglutide, a synthetic version of a human hormone called GLP-1, which helps regulate:</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Appetite</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Digestion</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Insulin response</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Cravings</li>
           </ul>
         </div>
+
+
+        {/* ---------- GLP-1 Activation Benefits (FitYou Style) ---------- */}
+<div className="max-w-4xl mx-auto px-4 mt-16">
+  <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    How GLP-1 Activation Helps You Lose Weight
+  </h2>
+
+  <div className="  rounded-xl p-6 md:p-8">
+    <p className="text-[#375C7A] text-[18px] md:text-[18px] leading-[1.8] mb-4">
+      This GLP-1 activation leads to several weight-loss benefits:
+    </p>
+
+    <ul className="space-y-4 text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8]">
+      <li className="flex gap-3">
+        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+        <span><strong>You feel full sooner:</strong> Wegovy signals the brain’s appetite centres, reducing overeating and cravings.</span>
+      </li>
+
+      <li className="flex gap-3">
+        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+        <span><strong>You eat fewer calories naturally:</strong> You don’t have to follow extreme diets or starve yourself.</span>
+      </li>
+
+      <li className="flex gap-3">
+        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+        <span><strong>Your digestion slows slightly:</strong> Food stays in your stomach longer, helping reduce hunger between meals.</span>
+      </li>
+
+      <li className="flex gap-3">
+        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+        <span><strong>Improved metabolic health:</strong> Helps stabilise insulin levels, supports people with prediabetes, and encourages fat burn.</span>
+      </li>
+    </ul>
+
+    <p className="text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8] mt-6">
+      Wegovy was officially approved in India in <strong>June 2025</strong> for chronic weight management, making it one of the best weight loss medications available today.
+    </p>
+  </div>
+</div>
+
+
+
+{/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
+<div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
+  <Image
+    src="/guide/wegovy-dosage-schedule.jpg" 
+    alt="Wegovy dosage schedule header"
+    width={1200}
+    height={400}
+    className="w-full h-auto object-contain"
+  />
+</div>
 
 {/* FitYou dosage roadmap */}
 
         <div className="max-w-4xl mx-auto px-4 mt-10">
 
   <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] leading-tight mb-6">
-    FitYou dosage roadmap: A simple step-by-step guide to understanding your weekly routine
+    Why Does Wegovy Come in Multiple Doses?
   </h2>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    You will begin your FitYou journey at the lightest and most comfortable level —
-    a starting point designed to help your body adjust gently.
+    If Wegovy is so effective, why not start at the highest dose?
   </p>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    Each month, your routine becomes slightly more structured, allowing your appetite
-    patterns to stabilise naturally without stressing your system.
+    Because increasing the dose too fast can trigger <strong>intense side effects</strong> such as nausea or vomiting. The body needs time to adjust to each level of Semaglutide.
   </p>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    This slow and steady change is intentional — it gives your body the time it needs
-    to adapt smoothly instead of feeling overwhelmed.
+    <strong>A slow and steady titration schedule ensures:</strong>
+     <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Better long-term results</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Fewer side effects</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Higher treatment success</li>
+            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Lower dropout rates</li>
   </p>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-6">
-    As you move forward, your FitYou coach (or doctor, if medically supervised) will
-    help decide when to maintain your pace or when it’s the right moment to shift into
-    the next stage based on how you are feeling.
+    This dosing method is the reason Wegovy is considered a <strong>safe and reliable drug to lose weight.</strong>
+
   </p>
 
-  <p className="text-[17px] leading-[1.8] font-semibold text-[#0D4F8B]">
-    Here’s the typical progress roadmap most FitYou members follow:
-  </p>
 
 </div>
 
@@ -281,40 +344,40 @@ export default function WegovyDosageSchedulePage() {
                   <td className="p-4 bg-[#F9FCFE]">0.25 mg</td>
                   <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
                   <td className="p-4 bg-[#F9FCFE]">Weeks 1–4</td>
-                  <td className="p-4 bg-[#F9FCFE]">Helps your body adjust calmly</td>
-                  <td className="p-4 bg-[#F9FCFE]">Your appetite begins to reduce</td>
+                  <td className="p-4 bg-[#F9FCFE]">Introduction dose to help the body adapt</td>
+                  <td className="p-4 bg-[#F9FCFE]">Appetite slowly decreases</td>
                 </tr>
 
                 <tr className="border-b">
                   <td className="p-4">0.5 mg</td>
                   <td className="p-4">Once weekly</td>
                   <td className="p-4">Weeks 5–8</td>
-                  <td className="p-4">Builds tolerance</td>
-                  <td className="p-4">Cravings reduce</td>
+                  <td className="p-4">Builds tolerance and reduces side effects</td>
+                  <td className="p-4">Hunger reduces, mild nausea improves</td>
                 </tr>
 
                 <tr className="border-b">
                   <td className="p-4 bg-[#F9FCFE]">1.0 mg</td>
                   <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
                   <td className="p-4 bg-[#F9FCFE]">Weeks 9–12</td>
-                  <td className="p-4 bg-[#F9FCFE]">Supports weight loss progression</td>
-                  <td className="p-4 bg-[#F9FCFE]">You feel full faster</td>
+                  <td className="p-4 bg-[#F9FCFE]">Boosts fat-loss results</td>
+                  <td className="p-4 bg-[#F9FCFE]">You feel full faster, calorie intake drops</td>
                 </tr>
 
                 <tr className="border-b">
                   <td className="p-4">1.7 mg</td>
                   <td className="p-4">Once weekly</td>
                   <td className="p-4">Weeks 13–16</td>
-                  <td className="p-4">Maintenance dose</td>
-                  <td className="p-4">Energy improves</td>
+                  <td className="p-4">Common long-term maintenance dose</td>
+                  <td className="p-4">Noticeable weight loss, better energy</td>
                 </tr>
 
                 <tr>
                   <td className="p-4 bg-[#F9FCFE]">2.4 mg</td>
                   <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
                   <td className="p-4 bg-[#F9FCFE]">Week 17+</td>
-                  <td className="p-4 bg-[#F9FCFE]">Higher dose for continued progress</td>
-                  <td className="p-4 bg-[#F9FCFE]">Steady long-term results</td>
+                  <td className="p-4 bg-[#F9FCFE]">Maximum dose for enhanced results</td>
+                  <td className="p-4 bg-[#F9FCFE]">Strong appetite control, improved progress</td>
                 </tr>
               </tbody>
             </table>
@@ -322,43 +385,98 @@ export default function WegovyDosageSchedulePage() {
 
 
           {/* MOBILE CARDS */}
-          <div className="md:hidden space-y-6 mt-6">
-            {[
-              { dose: "0.25 mg", duration: "Weeks 1–4", text: "Appetite decreases" },
-              { dose: "0.5 mg", duration: "Weeks 5–8", text: "Cravings reduce" },
-              { dose: "1.0 mg", duration: "Weeks 9–12", text: "You feel full faster" },
-              { dose: "1.7 mg", duration: "Weeks 13–16", text: "Energy improves" },
-              { dose: "2.4 mg", duration: "Week 17+", text: "Steady progress" },
-            ].map((item, i) => (
-              <div key={i} className="p-4 border rounded-xl shadow-sm bg-white">
-                <p className="font-semibold text-[#0D4F8B]">{item.dose}</p>
-                <p className="text-[#375C7A]">{item.duration}</p>
-                <p className="text-[#375C7A] mt-2">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+          {/* ---------- MOBILE CARDS (AktiVE STYLE) ---------- */}
+<div className="md:hidden space-y-6 mt-8">
+  {[
+    {
+      dose: "0.25 mg",
+      frequency: "Once weekly",
+      duration: "Weeks 1–4",
+      purpose: "Starting dose to help your body adjust to Wegovy",
+      notice: "Your appetite begins to reduce",
+    },
+    {
+      dose: "0.5 mg",
+      frequency: "Once weekly",
+      duration: "Weeks 5–8",
+      purpose:
+        "Helps build tolerance to side effects and minimises them",
+      notice:
+        "Mild side effects like nausea begin to settle. You crave less food",
+    },
+    {
+      dose: "1.0 mg",
+      frequency: "Once weekly",
+      duration: "Weeks 9–12",
+      purpose: "Supports weight loss progression",
+      notice: "You feel full faster",
+    },
+    {
+      dose: "1.7 mg",
+      frequency: "Once weekly",
+      duration: "Weeks 13–16",
+      purpose: "Maintenance dose",
+      notice: "Energy improves",
+    },
+    {
+      dose: "2.4 mg",
+      frequency: "Once weekly",
+      duration: "Week 17+",
+      purpose: "Higher dose for continued progress",
+      notice: "Steady long-term results",
+    },
+  ].map((item, i) => (
+    <div
+      key={i}
+      className="bg-[#F7FBFF] border border-[#DDEAF3] shadow-sm rounded-2xl p-6"
+    >
+      {/* DOSE */}
+      <p className="text-[#0D4F8B] text-[14px] font-medium">Dose (mg/week)</p>
+      <p className="text-[#0D4F8B] text-[20px] font-semibold mb-4">
+        {item.dose}
+      </p>
 
-{/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
-<div className="max-w-4xl mx-auto px-4 mb-6 mt-12">
-  <Image
-    src="/guide/wegovy-dosage-header.png" 
-    alt="Wegovy dosage schedule header"
-    width={1200}
-    height={400}
-    className="w-full h-auto object-contain"
-  />
+      {/* FREQUENCY */}
+      <p className="text-[#0D4F8B] text-[14px] font-medium">Frequency</p>
+      <p className="text-[#375C7A] mb-4">{item.frequency}</p>
+
+      {/* DURATION */}
+      <p className="text-[#0D4F8B] text-[14px] font-medium">Duration</p>
+      <p className="text-[#375C7A] mb-4">{item.duration}</p>
+
+      {/* PURPOSE */}
+      <p className="text-[#0D4F8B] text-[14px] font-medium">Purpose</p>
+      <p className="text-[#375C7A] mb-4 leading-[1.7]">{item.purpose}</p>
+
+      {/* WHAT YOU'LL NOTICE */}
+      <p className="text-[#0D4F8B] text-[14px] font-medium">
+        What you will notice
+      </p>
+      <p className="text-[#375C7A] leading-[1.7]">{item.notice}</p>
+    </div>
+  ))}
 </div>
 
+        </div>
 
+        <div>
+          {/* NOTE BOX */}
+  <div className="bg-[#FCEFE2] text-[#375C7A] px-6 py-5 rounded-xl mt-10 border border-[#F8DCC5]">
+    <p className="font-semibold text-[#0D4F8B] mb-2">Fit You Tip</p>
+    <p className="text-[16px] md:text-[17px] leading-[1.8]">
+      Not everyone needs the 2.4 mg dose. Many people achieve significant results at <strong>1.7 mg</strong>, depending on tolerance and weight-loss goals.
+    </p>
+  </div>
+</div>
         
+     
         {/* ---------- FITYOU PROGRESSION LIST + NOTE BOX (AKTIVE STYLE) ---------- */}
-<div className="max-w-4xl mx-auto px-4 mt-12">
+<div ref={missedDoseRef} className="max-w-4xl mx-auto px-4 mt-12">
 
   {/* Heading */}
-  <p className="text-[16px] md:text-[17px] leading-[1.8] font-semibold text-[#0D4F8B] mb-4">
-    Please note that your weekly experience may vary based on your lifestyle and consistency.
-  </p>
+  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
+    What to Expect Each Week on Wegovy
+  </h2>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
     Here’s what you can expect to see in the coming weeks when you follow the FitYou roadmap:
@@ -368,195 +486,290 @@ export default function WegovyDosageSchedulePage() {
   <ul className="space-y-3 text-[16px] md:text-[17px] leading-[1.8] text-[#375C7A]">
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 1–4:</strong> Your appetite patterns begin stabilising and random cravings reduce.</span>
+      <span><strong>Weeks 1–4: Adjustment Phase</strong> </span>
     </li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li>Semaglutide enters your system gradually</li>
+      <li>Appetite decreases</li>
+      <li>Nausea may appear but is usually mild</li>
+    </ul>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 5–8:</strong> You start feeling full on smaller portions and eating becomes more controlled.</span>
+      <span><strong>Weeks 5–8: Tolerance Phase</strong></span>
     </li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li>Body becomes used to the medication</li>
+      <li>Hunger is noticeably reduced</li>
+      <li>Meal sizes naturally decrease</li>
+    </ul>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 9–12:</strong> Noticeable improvements in hunger, reduced calorie intake, and early weight changes.</span>
+      <span><strong>Weeks 9–12: Acceleration Phase</strong> </span>
     </li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li>Weight begins to reduce steadily</li>
+      <li>You feel full faster</li>
+      <li>Energy levels stabilise</li>
+    </ul>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 13–16:</strong> Steady weight balance continues. Energy improves and overeating reduces.</span>
+      <span><strong>Weeks 13–16: Active Weight Loss Phase</strong> </span>
     </li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li>This is where many see visible results</li>
+      <li>Cravings drop significantly</li>
+      <li>Improved confidence and motivation</li>
+    </ul>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Week 17 onwards:</strong> You enter the ease-maintenance stage where habits feel natural and stable.</span>
+      <span><strong>Week 17 Onwards: Maintenance Phase</strong></span>
     </li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li>Continued fat loss</li>
+      <li>Easily sustained routine</li>
+      <li>More control over eating habits</li>
+      <li>Lifestyle improvements become long-term</li>
+    </ul>
   </ul>
 
-  {/* NOTE BOX */}
-  <div className="bg-[#FCEFE2] text-[#375C7A] px-6 py-5 rounded-xl mt-10 border border-[#F8DCC5]">
-    <p className="font-semibold text-[#0D4F8B] mb-2">Note:</p>
-    <p className="text-[16px] md:text-[17px] leading-[1.8]">
-      Every individual adapts at a different pace. Some people progress faster while others
-      may need extra time to feel comfortable with routine changes. Your FitYou plan adjusts
-      based on your feedback, weekly progress, and comfort level — ensuring healthy, steady
-      growth without stress.
-    </p>
-  </div>
 </div>
 
 {/* How do experts decide which routine level is right for you? */}
-<div className="max-w-4xl mx-auto px-4 mt-16">
+<div ref={doctorDecidesRef} className="max-w-4xl mx-auto px-4 mt-16">
 
   <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
-    How do experts decide which routine level is right for you?
+    How Doctors Decide Your Ideal Wegovy Dose
   </h2>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-6">
-    Your weight isn’t the only thing that determines how your FitYou pace progresses.
-    To make sure your weekly routine feels comfortable and effective, our experts
-    evaluate a few important areas:
+    Every person’s body responds differently to weight-loss medications. At Fit You, doctors customise the treatment based on:
   </p>
 
   <ul className="space-y-4 text-[17px] leading-[1.8] text-[#375C7A]">
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>How your body is responding</strong> – Are you comfortable at the
-      current level, or experiencing any discomfort?</span>
+      <span><strong>Side effect tolerance</strong> – How your stomach and digestion respond to each dose.</span>
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Your health background</strong> – Any existing medical conditions,
-      medications, or past challenges with appetite or metabolism.</span>
+      <span><strong>Medical conditions</strong> – Kidney function, liver health, diabetes status, pregnancy status, etc.</span>
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Your hunger and energy patterns</strong> – How your body responds
-      throughout the day, especially during your early weeks.</span>
+      <span><strong>Weight-loss goals</strong> – How much weight you wish to lose — and at what pace</span>
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Your personal goals</strong> – What you want to achieve and how
-      your body naturally adapts.</span>
+      <span><strong>Blood sugar behaviour</strong> – Especially important for people with prediabetes or Type 2 diabetes</span>
     </li>
   </ul>
 
   <p className="text-[17px] leading-[1.8] text-[#375C7A] mt-8">
-    The goal is to help you follow the <strong>most comfortable and effective pace</strong> —
-    one that supports progress without overwhelming your body.
-    Some people naturally settle into a slower routine long-term, and that’s completely okay.
-    FitYou adapts to <strong>your body</strong>, not the other way around.
+    The goal is to keep you on the <strong>lowest effective dose</strong> that delivers real results safely.
   </p>
 
 </div>
 
 {/* What to do if you miss a dose? */}
-
-<div ref={missedDoseRef} className="max-w-4xl mx-auto px-4 mt-16">
-
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-4 leading-tight">
-    What to do if you miss a dose?
+<div
+  ref={missedDoseRef}
+  className="max-w-4xl mx-auto px-4 mt-16"
+>
+  {/* Heading */}
+  <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-4 leading-tight">
+   What To Do If You Miss a Wegovy Dose
   </h2>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    If you ever miss your routine step, don’t worry — just follow these simple guidelines:
+    Mistakes happen — here’s what to do:
   </p>
 
-  {/* CARD 1 */}
-  <div className="bg-[#E6F2F7] p-6 rounded-xl mb-4">
-    <p className="text-[#0D4F8B] font-semibold mb-2">
-      If it’s been less than 2 days (48 hours):
-    </p>
-    <p className="text-[#375C7A] leading-[1.8]">
-      Skip the missed step and continue with your next one on your usual day.
-      Avoid doubling up — your routine works best when taken steadily.
-    </p>
+  {/* OUTER LIGHT-BLUE CONTAINER */}
+  <div className="bg-[#E8F4FA] p-6 md:p-4 rounded-1xl space-y-4">
+
+    {/* CARD 1 */}
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
+      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
+        If the next dose is within 48 hours:
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8]">
+        <strong>
+      → Skip the missed dose.
+      </strong>
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8] mt-2">
+        → Take your next scheduled injection normally.
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8] mt-2">
+        <strong>
+      → Never double the dose
+      </strong>
+      </p>
+
+    </div>
+
+  
+    {/* CARD 2 */}
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
+      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
+        More than 2 days (48 hours) away:
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8]">
+        → Take the dose as soon as you remember.
+      </p>
+    </div>
+
+    {/* CARD 3 */}
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
+      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
+        More than 2 weeks (14 days) have passed:
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8]">
+       → Contact your Fit You clinician.
+      </p>
+
+      <p className="text-[#375C7A] leading-[1.8] ">
+         → You may need to restart at a lower dose.
+      </p>
+    </div>
+
   </div>
-
-  {/* CARD 2 */}
-  <div className="bg-[#E6F2F7] p-6 rounded-xl mb-4">
-    <p className="text-[#0D4F8B] font-semibold mb-2">
-      If more than 2 days (48 hours) have passed:
-    </p>
-    <p className="text-[#375C7A] leading-[1.8]">
-      Take the missed step as soon as you remember and then return to your normal schedule.
-    </p>
-  </div>
-
-  {/* CARD 3 */}
-  <div className="bg-[#E6F2F7] p-6 rounded-xl">
-    <p className="text-[#0D4F8B] font-semibold mb-2">
-      If more than 2 weeks (14 days) have passed:
-    </p>
-    <p className="text-[#375C7A] leading-[1.8]">
-      Wait for your next planned day, or check in with your coach/doctor before restarting.
-      They’ll guide you on whether you should continue or adjust your pace.
-    </p>
-  </div>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mt-6">
-    If you ever need to shift your weekly routine, ensure there’s at least a two-day gap 
-    between steps to maintain consistency.
-  </p>
-
 </div>
+
 
 {/* Managing side effects as your dose increases */}
 
 <div ref={sideEffectsRef} className="max-w-4xl mx-auto px-4 mt-16">
 
-  <h2 className="text-[32px] md:text-[38px] font-semibold text-[#0D4F8B] mb-4 leading-tight">
-    Managing side effects as your dose increases
+  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-4 leading-tight">
+    Common Wegovy Side Effects & How to Manage Them
   </h2>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    As your routine progresses, your body adjusts to changes in appetite, digestion, 
-    and fullness signals. Because of this natural adjustment, some people may 
-    experience mild side effects during the early weeks or when their dose increases.
+    Like any powerful weight loss medication, Wegovy may cause temporary digestive symptoms such as:
   </p>
 
   {/* CARD 1 */}
-  <div className="bg-[#E6F2F7] p-6 rounded-xl mb-4 leading-[1.8]">
+  <div className=" p-6 rounded-xl mb-4 leading-[1.8]">
     <p className="text-[#0D4F8B] font-semibold mb-2">Common side effects:</p>
-    <ul className="list-disc pl-6 space-y-1 text-[#375C7A]">
-      <li>Nausea</li>
-      <li>Constipation</li>
-      <li>Diarrhoea</li>
-      <li>Mild vomiting</li>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Nausea </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Constipation </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Diarrhoea </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Bloating </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>vomiting </span>
+    </li>
     </ul>
   </div>
 
-  <div className="bg-[#E6F2F7] p-6 rounded-xl leading-[1.8]">
-    <p className="text-[#0D4F8B] font-semibold mb-2">Why this happens:</p>
-    <p className="text-[#375C7A]">
-      These effects happen because your body is adapting to new hunger cues 
-      and gut-hormone activity. Most side effects are temporary and fade as your 
-      system becomes more comfortable with the routine.
-    </p>
+  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
+    These effects are most common during <strong>dose increases</strong> and usually fade within days.
+  </p>
+
+  <div className=" p-6 rounded-xl leading-[1.8]">
+    <p className="text-[#0D4F8B] font-semibold mb-2">Tips To Handle Side Effects Easily</p>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Eat small, light meals </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Avoid fried, spicy, or greasy foods </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Sip water throughout the day </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Walk or stretch after meals </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Pause dose increase if symptoms worsen </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Contact Fit You if vomiting persists</span>
+    </li>
+    </ul>
   </div>
 
+  <div className=" p-6 rounded-xl leading-[1.8] mt-4">
+    <p className="text-[#0D4F8B] font-semibold mb-2">Pro Tip: Track Your Progress Weekly</p>
+    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
+      <p>Use a weight-loss tracking app or notebook to track:</p>
+      <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Daily weight</span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Cravings</span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Hunger levels </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Energy levels </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Mood changes </span>
+    </li>
+    <li className="flex gap-3">
+      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
+      <span>Side effects</span>
+    </li>
+    </ul>
+  </div>
+
+
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mt-6">
-    If you ever feel unsure or uncomfortable, slowing the pace or taking a gentler 
-    week can help. Your FitYou coach or healthcare professional can guide you on 
-    the best adjustments.
+    This makes it easier for your doctor to optimise your treatment.
   </p>
 
 </div>
 
 {/* Tip to make progress easier */}
 
-<div ref={tipsRef} className="max-w-4xl mx-auto px-4 mt-16">
+<div  ref={tipsRef} className="max-w-4xl mx-auto px-4 mt-16">
 
-  <h2 className="text-[32px] md:text-[38px] font-semibold text-[#0D4F8B] mb-6 leading-tight">
-    Tips to make progress easier
+  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
+    Wegovy Results: Losing Weight at Your Own Pace
   </h2>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Adjusting to a new routine can take a little time — especially when it influences 
-    your hunger patterns, fullness signals, and daily habits. But with a few gentle 
-    lifestyle adjustments, you can make the transition feel much smoother.
+    Whether you lose weight quickly or gradually, both are normal. The goal is sustainable progress, not a crash diet. Wegovy is one of the <strong>best medicines to lose weight</strong> because it supports:
   </p>
 
   {/* Tips List */}
@@ -564,27 +777,27 @@ export default function WegovyDosageSchedulePage() {
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Eat light meals and chew slowly during the first few days of adjusting your routine.
+      Real fat loss
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Stay hydrated throughout the day. Set gentle reminders if you tend to forget.
+      Better appetite control
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Take a short walk, do simple stretches, or try slow breathing to ease nausea or discomfort.
+      Healthier habits
     </li>
 
     <li className="flex gap-3">
       <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Avoid heavy, spicy, or very oily meals right after your routine check-in or dose day.
+      Long-term maintenance
     </li>
 
     <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Keep important contacts easily accessible in case you need guidance or reassurance.
+      <span className="text-[#0D4F8B] text-xl mt-[2px]"></span>
+      Fit You ensures that your Wegovy journey is safe, personalised, and medically supervised every step of the way
     </li>
 
   </ul>
@@ -595,151 +808,105 @@ export default function WegovyDosageSchedulePage() {
 
 <div ref={pauseDoseRef} className="max-w-4xl mx-auto px-4 mt-16">
 
-  <h2 className="text-[32px] md:text-[38px] font-semibold text-[#0D4F8B] mb-6 leading-tight">
-    When to pause or reduce your Wegovy dose?
+  <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+   Final Thoughts: Start Your Wegovy Journey with Fit You
   </h2>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    In certain situations, your doctor may recommend lowering your dose, delaying your next dose, 
-    or pausing Wegovy temporarily to keep you safe and comfortable.
-  </p>
-
-  {/* LIST OF REASONS */}
-  <ul className="space-y-4 text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8]">
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you are experiencing severe nausea, vomiting, diarrhoea, or stomach pain.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you missed multiple doses of Wegovy and need to restart safely.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you are pregnant, planning to conceive, or think you might be pregnant.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If vomiting or diarrhoea has caused dehydration or weakness.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you are scheduled for a procedure that requires fasting or general anaesthesia.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you have medical conditions that affect your kidney or liver function.
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      If you are struggling to tolerate your current dose and need a slower escalation.
-    </li>
-
-  </ul>
-
-  {/* FINAL NOTE */}
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mt-6">
-    If you’re ever unsure about a side effect, missed dose, or upcoming event like surgery, 
-    fasting, or pregnancy — speak to your doctor before making any changes. 
-    They will guide you on how to continue safely.
-  </p>
-</div>
-
-
-{/* ---------- PRO TIP BOX ---------- */}
-<div className="max-w-4xl mx-auto px-4 mt-2">
-  <div className="bg-[#FCEFD9] border border-[#F5D8B5] px-6 py-5 rounded-xl">
-    <p className="font-semibold text-[#0D4F8B] mb-2">Pro tip</p>
-    <p className="text-[16px] md:text-[17px] leading-[1.8] text-[#375C7A]">
-      Use a diary or a tracking app to record your daily weight, mood, energy levels, 
-      and any symptoms you experience. These records can help your doctor adjust your dose.
-    </p>
-  </div>
-</div>
-
-
-{/* ---------- WEIGHT LOSS AT YOUR DOSE SECTION ---------- */}
-<div ref={weightLossRef} className="max-w-4xl mx-auto px-4 mt-16">
-
-  <h2 className="text-[32px] md:text-[38px] font-semibold text-[#0D4F8B] leading-tight mb-6">
-    Weight loss at your dose, your pace
-  </h2>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-4">
-    Everyone experiences weight loss differently. Some people see visible changes at a 
-    lower dose, while others may need a higher dose of Wegovy. What matters most is that 
-    your body tolerates the dose safely and begins showing progress.
+    Wegovy is one of the most advanced <strong>drugs to lose weight</strong> available today. With the right dose schedule, expert support, and consistent habits, you can achieve significant results — safely and confidently.
   </p>
 
   <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    With the right support and a little patience, you can see steady progress—often in 
-    ways beyond just the numbers on the scale.
+    If you are ready for a medically-guided, effective <strong>weight reduce in 1 month</strong> plan or long-term fat-loss transformation, Fit You is here to support you at every step.
   </p>
 
+</div>
 
-  {/* ---------- INFO BOX ---------- */}
-  <div className="bg-[#E9F4FB] border border-[#CFE6F5] px-6 py-6 rounded-xl">
+<div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-2xl p-6 md:p-8 mt-6">
+  
+  {/* Heading */}
+  <p className="text-[#0b3f70] font-semibold text-[18px] mb-3">
+    Launched in India in June 2025
+  </p>
 
-    <p className="font-semibold text-[#0D4F8B] text-[17px] mb-3">
-      Launched in India in June 2025
-    </p>
+  {/* Description */}
+  <p className="text-[#0D4F8B] text-[18px] md:text-[18px] leading-[1.8] mb-6">
+    Wegovy is available in India in the form of a pre-filled injection pen
+    (FlexTouch). You can either self-inject it or take it with the help
+    of a healthcare professional.
+  </p>
 
-    <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-5">
-      Wegovy is available in India in the form of a pre-filled injection pen (FlexTouch). 
-      You can self-inject it, or take it with the help of a healthcare professional.
-    </p>
-
-    <button className="bg-[#0D4F8B] hover:bg-[#093866] text-white px-6 py-3 rounded-lg text-[15px] font-medium transition">
-      Read more about Wegovy
-    </button>
-  </div>
+  {/* Button */}
+  <button
+    className="bg-[#A7CBD7] text-[#002074] font-semibold px-6 py-3 rounded-lg text-[18px] hover:bg-[#9CC5CD] transition"
+  >
+    Read more about Wegovy
+  </button>
 
 </div>
+
 
 <FAQ
   items={[
     {
       question:
-        "Can I increase my Wegovy dose faster if I'm not experiencing any side effects?",
+        "Is Wegovy the Best Wegovy Option for Long-Term Weight Loss?",
       answer:
-        "Even if you feel completely fine, don’t skip ahead. Each 4-week stage is designed to help your body’s GLP-1 receptors adapt slowly and safely. Rushing doses can trigger sudden side effects or reduce how well the treatment works later.",
+        "Yes, Wegovy is widely considered the best Wegovy option for long-term medical weight loss because it directly targets appetite control and metabolism through GLP-1 hormone activation. Unlike crash diets or temporary fat burners, Wegovy supports sustainable fat loss by reducing hunger, improving insulin balance, and controlling cravings. Clinical studies show consistent weight reduction over 6–12 months when combined with lifestyle changes, making it one of the most reliable prescription weight loss treatments available today.",
     },
     {
-      question: "Will I regain weight if I stop Wegovy after reaching my goal?",
+      question: " How to Use Wegovy Safely for Beginners?",
       answer:
-        "Some regain is possible if old habits return, but maintaining a structured routine helps stabilise your progress.",
-    },
-    {
-      question:
-        "Can my doctor customize my dose schedule differently from the standard plan?",
-      answer:
-        "Yes. Doctors often adjust the plan based on your tolerance, goals, and how your body responds.",
+        "If you're learning how to use Wegovy, the key is to follow a gradual weekly injection schedule. You start at a low dose (0.25 mg weekly) to allow your body to adapt and reduce side effects. The dose increases every four weeks until you reach your maintenance level. Wegovy is injected once per week, on the same day each week, in the abdomen, thigh, or upper arm. Never change your dose without medical guidance.",
     },
     {
       question:
-        "What if I feel nothing after the first few doses of Wegovy?",
+        "Can I Buy Wegovy Online in India Legally?",
       answer:
-        "Some people respond slowly. It's normal — effects increase gradually as dose increases.",
+        "Yes, you can buy Wegovy online in India, but only through verified clinics and licensed pharmacies with a valid prescription. Avoid websites offering Wegovy without medical assessment, as counterfeit products carry major health risks. A proper process includes an online consultation, medical screening, dose selection, and supervised follow-ups. This ensures safe treatment, correct storage, and genuine medication delivery—especially important for injection-based therapies like Wegovy.",
     },
     {
       question:
-        "Why do side effects come back each time I increase the dose?",
+        " Where Can I Find Trusted Wegovy Online Consultations?",
       answer:
-        "Each dose level needs new adaptation. Symptoms usually settle within a few days.",
+        "You can access Wegovy online through certified weight-loss clinics that offer digital consultations with doctors. These platforms assess your BMI, medical history, blood sugar levels, and lifestyle before prescribing Wegovy. Online Wegovy programs also include dose guidance, side-effect management, and progress tracking. This approach is ideal for people who prefer privacy, convenience, and structured medical supervision without frequent in-clinic visits.",
     },
     {
       question:
-        "I'm losing weight well on 1.0 mg. Do I still need to increase to higher doses?",
+        " How Long Does It Take to See Results Using the Best Wegovy Plan?",
       answer:
-        "Not always. Some patients stay on lower doses long term if progress is steady and safe.",
+        "With the best Wegovy plan, most people begin noticing reduced appetite within the first 2–4 weeks. Visible weight loss often starts between weeks 8–12 as the dose increases. By 4–6 months, many users lose 10–15% of their body weight with proper diet and lifestyle support. Results vary based on starting weight, metabolic health, and adherence, but Wegovy delivers steady, sustainable fat loss rather than rapid water-weight drops.",
     },
+    {
+      question:
+        " What Is the Right Way to Store Wegovy After You Buy Wegovy Online?",
+      answer:
+        "After you buy Wegovy online, proper storage is essential to maintain effectiveness. Unused pens should be stored in the refrigerator between 2°C–8°C. Once in use, Wegovy can be kept at room temperature (below 30°C) for up to 28 days. Never freeze the medication or expose it to direct sunlight. Always inspect the liquid—it should be clear and colorless before injection.",
+    },
+    {
+      question:
+        "Are There Any Risks When Using Wegovy Without Medical Guidance?",
+      answer:
+        "Yes, using Wegovy without medical supervision can be risky. Without proper dose titration, users may experience severe nausea, dehydration, electrolyte imbalance, or blood sugar fluctuations. People with thyroid disorders, pancreatitis history, kidney disease, or pregnancy must avoid Wegovy. This is why even if you access Wegovy online, it should always be paired with doctor monitoring, lab tracking, and structured follow-up care.",
+    },
+    {
+      question:
+        "How to Use Wegovy Along With Diet for Faster Results?",
+      answer:
+        "Understanding how to use Wegovy with the right diet significantly improves results. Wegovy works best with high-protein meals, fibre-rich foods, controlled portions, and reduced sugar intake. Avoid greasy and heavily processed foods, especially during dose increases. Since Wegovy naturally lowers appetite, forcing large meals can trigger nausea. Staying hydrated and eating smaller meals helps maximise fat loss while minimising digestive side effects.",
+    },
+    {
+      question:
+        "Is Buying Wegovy Online Safe for First-Time Users?",
+      answer:
+        "Yes, buying Wegovy online is safe for first-time users only when done through verified medical platforms. A legitimate service will require medical history, blood reports, BMI assessment, and doctor approval before prescribing the injection. You should also receive training on how to inject properly, manage side effects, and escalate doses safely. Avoid open marketplace sellers or social media ads offering Wegovy without prescription checks.",
+    },
+    {
+      question:
+        " Who Should Avoid Using Even the Best Wegovy for Weight Loss?",
+      answer:
+        "Even the best Wegovy is not suitable for everyone. Pregnant or breastfeeding women, people with thyroid cancer history, severe gastrointestinal diseases, pancreatitis, or advanced kidney disease should avoid it. Those with eating disorders or underweight individuals should also not use Wegovy. A full medical screening is essential before starting. This protects you from serious complications and ensures Wegovy is both safe and effective for your body.",
+    }
   ]}
 />
 
@@ -770,12 +937,12 @@ export default function WegovyDosageSchedulePage() {
     Gauri Ghatnekar-Desai
   </p>
 
-  <p className="text-[#375C7A] text-[15px] leading-[1.7] mt-1">
+  <p className="text-[#375C7A] text-[18px] leading-[1.7] mt-1">
     holds a PG Diploma in Emergency Medical Services from Symbiosis Institute of Health Sciences, Pune.
     As a professional healthcare writer, she creates simple, accurate, detail-oriented content for health organisations, healthcare providers, and patients.
   </p>
 
-  <p className="text-[#375C7A] text-[15px] leading-[1.7] mt-2">
+  <p className="text-[#375C7A] text-[18px] leading-[1.7] mt-2">
     Beyond the desk, she enjoys reading, travelling, and adventure sports.
   </p>
 
@@ -801,12 +968,12 @@ export default function WegovyDosageSchedulePage() {
 {/* ------------------ REFERENCES SECTION ------------------------ */}
 {/* ------------------------------------------------------------- */}
 
-<div className="max-w-4xl mx-auto px-4 mt-16 pb-16">
+{/* <div className="max-w-4xl mx-auto px-4 mt-16 pb-16">
   <h3 className="text-[#0D4F8B] font-semibold text-[20px] mb-4">
     References:
   </h3>
 
-  <ul className="space-y-6 text-[15px] leading-[1.7] text-[#375C7A]">
+  <ul className="space-y-6 text-[18px] leading-[1.7] text-[#375C7A]">
     <li>
       <strong>[1]</strong> Kommu, S., & Whitfield, P. (2024, February 11). Semaglutide. 
       StatPearls - NCBI Bookshelf. 
@@ -833,7 +1000,7 @@ export default function WegovyDosageSchedulePage() {
       </a>
     </li>
   </ul>
-</div>
+</div> */}
 
 
       </section>
