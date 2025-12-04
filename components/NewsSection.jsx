@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 
 export default function NewsSection() {
   const scrollRef = useRef(null);
@@ -34,73 +34,73 @@ export default function NewsSection() {
     },
   ];
 
-  // SEAMLESS AUTO SCROLL FOR DESKTOP
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
 
-    const isDesktop = window.innerWidth >= 768;
-    if (!isDesktop) return;
+    let speed = 0.6;
+    let animationFrame;
 
-    let speed = 0.7;
-
-    const scroll = () => {
+    function autoScroll() {
       container.scrollLeft += speed;
 
-      // When reached middle → reset back
+      // When fully scrolled → reset seamlessly
       if (container.scrollLeft >= container.scrollWidth / 2) {
         container.scrollLeft = 0;
       }
 
-      requestAnimationFrame(scroll);
-    };
+      animationFrame = requestAnimationFrame(autoScroll);
+    }
 
-    const pause = () => (speed = 0);
-    const resume = () => (speed = 0.7);
+    animationFrame = requestAnimationFrame(autoScroll);
 
-    container.addEventListener("mouseenter", pause);
-    container.addEventListener("mouseleave", resume);
+    // Pause on manual scroll
+    const stop = () => (speed = 0);
+    const start = () => (speed = 0.6);
 
-    scroll();
+    container.addEventListener("mouseenter", stop);
+    container.addEventListener("mouseleave", start);
+    container.addEventListener("touchstart", stop);
+    container.addEventListener("touchend", start);
+
+    return () => cancelAnimationFrame(animationFrame);
   }, []);
 
   return (
     <section className="bg-[#FBF6EE] py-20 font-laila">
       <div className="max-w-6xl mx-auto px-4">
 
-        {/* TITLE */}
-        <h2 className="text-[40px] text-[#0D336A] font-bold leading-tight mb-12">
+        <h2 className="text-[40px] text-[#0D336A] font-bold mb-12 leading-tight">
           The breakthrough in weight loss medication <br />
           has hit the news big time.
         </h2>
 
-        {/* SCROLLER */}
+        {/* SCROLL CONTAINER */}
         <div
           ref={scrollRef}
           className="
             flex gap-6 
-            overflow-x-auto 
+            overflow-x-scroll 
             scrollbar-none 
-            md:overflow-x-hidden
-            pb-4 
-            snap-x
+            pb-4
+            whitespace-nowrap 
           "
+          style={{ scrollBehavior: "auto" }}
         >
-          {/* DUPLICATED LIST FOR INFINITE LOOP */}
+          {/* DOUBLE LIST FOR PERFECT LOOP */}
           {[...articles, ...articles].map((item, i) => (
             <div
               key={i}
               className="
                 bg-white 
+                inline-block
+                align-top
                 rounded-2xl 
                 border border-[#E4E8EE]
                 shadow-sm
                 p-6
-                min-w-[300px]
-                max-w-[300px]
+                w-[300px]
                 h-[240px]
-                flex flex-col justify-between
-                snap-start
               "
             >
               <p className="text-[#0D336A] text-[17px] font-medium leading-snug">

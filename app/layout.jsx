@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
           {/* </PageTransition> */}
           {/* <FloatingButton/> */}
 
-          <main>{children}</main>
+          {/* <main>{children}</main> */}
 
 
           <Footer />
