@@ -24,9 +24,10 @@ export default function PrivacyPage() {
         >
          {/* Title */}
 <header className="mb-16">
-  <h1 className="text-6xl sm:text-7xl md:text-[64px] mb-6">
-    Privacy Policy
-  </h1>
+  <h1 className="text-6xl sm:text-7xl md:text-[64px] mb-6 font-semibold whitespace-nowrap">
+  Privacy Policy
+</h1>
+
   <p className="text-base md:text-lg leading-relaxed text-[#4b5c7a] space-y-4">
     FitYou (https://fityou.net) is an internet-based platform (the
     “Website”) operated by FitYou Health &amp; Wellness Private Limited
@@ -62,7 +63,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl md:text-3xl font-semibold mb-2">
               1. General
             </h2>
-            <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+            
             <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4">
               {/* Replace with “1. General” text from the PDF. */}
               By using FitYou and accepting this Privacy Policy, you confirm that you have read, understood, and agreed to the practices described here. You also agree to be bound by all terms outlined in this Privacy Policy.
@@ -76,7 +77,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     2. Information We Collect
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+  
 
   {/* Intro */}
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
@@ -88,7 +89,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.1 Registration Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-2 mb-2">
-    2.1 Registration Information
+     Registration Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-3">
     When you create an account on the Website, FitYou collects basic details
@@ -99,7 +100,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.2 Order Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.2 Order Information
+    A. Order Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     When you place an order, FitYou collects information necessary to process
@@ -118,7 +119,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.3 Usage Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.3 Usage Information
+    B. Usage Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     To improve the Website and provide better wellness insights, FitYou may
@@ -142,7 +143,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.4 Personal Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.4 Personal Information (PI)
+    C. Personal Information (PI)
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-4">
     Registration Information, Order Information, and Usage Information together
@@ -151,7 +152,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.5 Diagnosis Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.5 Diagnosis Information
+    D. Diagnosis Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     If you fill out FitYou health questionnaires or consult a doctor through the
@@ -172,7 +173,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.6 Consultation Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.6 Consultation Information
+    E. Consultation Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     When you connect with a FitYou doctor, FitYou may collect information
@@ -195,7 +196,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.7 Prescription & Medication Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.7 Prescription and Medication Information
+    F. Prescription and Medication Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-4">
     If a FitYou doctor prescribes any treatment or clinically approved
@@ -207,7 +208,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.8 SPDI */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.8 Sensitive Personal Data or Information (SPDI)
+    G. Sensitive Personal Data or Information (SPDI)
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     Diagnosis Information, Consultation Information, and Prescription and
@@ -223,7 +224,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
   {/* 2.9 Your Consent */}
   <h3 className="text-xl md:text-2xl font-semibold mt-4 mb-2">
-    2.9 Your Consent
+    H. Your Consent
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-2">
     You provide your Personal Information and SPDI to FitYou voluntarily and
@@ -246,7 +247,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     3. Use Of Information
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     FitYou uses your information to provide safe, effective, personalised, and
@@ -462,7 +463,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     4. Disclosure of Information
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     To provide you with safe, seamless, and medically guided services, FitYou
@@ -622,7 +623,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     5. Third‑Party Links
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     FitYou may display or provide access to hyperlinks that lead to external
@@ -690,7 +691,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     6. Updating Your Information
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     You may request to review, update, or correct your Personal Information,
@@ -738,11 +739,11 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     7. Security &amp; Data Protection
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   {/* 7.1 Security of Your Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-1 mb-2">
-    7.1 Security of Your Information
+     Security of Your Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     FitYou is committed to protecting your Personal Information and Sensitive
@@ -830,7 +831,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
   </p>
   {/* 7.2 Retention of Information */}
   <h3 className="text-xl md:text-2xl font-semibold mt-2 mb-2">
-    7.2 Retention of Information
+     Retention of Information
   </h3>
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-3">
     FitYou stores your Personal Information and SPDI only for as long as needed
@@ -917,7 +918,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
            <h2 className="text-2xl md:text-3xl font-semibold mb-2">
     8. Cookies &amp; Tracking Technologies
   </h2>
-  <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+ 
 
   <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
     FitYou uses cookies and similar tracking technologies to enhance your
@@ -994,7 +995,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
             <h2 className="text-2xl md:text-3xl font-semibold mb-2">
               9. Changes to This Policy
             </h2>
-            <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+           
             <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4">
               {/* Replace with change‑notification text from the PDF. */}
              FitYou reserves the right to update, revise, or modify this Privacy Policy at any time. Any changes made will become effective from the date they are posted on our Website. We encourage all users, especially those exploring
@@ -1010,11 +1011,11 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
             <h2 className="text-2xl md:text-3xl font-semibold mb-2">
               10. Miscellaneous
             </h2>
-            <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+           
 
             {/* 10(a) Indemnity */}
             <h3 className="text-xl md:text-2xl font-semibold mt-1 mb-2">
-              10.1 Indemnity
+              (a) Indemnity
             </h3>
             <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] mb-4">
               {/* Replace with indemnity text from the PDF. */}
@@ -1033,7 +1034,7 @@ You voluntarily consent to the collection, use, processing, sharing, and disclos
 
             {/* 10(b) Severability */}
             <h3 className="text-xl md:text-2xl font-semibold mt-2 mb-2">
-              10.2 Severability
+              (b) Severability
             </h3>
             <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064]">
               {/* Replace with severability clause from the PDF. */}
@@ -1049,7 +1050,7 @@ The integrity of the remaining clauses will remain fully enforceable and applica
             <h2 className="text-2xl md:text-3xl font-semibold mb-2">
               11. Contact – Grievance Officer
             </h2>
-            <div className="h-[2px] w-16 bg-[#9fb5d9] mb-5" />
+           
             <p className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-4 mb-4">
               {/* Replace with grievance‑officer details from the PDF. */}
               In accordance with the Information Technology Act, 2000 and
