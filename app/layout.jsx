@@ -1,18 +1,21 @@
+
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
+
 // import PageTransition from "@/components/PageTransition";
+
 import { Laila } from "next/font/google";
 // import FloatingButton from "@/components/chatbot/FloatingButton";
+
 
 export const metadata = {
   title: "Fityou",
   description: "Safer weight management with medical awareness.",
 };
 
-// Load Laila font
 const laila = Laila({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -24,7 +27,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={laila.variable} // Apply font variable
+      className={laila.variable}
     >
       <body
         className="
@@ -37,7 +40,9 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <RouteLoader />
+
           <Navbar />
+
 
           {/* <PageTransition> */}
             <main>
@@ -45,6 +50,10 @@ export default function RootLayout({ children }) {
             </main>
           {/* </PageTransition> */}
           {/* <FloatingButton/> */}
+
+          <main>{children}</main>
+
+
           <Footer />
         </AuthProvider>
       </body>
