@@ -1,3 +1,4 @@
+//FitYou\components\recommendations\MiddleImage.jsx
 "use client";
 
 export default function MiddleImage() {

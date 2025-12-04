@@ -5,6 +5,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import { ChevronLeft, Info, Calendar as CalendarIcon } from "lucide-react";
+import CustomSelect from "@/components/CustomSelect";
+
 
 
 const doctorAvatar = "/doctor/doctor.png";
@@ -300,8 +302,10 @@ export default function QuizPage() {
   const [otpError, setOtpError] = useState("");
   const [otpTimer, setOtpTimer] = useState(60);
 
-  // 🔵 NEW: track if user has navigated back at least once
-  const [hasNavigatedBack, setHasNavigatedBack] = useState(false);
+  
+  // Track which button-questions were visited via Back
+const [backVisitedQuestions, setBackVisitedQuestions] = useState(new Set());
+
 
   useEffect(() => {
     fetch("/lottie/Marathon.json")
@@ -336,8 +340,9 @@ export default function QuizPage() {
       setIntroDone(false);
       return;
     }
-    setHasNavigatedBack(true);
-    setStepIndex((i) => Math.max(0, i - 1));
+   setBackVisitedQuestions(prev => new Set(prev).add(stepIndex - 1));
+setStepIndex(i => Math.max(0, i - 1));
+
   };
 
   // build URL for result page
@@ -440,12 +445,7 @@ export default function QuizPage() {
       }
     }
 
-    if (q.type === "buttons") {
-      if (!answers[q.id]) {
-        setError("Please select one of the options.");
-        return;
-      }
-    }
+    
 
     if (q.type === "checkboxes") {
       if (!answers.majorConditions || answers.majorConditions.length === 0) {
@@ -555,25 +555,32 @@ export default function QuizPage() {
   }, [showOtpPopup]);
 
   const handleSendCode = () => {
-    if (!phoneNumber.trim()) {
-      setPhoneError("Please enter your mobile number.");
-      return;
-    }
-    setPhoneError("");
-    setShowPhonePopup(false);
-    setShowOtpPopup(true);
-  };
+  if (phoneNumber.length !== 10) {
+    setPhoneError("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  // ⭐ SAVE PHONE NUMBER FOR PAYMENT PAGE
+  localStorage.setItem("fityou_phone", phoneNumber);
+
+  setPhoneError("");
+  setShowPhonePopup(false);
+  setShowOtpPopup(true);
+};
+
+
 
   const handleOtpSubmit = () => {
-    if (!otpCode.trim()) {
-      setOtpError("Please enter the code.");
-      return;
-    }
-    setOtpError("");
-    // here you would normally verify OTP with backend
-    setShowOtpPopup(false);
-    redirectToResult();
-  };
+  if (otpCode.length !== 4) {
+    setOtpError("Please enter the 4-digit code.");
+    return;
+  }
+
+  setOtpError("");
+  setShowOtpPopup(false);
+  redirectToResult();
+};
+
 
   // ---- RENDER HELPERS ----
   const renderQuestionBody = () => {
@@ -583,60 +590,46 @@ export default function QuizPage() {
     if (q.type === "height") {
       return (
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="flex w-full sm:w-[360px] gap-3">
-            <select
-               className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none
-                max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
-              value={answers.heightFeet}
-              onChange={(e) => setField("heightFeet", e.target.value)}
-            >
-              <option value="">Feet</option>
-              <option value="4">4 ft</option>
-              <option value="5">5 ft</option>
-              <option value="6">6 ft</option>
-              <option value="7">7 ft</option>
-              <option value="8">8 ft</option>
-            </select>
+  <div className="flex w-full sm:w-[360px] gap-3">
+    
+    {/* Feet */}
+    <CustomSelect
+      value={answers.heightFeet}
+      onChange={(v) => setField("heightFeet", v)}
+      placeholder="Feet"
+      options={["4","5","6","7","8"]}
+    />
 
-            <select
-              className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none
-              max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
-              value={answers.heightInches}
-              onChange={(e) => setField("heightInches", e.target.value)}
-            >
-              <option value="">Inches</option>
-              {Array.from({ length: 12 }, (_, i) => i).map((v) => (
-                <option key={v} value={v}>
-                  {v} in
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+    {/* Inches */}
+    <CustomSelect
+      value={answers.heightInches}
+      onChange={(v) => setField("heightInches", v)}
+      placeholder="Inches"
+      options={Array.from({ length: 12 }, (_, i) => String(i))}
+    />
+
+  </div>
+</div>
+
       );
     }
 
     if (q.type === "weight") {
       return (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="w-full sm:w-[360px]">
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none max-h-64 overflow-y-auto"
-              value={answers.weightKg}
-              onChange={(e) => {
-                setField("weightKg", e.target.value);
-                setField("weightRaw", e.target.value);
-              }}
-            >
-              <option value="">Select</option>
-              {WEIGHT_VALUES.map((kg) => (
-                <option key={kg} value={kg}>
-                  {kg} kg
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+       <div className="mt-6 flex flex-col items-center gap-4">
+  <div className="w-full sm:w-[360px]">
+    <CustomSelect
+      value={answers.weightKg}
+      onChange={(v) => {
+        setField("weightKg", v);
+        setField("weightRaw", v);
+      }}
+      placeholder="Select weight"
+      options={WEIGHT_VALUES.map((kg) => `${kg}`)}
+    />
+  </div>
+</div>
+
       );
     }
 
@@ -664,7 +657,7 @@ export default function QuizPage() {
                 </div>
               </div>
 
-              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border border-[#BCD6EA]">
+              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border border-[#BCD6EA] ml-2">
                 <CalendarIcon size={18} className="text-[#0D4F8B]" />
               </span>
             </button>
@@ -768,23 +761,13 @@ export default function QuizPage() {
 
     if (q.type === "select") {
       return (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="w-full sm:w-[380px]">
-            <select
-              className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none 
-             max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
-              value={answers[q.id] || ""}
-              onChange={(e) => setField(q.id, e.target.value)}
-            >
-              <option value="">Select</option>
-              {q.options.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <CustomSelect
+  value={answers[q.id] || ""}
+  onChange={(v) => setField(q.id, v)}
+  placeholder="Select"
+  options={q.options}
+/>
+
       );
     }
 
@@ -926,88 +909,89 @@ export default function QuizPage() {
 
         {/* THREE CHECK LINES */}
         <div className="flex flex-col gap-9">
-          {/* ---------------- LINE 1 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking BMI qualification</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
+          {/* ---- LINE 1 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 0 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking BMI qualification</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
+        />
+      </div>
+    </div>
+    {reviewStep >= 1 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
 
-            {reviewStep >= 1 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
+  {/* ---- LINE 2 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 1 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking contraindications</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
+        />
+      </div>
+    </div>
+    {reviewStep >= 2 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
 
-          {/* ---------------- LINE 2 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking contraindications</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
+  {/* ---- LINE 3 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 2 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking safety and suitability</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
+        />
+      </div>
+    </div>
+    {reviewStep >= 3 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
 
-            {reviewStep >= 2 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
-
-          {/* ---------------- LINE 3 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking safety and suitability</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
-
-            {reviewStep >= 3 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
         </div>
 
         {/* 📱 PHONE POPUP */}
         {showPhonePopup && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-            <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 px-4">
+        <div className="bg-white w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-2xl text-center">
               <h3 className="text-lg md:text-xl font-semibold text-[#0D2451] mb-6">
                 Please enter your mobile number to see your personalised plan
               </h3>
 
               <div className="flex flex-col gap-3 items-stretch mb-5">
-                <div className="flex">
-                  <button className="px-4 py-3 border border-r-0 border-[#C8D7E8] rounded-l-lg text-sm bg-[#F7FAFF] text-[#0D2451]">
-                    India(+91)
-                  </button>
-                  <input
-                    type="tel"
-                    className="flex-1 border border-l-0 border-[#C8D7E8] rounded-r-lg px-4 py-3 text-sm outline-none"
-                    placeholder="Mobile number"
-                    value={phoneNumber}
-                    onChange={(e) => {
-                      setPhoneNumber(e.target.value);
-                      setPhoneError("");
-                    }}
-                  />
-                </div>
+                <div className="flex w-full">
+                    <button className="px-3 sm:px-4 py-3 border border-r-0 border-[#C8D7E8] rounded-l-lg text-xs sm:text-sm bg-[#F7FAFF] text-[#0D2451] whitespace-nowrap">
+                      India(+91)
+                    </button>
+
+                    <input
+                      type="tel"
+                      className="flex-1 border border-l-0 border-[#C8D7E8] rounded-r-lg px-3 sm:px-4 py-3 text-sm outline-none w-full"
+                      placeholder="Mobile number"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setPhoneNumber(val);
+                        setPhoneError("");
+                      }}
+                    />
+                  </div>
+
 
                 {phoneError && (
                   <p className="text-xs text-red-500 text-left">{phoneError}</p>
@@ -1045,13 +1029,17 @@ export default function QuizPage() {
               <div className="mb-4 flex justify-center">
                 <input
                   type="text"
-                  maxLength={6}
+                  maxLength={4}
                   className="w-32 border border-[#C8D7E8] rounded-lg text-center px-4 py-3 tracking-[0.3em] text-lg outline-none"
                   value={otpCode}
                   onChange={(e) => {
-                    setOtpCode(e.target.value);
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 4);
+                    setOtpCode(val);
                     setOtpError("");
                   }}
+
+                  
+
                 />
               </div>
 
@@ -1089,16 +1077,27 @@ export default function QuizPage() {
   }
 
   // ---- CONTINUE BUTTON VISIBILITY LOGIC ----
-  const showContinueButton =
-    currentQuestion &&
-    (currentQuestion.type !== "buttons" || hasNavigatedBack);
+// Always show continue button (even for peach buttons)
+const showContinueButton = (() => {
+  if (!currentQuestion) return false;
+
+  // Non-button type always shows Continue
+  if (currentQuestion.type !== "buttons") return true;
+
+  // Button question shows Continue ONLY if user has returned to it
+  return backVisitedQuestions.has(stepIndex);
+})();
+
+
+
+
 
   // ---- MAIN RENDER ----
   return (
     <div className="min-h-screen bg-[#F6FAFF] text-[#0D2451] font-laila flex flex-col">
       {/* HEADER + PROGRESS (sticky on top) */}
       {introDone && (
-        <header className="w-full border-b border-[#E5EEF6] bg-[#F6FAFF] sticky top-0 z-20">
+        <header className="w-full border-b border-[#E5EEF6] bg-gradient-to-b from-[#E6F3FB] to-[#F6FAFF] sticky top-0 z-20">
           <div className="max-w-5xl mx-auto px-4 pt-4 pb-3">
             <div className="flex items-center justify-between">
               <button
