@@ -1,180 +1,121 @@
-export default function HealthGuidePage() {
-  return (
-    <div className="min-h-screen bg-white text-[#4A4A4A] font-laila">
+"use client";
 
-      {/* HERO */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-10 md:pt-20">
-        <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#3A86FF]">
-            HEALTH GUIDE
-          </p>
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
-          <h1 className="mt-3 text-3xl md:text-4xl font-bold text-[#1A1A1A]">
-            A calmer way to think about weight, energy and health.
-          </h1>
+const articles = [
+  { title: "Wegovy Dosage Schedule", image: "/guide/wegovy-dosage-schedule-new.jpg", href: "#" },
+  { title: "How to inject Wegovy ?", image: "/guide/how-to-inject-wegovy-banner.jpg", href: "#" },
+  { title: "Mounjaro Dosage Schedule", image: "/guide/mouj-dosage-schedule-new.jpg", href: "#" },
+  { title: "How to manage Wegovy side effects?", image: "/guide/wegovy-flextouch-pen-new.jpg", href: "#" },
+  { title: "How to manage Mounjaro side effects?", image: "/guide/mounjaro-injection-pen.jpg", href: "#" },
+  { title: "Wegovy weight loss injection launched in India", image: "/guide/wegovy-weight-loss-injection-banner-img.jpg", href: "#" },
+  { title: "How to take Mounjaro injection", image: "/guide/mounjaro-updt-banner-new-v1.jpg", href: "#" },
+  { title: "11 surprising benefits of drinking hot water", image: "/guide/glass-of-hot-water-new-v1.jpg", href: "#" },
 
-          <p className="mt-4 text-sm md:text-[15px] text-[#4A4A4A]">
-            This guide is not medical advice. It’s a simple framework to help
-            you think more clearly about your body, your routines, and when it’s
-            time to talk to a professional.
-          </p>
-        </div>
-      </section>
+  // More Articles
+  { title: "GLP-1 vs non-GLP approaches", image: "/guide/blackcoffee-calaroies-v1.jpg", href: "#" },
+  { title: "Is fasting safe?", image: "/guide/apple-banner-image-v1.jpg", href: "#" },
+  { title: "Daily steps impact explained", image: "/guide/mango-caloriess-v1.jpg", href: "#" },
+  { title: "Foods that reduce cravings", image: "/guide/food-cravings-v1.jpg", href: "#" },
+  { title: "How stress affects weight", image: "/guide/dosas-banner-v1.jpg", href: "#" },
+  { title: "Your metabolism roadmap", image: "/guide/final-millets-bannr-v1.jpg", href: "#" },
+  { title: "Why protein matters", image: "/guide/mounjaro-kwikpen-injection-banner-v1.jpg", href: "#" },
+  { title: "Fix your sleep cycle", image: "/guide/five-yoga-pose-v1.jpg", href: "#" },
+];
 
-      {/* 3 PILLARS */}
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            {
-              title: "Awareness first",
-              text: "Notice your patterns: sleep, hunger, fatigue, motivation, and stress. You can’t change what you don’t see clearly.",
-            },
-            {
-              title: "Small, repeatable steps",
-              text: "If you can’t repeat it on a stressful week, it’s too intense. Fityou favours low-friction changes.",
-            },
-            {
-              title: "Safety over speed",
-              text: "The goal is not the quickest drop on the scale. It’s better energy and stability that actually lasts.",
-            },
-          ].map((card) => (
-            <div
-              key={card.title}
-              className="rounded-3xl border border-[#E5E7EB] bg-white p-5 text-sm shadow-sm"
-            >
-              <h2 className="text-base font-semibold text-[#1A1A1A]">
-                {card.title}
+export default function HealthGuide() {
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  const loadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 4, articles.length));
+  };
+
+  const loadLess = () => {
+    setVisibleCount((prev) => Math.max(prev - 4, 8));
+  };
+return (
+  <section className="bg-white py-20 font-laila">
+    <div className="mx-auto max-w-6xl px-4">
+
+      {/* PAGE TITLE */}
+      <h1 className="text-4xl md:text-5xl font-bold text-[#0D4F8B] mb-14">
+        Health guide
+      </h1>
+
+      {/* ARTICLE LIST */}
+      <div className="space-y-20">
+        {articles.slice(0, visibleCount).map((item, i) => (
+          <div
+            key={i}
+            className="grid md:grid-cols-2 gap-10 items-center"
+          >
+            {/* IMAGE */}
+            <div className="rounded-2xl overflow-hidden border border-[#E5EAF2] shadow-sm">
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={800}
+                height={500}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* TEXT CONTENT */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] leading-tight mb-4">
+                {item.title}
               </h2>
-              <p className="mt-2 text-[#4A4A4A]">
-                {card.text}
+
+              {/* OPTIONAL DESCRIPTION (You can customize content per article) */}
+              <p className="text-[#375C7A] text-[15px] leading-[1.7] mb-6 max-w-[600px]">
+                Learn more about this topic and understand it better with our
+                detailed guide.
               </p>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* BEFORE YOU START */}
-      <section className="mx-auto max-w-6xl px-4 pb-16 grid gap-6 md:grid-cols-[1.3fr,1fr]">
+              <Link
+                href={`/health-guide/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
 
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-          <h2 className="text-lg md:text-xl font-semibold text-[#1A1A1A]">
-            Before you start any weight program
-          </h2>
-
-          <p className="mt-2 text-sm text-[#4A4A4A]">
-            Ask yourself these questions. If any of them worry you, your next
-            step should be a conversation with a doctor — not a new diet.
-          </p>
-
-          <div className="mt-4 grid gap-3 text-sm text-[#4A4A4A]">
-            <div>
-              <p className="font-semibold text-[#1A1A1A]">
-                1. Has your weight changed very fast?
-              </p>
-              <p className="text-xs mt-1">
-                Sudden gain or loss without clear reason can be a medical flag.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-semibold text-[#1A1A1A]">
-                2. Do you feel chest pain, dizziness, or fainting?
-              </p>
-              <p className="text-xs mt-1">
-                These are not “push harder” signals. They’re “slow down and
-                check” signals.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-semibold text-[#1A1A1A]">
-                3. Are you on long-term medication?
-              </p>
-              <p className="text-xs mt-1">
-                Some medicines affect appetite, weight, heart rate and sleep.
-                Your doctor should know what you plan to change.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-semibold text-[#1A1A1A]">
-                4. Is your relationship with food already stressful?
-              </p>
-              <p className="text-xs mt-1">
-                If guilt, secrecy or extreme restriction are involved, you may
-                need specialised support, not another “plan”.
-              </p>
-            </div>
-          </div>
-
-          <p className="mt-5 text-[11px] text-[#6B7280]">
-            Fityou’s quiz includes some of these questions to help you pause if
-            starting a program might not be the right move yet.
-          </p>
-        </div>
-
-        <div className="rounded-3xl bg-[#EAF3FF] border border-[#D6E4FF] p-6 text-sm text-[#1A1A1A]">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#3A86FF]">
-            GREEN LIGHT VS RED LIGHT
-          </p>
-
-          <ul className="mt-3 space-y-2 text-xs">
-            <li>✅ Mild tiredness, but no worrying symptoms</li>
-            <li>✅ Stable weight over months</li>
-            <li>✅ You can describe why you want change without panic</li>
-            <li>⚠️ Sudden, large weight changes</li>
-            <li>⚠️ Chest pain, fainting, racing heartbeat</li>
-            <li>⚠️ Obsession, shame, or secrecy around food</li>
-          </ul>
-        </div>
-
-      </section>
-
-      {/* DAILY FOUNDATIONS */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
-
-        <div className="rounded-3xl bg-white border border-[#E5E7EB] p-6 md:p-8 shadow-sm">
-          <h2 className="text-lg md:text-xl font-semibold text-[#1A1A1A]">
-            Daily foundations that matter more than any “hack”
-          </h2>
-
-          <div className="mt-5 grid gap-4 md:grid-cols-3 text-sm">
-            {[
-              {
-                title: "Sleep window",
-                text: "Aim for a roughly stable sleep and wake time, even if the duration isn’t perfect yet.",
-              },
-              {
-                title: "Meal rhythm",
-                text: "Chaotic timing often leads to high cravings and overeating later, even with “healthy” food.",
-              },
-              {
-                title: "Light movement",
-                text: "Short walks, stretching, light mobility sessions matter more than one intense workout per week.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl bg-[#EAF3FF] border border-[#D6E4FF] p-4"
+                className="
+                  bg-[#A7C5D8] text-[#0D4F8B] font-semibold px-6 py-3 
+                  rounded-lg shadow hover:bg-[#94b5cb] transition
+                  inline-block
+                "
               >
-                <h3 className="text-sm font-semibold text-[#1A1A1A]">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs text-[#4A4A4A]">
-                  {item.text}
-                </p>
-              </div>
-            ))}
+                Read full article
+              </Link>
+            </div>
           </div>
+        ))}
+      </div>
 
-          <p className="mt-5 text-xs text-[#6B7280] max-w-2xl">
-            Fityou’s weekly structure is built around these foundations, not
-            just calories and workouts.
-          </p>
-        </div>
+      {/* BUTTONS */}
+      <div className="mt-16 flex justify-center">
 
-      </section>
+        {/* VIEW MORE */}
+        {visibleCount < articles.length && (
+          <button
+            onClick={loadMore}
+            className="text-[#0D4F8B] text-[16px] font-semibold hover:opacity-70 underline underline-offset-4"
+          >
+            View more
+          </button>
+        )}
 
+        {/* VIEW LESS */}
+        {visibleCount > 8 && visibleCount === articles.length && (
+          <button
+            onClick={loadLess}
+            className="text-[#0D4F8B] text-[16px] font-semibold hover:opacity-70 underline underline-offset-4"
+          >
+            View less
+          </button>
+        )}
+
+      </div>
     </div>
-  );
+  </section>
+);
+
 }

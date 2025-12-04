@@ -51,7 +51,8 @@ export default function HealthGuide() {
   {articles.slice(0, visibleCount).map((item, i) => (
     <Link
       key={i}
-      href={item.href}
+      href={`/health-guide/${item.title.replace(/\s+/g, "-").toLowerCase()}`}
+
       className="group rounded-2xl bg-white p-3 shadow-sm hover:shadow-md transition"
     >
       <div className="overflow-hidden rounded-xl">
