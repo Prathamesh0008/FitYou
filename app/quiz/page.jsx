@@ -1,39 +1,28 @@
 // FitYou/app/quiz/page.jsx
 "use client";
 
+import { useAuth } from "@/components/AuthProvider";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import { ChevronLeft, Info, Calendar as CalendarIcon } from "lucide-react";
-
+import CustomSelect from "@/components/CustomSelect";
 
 const doctorAvatar = "/doctor/doctor.png";
 const QUIZ_KEY_PREFIX = "fityou_quiz_";
 
-// weight options 40–200 kg (single unit)
+// weight options
 const WEIGHT_VALUES = Array.from({ length: 161 }, (_, i) => 40 + i);
 
-// ---- QUESTION CONFIG ----
+// QUESTIONS
 const QUESTIONS = [
-  // 0 – Height
-  {
-    id: "height",
-    type: "height",
-    title: "Please provide your height.",
-  },
-  // 1 – Weight
-  {
-    id: "weight",
-    type: "weight",
-    title: "Please provide your current weight.",
-  },
-  // 2 – Last weight check date
+  { id: "height", type: "height", title: "Please provide your height." },
+  { id: "weight", type: "weight", title: "Please provide your current weight." },
   {
     id: "lastWeightCheck",
     type: "date",
     title: "When did you last check your weight?",
   },
-  // 3 – Target weight
   {
     id: "targetWeightGoal",
     type: "select",
@@ -46,7 +35,6 @@ const QUESTIONS = [
       "Maintain my current weight",
     ],
   },
-  // 4 – Calories
   {
     id: "calories",
     type: "buttons",
@@ -61,7 +49,6 @@ const QUESTIONS = [
       "I don't count calories",
     ],
   },
-  // 5 – Exercise
   {
     id: "exercise",
     type: "buttons",
@@ -76,7 +63,6 @@ const QUESTIONS = [
       "7 times +",
     ],
   },
-  // 6 – Alcohol
   {
     id: "alcohol",
     type: "buttons",
@@ -88,67 +74,54 @@ const QUESTIONS = [
       "Yes – 6 or more units/week",
     ],
   },
-  // 7 – Previous weight-loss medicines
   {
     id: "prevMeds",
     type: "buttons",
     title: "Have you previously taken any medicine(s) to help with weight loss?",
     options: ["Yes", "No"],
   },
-  // 8 – Sleep
   {
     id: "sleep",
     type: "select",
     title: "How many hours do you usually sleep per night?",
     options: ["<5 hours", "5–7 hours", "7–9 hours", "9+ hours"],
   },
-  // 9 – Gender
   {
     id: "gender",
     type: "buttons",
     title: "Are you male or female?",
     options: ["Male", "Female"],
   },
-  // 10 – High blood pressure
   {
     id: "highBp",
     type: "buttons",
-    title:
-      "Have you been diagnosed with high blood pressure (with or without treatment)?",
+    title: "Have you been diagnosed with high blood pressure?",
     options: ["Yes", "No"],
   },
-  // 11 – Diabetes
   {
     id: "diabetes",
     type: "buttons",
-    title:
-      "Have you been diagnosed with Diabetes (with or without treatment)?",
+    title: "Have you been diagnosed with Diabetes?",
     options: ["Yes", "No"],
   },
-  // 12 – Underactive thyroid
   {
     id: "thyroid",
     type: "buttons",
-    title:
-      "Have you been diagnosed with an underactive thyroid, for which you take Levothyroxine?",
+    title: "Have you been diagnosed with an underactive thyroid?",
     options: ["Yes", "No"],
   },
-  // 13 – Depression
   {
     id: "depression",
     type: "buttons",
-    title: "Do you suffer from depression diagnosed by a psychiatrist?",
+    title: "Do you suffer from depression?",
     options: ["Yes", "No"],
   },
-  // 14 – Serious thoughts about wellbeing/safety
   {
     id: "seriousThoughts",
     type: "buttons",
-    title:
-      "Have you ever had very serious thoughts about your own safety or wellbeing?",
+    title: "Have you ever had serious thoughts about your wellbeing?",
     options: ["Yes", "No"],
   },
-  // 15 – Big multi-diagnosis checkbox list
   {
     id: "majorConditions",
     type: "checkboxes",
@@ -164,81 +137,56 @@ const QUESTIONS = [
       "None of the above",
     ],
   },
-
-  // 🔥 NEW QUESTIONS 🔥
-
-  // 16 – Family history MTC
   {
     id: "familyMTC",
     type: "buttons",
     title: "Do you have a family history of Medullary Thyroid Carcinoma (MTC)?",
     options: ["Yes", "No"],
   },
-
-  // 17 – Pregnancy
   {
     id: "pregnancy",
     type: "buttons",
     title: "Are you pregnant, breastfeeding or planning on conceiving?",
     options: ["Yes", "No"],
   },
-
-  // 18 – Physical conditions
   {
     id: "physicalCondition",
     type: "buttons",
-    title: "Do you have any physical conditions that prevent you from exercising?",
+    title: "Do you have physical conditions preventing exercise?",
     options: ["Yes", "No"],
   },
-
-  // 19 – Medicines
   {
     id: "otherMeds",
     type: "buttons",
-    title:
-      "Do you take any other medicines including prescription, over-the-counter or recreational drugs?",
+    title: "Do you take any other medicines or drugs?",
     options: ["Yes", "No"],
   },
-
-  // 20 – Allergies
   {
     id: "allergies",
     type: "buttons",
     title: "Do you have any allergies?",
     options: ["Yes", "No"],
   },
-
-  // 21 – Additional info
   {
     id: "additionalInfo",
     type: "buttons",
-    title:
-      "Have you ever had any medical conditions or surgery not previously mentioned in this form, or is there any further information you would like to provide the doctor?",
+    title: "Any medical conditions or surgeries not mentioned?",
     options: ["Yes", "No"],
   },
-
-  // 22 – Injection preference
   {
     id: "injectionPreference",
     type: "buttons",
     title: "Are you comfortable using an injection?",
     options: ["Yes", "No, I prefer a tablet"],
   },
-
-  // 23 – Info screen before result
-  {
-    id: "lifestyleSummary",
-    type: "info",
-  },
+  { id: "lifestyleSummary", type: "info" },
 ];
 
-// small helper for date formatting
-const formatDateYMD = (date) => {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-};
+// Helpers
+const formatDateYMD = (d) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
 
 const isSameDay = (a, b) =>
   a &&
@@ -247,11 +195,9 @@ const isSameDay = (a, b) =>
   a.getMonth() === b.getMonth() &&
   a.getDate() === b.getDate();
 
-
-
-// ---- MAIN PAGE ----
 export default function QuizPage() {
   const router = useRouter();
+  const { user } = useAuth();
 
   const [introDone, setIntroDone] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -285,115 +231,64 @@ export default function QuizPage() {
     majorConditions: [],
   });
 
+  const [storageKey, setStorageKey] = useState(null);
   const [error, setError] = useState("");
   const [marathonAnim, setMarathonAnim] = useState(null);
 
-  // calendar UI state
+  // CALENDAR
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(() => new Date());
 
-  // 🔵 NEW: review animation + popups
-  const [showReviewScreen, setShowReviewScreen] = useState(false);
-  const [reviewStep, setReviewStep] = useState(0); // 0–3
-  const [showPhonePopup, setShowPhonePopup] = useState(false);
-  const [showOtpPopup, setShowOtpPopup] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpCode, setOtpCode] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [otpError, setOtpError] = useState("");
-  const [otpTimer, setOtpTimer] = useState(60);
-
-  const saveQuizAndRedirect = () => {
-  const email = localStorage.getItem("fityou_email") || phoneNumber;
-
-  // --- compute BMI ---
-  let bmi = 0;
-  if (answers.heightCm && answers.weightKg) {
-    const h = Number(answers.heightCm) / 100;
-    const w = Number(answers.weightKg);
-    bmi = Number((w / (h * h)).toFixed(1));
-  }
-
-  // --- determine eligibility ---
-  let eligible = true;
-
-  if (bmi < 27) eligible = false;
-  if (answers.seriousThoughts === "Yes") eligible = false;
-  if (answers.familyMTC === "Yes") eligible = false;
-  if (answers.pregnancy === "Yes") eligible = false;
-
-  const selected = answers.majorConditions || [];
-  const hasOthersMajor = selected.some((i) => i !== "None of the above");
-  if (hasOthersMajor || selected.length > 3) eligible = false;
-
-  const payload = {
-    completedAt: Date.now(),
-    bmi,
-    eligible,
-    ...answers,
-  };
-
-  localStorage.setItem(QUIZ_KEY_PREFIX + email, JSON.stringify(payload));
-
-  router.push(`/recommendations?bmi=${bmi}`);
-};
-
-  // 🔵 NEW: track if user has navigated back at least once
-  const [hasNavigatedBack, setHasNavigatedBack] = useState(false);
-
-  const [storedQuiz, setStoredQuiz] = useState(null);
-
-useEffect(() => {
-  const email = localStorage.getItem("fityou_email");
-
-  if (!email) return;
-
-  const raw = localStorage.getItem(QUIZ_KEY_PREFIX + email);
-
-  if (raw) {
-    setStoredQuiz(JSON.parse(raw));
-  }
-}, []);
-
-
+  // Load animation
   useEffect(() => {
     fetch("/lottie/Marathon.json")
       .then((res) => res.json())
-      .then((data) => setMarathonAnim(data));
+      .then(setMarathonAnim);
   }, []);
 
+  // localStorage key
+  useEffect(() => {
+    const email = localStorage.getItem("fityou_email") || "guest";
+    const key = QUIZ_KEY_PREFIX + email;
+    setStorageKey(key);
+
+    const saved = localStorage.getItem(key);
+    if (saved) setAnswers((a) => ({ ...a, ...JSON.parse(saved) }));
+  }, []);
+
+  useEffect(() => {
+    if (storageKey)
+      localStorage.setItem(storageKey, JSON.stringify(answers));
+  }, [answers, storageKey]);
+
   const totalSteps = QUESTIONS.length;
+  const currentQuestion = introDone ? QUESTIONS[stepIndex] : null;
+
+  const today = new Date();
 
   const progressPercent = useMemo(() => {
     if (!introDone) return 0;
-    const current = stepIndex + 1;
-    return Math.round((current / totalSteps) * 100);
-  }, [introDone, stepIndex, totalSteps]);
+    return Math.round(((stepIndex + 1) / totalSteps) * 100);
+  }, [introDone, stepIndex]);
 
-  const currentQuestion = introDone ? QUESTIONS[stepIndex] : null;
+  const progressTagline = useMemo(() => {
+    if (!introDone) return "";
+    if (progressPercent <= 25) return "You’ll have more energy.";
+    if (progressPercent <= 60) return "You’ll sleep better.";
+    if (progressPercent < 100) return "Last few questions – keep going.";
+    return "First step to reaching your goal done!";
+  }, [progressPercent]);
 
-  const today = useMemo(() => new Date(), []);
-  // eslint-disable-next-line no-unused-vars
-  const todayStr = useMemo(() => formatDateYMD(today), [today]);
-
-  const setField = (name, value) => {
-    setAnswers((prev) => ({ ...prev, [name]: value }));
-    if (error) setError("");
-  };
-
+  // Back logic
   const canGoBack = introDone && stepIndex >= 0;
 
   const handleBack = () => {
     if (!introDone) return;
-    if (stepIndex === 0) {
-      setIntroDone(false);
-      return;
-    }
-    setHasNavigatedBack(true);
-    setStepIndex((i) => Math.max(0, i - 1));
+    if (stepIndex === 0) return setIntroDone(false);
+    setStepIndex((i) => i - 1);
   };
 
-  // build URL for result page
+  // FINAL NAVIGATION (after last question)
   const redirectToResult = () => {
     const params = new URLSearchParams();
     if (answers.heightCm) params.set("height", answers.heightCm);
@@ -401,409 +296,179 @@ useEffect(() => {
     router.push(`/recommendations?${params.toString()}`);
   };
 
-  // 🔵 NEW: instead of redirecting immediately, show review animation
-  const goToResult = () => {
-const userEmail = localStorage.getItem("fityou_email");
+  const nextStepOrLogin = () => {
+    if (user) {
+      redirectToResult();
+    } else {
+      window.dispatchEvent(new Event("open-login"));
 
-if (userEmail) {
-  setShowReviewScreen(true);
+      const handler = () => {
+        window.removeEventListener("otp-success", handler);
+        redirectToResult();
+      };
 
-  // Run the animation (3 steps)
-  let i = 1;
-  const interval = setInterval(() => {
-    setReviewStep(i);
-    i++;
-    if (i > 3) {
-      clearInterval(interval);
-
-      // wait a moment for UI smoothness
-      setTimeout(() => {
-        saveQuizAndRedirect();
-      }, 400);
+      window.addEventListener("otp-success", handler);
     }
-  }, 1100);
-
-  return;
-}
-
-
-    setShowReviewScreen(true);
-    setReviewStep(0);
-
-    let i = 1;
-    const interval = setInterval(() => {
-      setReviewStep(i);
-      i += 1;
-
-      if (i > 3) {
-        clearInterval(interval);
-        // after lines complete, open phone popup
-        setTimeout(() => {
-          setShowPhonePopup(true);
-        }, 500);
-      }
-    }, 1200);
   };
 
+  // Validation
   const ensureHeightWeight = () => {
-    const ft = Number(answers.heightFeet) || 0;
-    const inch = Number(answers.heightInches) || 0;
-    if (ft && (inch || inch === 0)) {
+    const ft = Number(answers.heightFeet);
+    const inch = Number(answers.heightInches);
+    if (ft && inch >= 0) {
       const cm = ft * 30.48 + inch * 2.54;
-      if (cm > 80 && cm < 260) {
-        setAnswers((prev) => ({ ...prev, heightCm: String(Math.round(cm)) }));
-      }
+      if (cm > 80 && cm < 260)
+        setAnswers((p) => ({ ...p, heightCm: String(Math.round(cm)) }));
     }
   };
-
-  // tagline under the line (Aktive-style – text changes with progress)
-  const progressTagline = useMemo(() => {
-    if (!introDone) return "";
-    if (progressPercent <= 25) return "You’ll have more energy.";
-    if (progressPercent <= 60) return "You’ll sleep better.";
-    if (progressPercent < 100) return "Last few questions – keep going.";
-    return "First step to reaching your goal done!";
-  }, [introDone, progressPercent]);
-
-  // ---- MAJOR CONDITIONS ELIGIBILITY (for button + red box) ----
-  const isMajorConditionsStep =
-    introDone && currentQuestion?.id === "majorConditions";
-  const selectedMajor = answers.majorConditions || [];
-  const hasOthersMajor = selectedMajor.some((i) => i !== "None of the above");
-  const isNotEligibleMajor =
-    isMajorConditionsStep && (selectedMajor.length > 3 || hasOthersMajor);
 
   const validateAndNext = () => {
     if (!introDone) {
       setIntroDone(true);
-      setStepIndex(0);
       return;
     }
 
     const q = currentQuestion;
     if (!q) return;
 
-    // validation per type
     if (q.type === "height") {
-      if (!answers.heightFeet) {
-        setError("Please select your height in feet.");
-        return;
-      }
-      if (answers.heightInches === "") {
-        setError("Please select inches.");
-        return;
-      }
+      if (!answers.heightFeet) return setError("Select feet.");
+      if (answers.heightInches === "") return setError("Select inches.");
       ensureHeightWeight();
     }
 
-    if (q.type === "weight") {
-      if (!answers.weightKg) {
-        setError("Please select your weight.");
-        return;
-      }
-    }
+    if (q.type === "weight" && !answers.weightKg)
+      return setError("Select your weight.");
 
-    if (q.type === "date") {
-      if (!answers.lastWeightDate) {
-        setError("Please select the date.");
-        return;
-      }
-    }
+    if (q.type === "date" && !answers.lastWeightDate)
+      return setError("Please select a date.");
 
-    if (q.type === "select") {
-      if (!answers[q.id]) {
-        setError("Please choose an option.");
-        return;
-      }
-    }
-
-    if (q.type === "buttons") {
-      if (!answers[q.id]) {
-        setError("Please select one of the options.");
-        return;
-      }
-    }
+    if (q.type === "select" && !answers[q.id])
+      return setError("Please choose an option.");
 
     if (q.type === "checkboxes") {
-      if (!answers.majorConditions || answers.majorConditions.length === 0) {
-        setError("Please select at least one option.");
-        return;
-      }
+      if (!answers.majorConditions.length)
+        return setError("Select at least one option.");
     }
 
-    // final info screen -> result
-    if (q.type === "info" && stepIndex === totalSteps - 1) {
-      goToResult();
-      return;
-    }
+    // last screen → login or result
+    if (q.type === "info" && stepIndex === totalSteps - 1)
+      return nextStepOrLogin();
 
-    setStepIndex((i) => Math.min(totalSteps - 1, i + 1));
+    setError("");
+    setStepIndex((i) => i + 1);
   };
 
-  // ---- CHECKBOX LOGIC ----
-  const toggleCondition = (label) => {
-    setAnswers((prev) => {
-      const curr = new Set(prev.majorConditions);
-      const isSelected = curr.has(label);
-
-      if (label === "None of the above") {
-        if (isSelected) {
-          curr.delete(label);
-        } else {
-          curr.clear();
-          curr.add(label);
-        }
-      } else {
-        curr.delete("None of the above");
-        if (isSelected) curr.delete(label);
-        else curr.add(label);
-      }
-
-      return { ...prev, majorConditions: Array.from(curr) };
-    });
-    if (error) setError("");
-  };
-
-  // scroll to top when step changes – esp. on mobile
-  useEffect(() => {
-    if (introDone && typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [stepIndex, introDone]);
-
-  // ---- CALENDAR MATRIX ----
+  // Calendar matrix
   const monthMatrix = useMemo(() => {
     const year = calendarMonth.getFullYear();
     const month = calendarMonth.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const startWeekday = firstDay.getDay(); // 0-6 (Sun-Sat)
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const first = new Date(year, month, 1);
+    const startDay = first.getDay();
+    const days = new Date(year, month + 1, 0).getDate();
 
     const cells = [];
     for (let i = 0; i < 42; i++) {
-      const dayNum = i - startWeekday + 1;
-      if (dayNum < 1 || dayNum > daysInMonth) {
-        cells.push(null);
-      } else {
-        cells.push(new Date(year, month, dayNum));
-      }
+      const num = i - startDay + 1;
+      cells.push(num < 1 || num > days ? null : new Date(year, month, num));
     }
     return cells;
   }, [calendarMonth]);
 
-  const canGoNextMonth = useMemo(() => {
-    const y = calendarMonth.getFullYear();
-    const m = calendarMonth.getMonth();
-    const ty = today.getFullYear();
-    const tm = today.getMonth();
-    return y < ty || (y === ty && m < tm);
-  }, [calendarMonth, today]);
-
-  const handleDaySelect = (date) => {
-    if (!date) return;
-    if (date > today) return;
-    const formatted = formatDateYMD(date);
-    setField("lastWeightDate", formatted);
+  const handleDaySelect = (d) => {
+    if (!d || d > today) return;
+    setAnswers((p) => ({ ...p, lastWeightDate: formatDateYMD(d) }));
     setCalendarOpen(false);
   };
 
-  // selected date pieces for DD/MM/YYYY display
-  const selectedDateObj = answers.lastWeightDate
+  // Selected date display
+  const sel = answers.lastWeightDate
     ? new Date(answers.lastWeightDate)
     : null;
-  const selectedDD = selectedDateObj
-    ? String(selectedDateObj.getDate()).padStart(2, "0")
-    : "DD";
-  const selectedMM = selectedDateObj
-    ? String(selectedDateObj.getMonth() + 1).padStart(2, "0")
-    : "MM";
-  const selectedYYYY = selectedDateObj
-    ? String(selectedDateObj.getFullYear())
-    : "YYYY";
 
-  // ---- OTP TIMER EFFECT ----
-  useEffect(() => {
-    if (!showOtpPopup) return;
-    setOtpTimer(60);
-    const id = setInterval(() => {
-      setOtpTimer((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(id);
-  }, [showOtpPopup]);
+  // Continue button visibility
+  const showContinueButton = currentQuestion?.type !== "buttons";
 
-  const handleSendCode = () => {
-    if (!phoneNumber.trim()) {
-      setPhoneError("Please enter your mobile number.");
-      return;
-    }
-    setPhoneError("");
-    setShowPhonePopup(false);
-    setShowOtpPopup(true);
-  };
-
-const handleOtpSubmit = () => {
-  if (!otpCode.trim()) {
-    setOtpError("Please enter the code.");
-    return;
-  }
-
-  const email = localStorage.getItem("fityou_email") || phoneNumber;
-
-  // --- compute BMI ---
-  let bmi = 0;
-  if (answers.heightCm && answers.weightKg) {
-    const h = Number(answers.heightCm) / 100;
-    const w = Number(answers.weightKg);
-    bmi = Number((w / (h * h)).toFixed(1));
-  }
-
-  // --- determine eligibility ---
-  let eligible = true;
-
-  // BMI check
-  if (bmi < 27) eligible = false;
-
-  // Serious medical exclusions
-  if (answers.seriousThoughts === "Yes") eligible = false;
-  if (answers.familyMTC === "Yes") eligible = false;
-  if (answers.pregnancy === "Yes") eligible = false;
-
-  // Major conditions list
-  const selected = answers.majorConditions || [];
-  const hasOthersMajor = selected.some((i) => i !== "None of the above");
-  if (hasOthersMajor || selected.length > 3) {
-    eligible = false;
-  }
-
-  // store quiz result
-  const payload = {
-    completedAt: Date.now(),
-    bmi,
-    eligible,
-    ...answers,
-  };
-
-  localStorage.setItem(QUIZ_KEY_PREFIX + email, JSON.stringify(payload));
-
-  setOtpError("");
-  setShowOtpPopup(false);
-
-  router.push("/recommendations");
-};
-
-
-  // ---- RENDER HELPERS ----
+  // ---- RENDER QUESTION BODY ----
   const renderQuestionBody = () => {
     if (!introDone || !currentQuestion) return null;
     const q = currentQuestion;
 
+    /** HEIGHT **/
     if (q.type === "height") {
       return (
         <div className="mt-6 flex flex-col items-center gap-4">
           <div className="flex w-full sm:w-[360px] gap-3">
-            <select
-               className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none
-                max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
+            <CustomSelect
               value={answers.heightFeet}
-              onChange={(e) => setField("heightFeet", e.target.value)}
-            >
-              <option value="">Feet</option>
-              <option value="4">4 ft</option>
-              <option value="5">5 ft</option>
-              <option value="6">6 ft</option>
-              <option value="7">7 ft</option>
-              <option value="8">8 ft</option>
-            </select>
-
-            <select
-              className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none
-              max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
+              onChange={(v) => setAnswers((p) => ({ ...p, heightFeet: v }))}
+              placeholder="Feet"
+              options={["4", "5", "6", "7", "8"]}
+            />
+            <CustomSelect
               value={answers.heightInches}
-              onChange={(e) => setField("heightInches", e.target.value)}
-            >
-              <option value="">Inches</option>
-              {Array.from({ length: 12 }, (_, i) => i).map((v) => (
-                <option key={v} value={v}>
-                  {v} in
-                </option>
-              ))}
-            </select>
+              onChange={(v) => setAnswers((p) => ({ ...p, heightInches: v }))}
+              placeholder="Inches"
+              options={Array.from({ length: 12 }, (_, i) => String(i))}
+            />
           </div>
         </div>
       );
     }
 
+    /** WEIGHT **/
     if (q.type === "weight") {
       return (
         <div className="mt-6 flex flex-col items-center gap-4">
           <div className="w-full sm:w-[360px]">
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none max-h-64 overflow-y-auto"
+            <CustomSelect
               value={answers.weightKg}
-              onChange={(e) => {
-                setField("weightKg", e.target.value);
-                setField("weightRaw", e.target.value);
-              }}
-            >
-              <option value="">Select</option>
-              {WEIGHT_VALUES.map((kg) => (
-                <option key={kg} value={kg}>
-                  {kg} kg
-                </option>
-              ))}
-            </select>
+              onChange={(v) =>
+                setAnswers((p) => ({ ...p, weightKg: v, weightRaw: v }))
+              }
+              placeholder="Select weight"
+              options={WEIGHT_VALUES.map(String)}
+            />
           </div>
         </div>
       );
     }
 
+    /** DATE **/
     if (q.type === "date") {
       return (
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="relative w-full sm:w-[360px] flex flex-col items-center">
-            {/* CLICKABLE BOXES + ICON */}
+          <div className="relative w-full sm:w-[360px]">
             <button
-              type="button"
-              onClick={() => setCalendarOpen((prev) => !prev)}
-              className="flex items-center justify-center gap-0 w-full rounded-lg border border-[#DFE8F1] bg-white px-4 py-3 text-sm text-[#0D2451] shadow-sm hover:border-[#C7D7EC] transition"
+              onClick={() => setCalendarOpen((s) => !s)}
+              className="flex items-center justify-between w-full rounded-lg border border-[#DFE8F1] bg-white px-4 py-3 text-sm shadow-sm"
             >
-              <div className="flex items-center gap-2">
-                <div className="flex gap-2">
-                  <div className="w-14 h-9 flex items-center justify-center rounded-md border border-[#E1E7F0] text-xs font-semibold text-[#0D2451] bg-[#FFFFFF]">
-                    {selectedDD}
-                  </div>
-                  <div className="w-14 h-9 flex items-center justify-center rounded-md border border-[#E1E7F0] text-xs font-semibold text-[#0D2451] bg-[#FFFFFF]">
-                    {selectedMM}
-                  </div>
-                  <div className="w-20 h-9 flex items-center justify-center rounded-md border border-[#E1E7F0] text-xs font-semibold text-[#0D2451] bg-[#FFFFFF]">
-                    {selectedYYYY}
-                  </div>
+              <div className="flex gap-2">
+                <div className="w-14 h-9 flex items-center justify-center border rounded-md">
+                  {sel ? String(sel.getDate()).padStart(2, "0") : "DD"}
+                </div>
+                <div className="w-14 h-9 flex items-center justify-center border rounded-md">
+                  {sel ? String(sel.getMonth() + 1).padStart(2, "0") : "MM"}
+                </div>
+                <div className="w-20 h-9 flex items-center justify-center border rounded-md">
+                  {sel ? sel.getFullYear() : "YYYY"}
                 </div>
               </div>
 
-              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border border-[#BCD6EA]">
+              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border ml-2">
                 <CalendarIcon size={18} className="text-[#0D4F8B]" />
               </span>
             </button>
 
-            {/* CUSTOM CALENDAR POPUP */}
             {calendarOpen && (
-              <div className="absolute top-[110%] left-1/2 -translate-x-1/2 mt-2 w-[280px] rounded-xl bg-white shadow-lg border border-[#DFE8F1] z-20">
-                {/* header */}
-                <div className="flex items-center justify-between px-4 py-3 bg-[#D0E6F4] rounded-t-xl text-xs font-semibold text-[#0D4F8B]">
+              <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-[280px] bg-white border rounded-xl shadow z-20">
+                <div className="flex items-center justify-between px-4 py-3 bg-[#D0E6F4] rounded-t-xl text-xs font-semibold">
                   <button
-                    type="button"
                     onClick={() =>
                       setCalendarMonth(
-                        (prev) =>
-                          new Date(
-                            prev.getFullYear(),
-                            prev.getMonth() - 1,
-                            1
-                          )
+                        (p) => new Date(p.getFullYear(), p.getMonth() - 1, 1)
                       )
                     }
-                    className="px-2 py-1 rounded-md hover:bg-[#BCD6EA]"
                   >
                     {"<"}
                   </button>
@@ -814,67 +479,41 @@ const handleOtpSubmit = () => {
                     })}
                   </span>
                   <button
-                    type="button"
-                    disabled={!canGoNextMonth}
                     onClick={() =>
                       setCalendarMonth(
-                        (prev) =>
-                          new Date(
-                            prev.getFullYear(),
-                            prev.getMonth() + 1,
-                            1
-                          )
+                        (p) => new Date(p.getFullYear(), p.getMonth() + 1, 1)
                       )
                     }
-                    className={`px-2 py-1 rounded-md ${
-                      canGoNextMonth
-                        ? "hover:bg-[#BCD6EA]"
-                        : "opacity-40 cursor-not-allowed"
-                    }`}
                   >
                     {">"}
                   </button>
                 </div>
 
-                {/* days of week */}
-                <div className="grid grid-cols-7 text-[10px] text-center text-[#7A8AA5] px-3 pt-2">
+                <div className="grid grid-cols-7 text-[10px] text-center px-3 pt-2 text-[#7A8AA5]">
                   {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
-                    <div key={d} className="py-1">
-                      {d}
-                    </div>
+                    <div key={d}>{d}</div>
                   ))}
                 </div>
 
-                {/* date cells */}
-                <div className="grid grid-cols-7 text-xs px-3 pb-3">
-                  {monthMatrix.map((date, idx) => {
-                    if (!date) {
-                      return <div key={idx} className="h-8" />;
-                    }
-
-                    const disabled = date > today;
-                    const isSelected = selectedDateObj
-                      ? isSameDay(date, selectedDateObj)
-                      : false;
-
-                    return (
+                <div className="grid grid-cols-7 px-3 pb-3 text-xs">
+                  {monthMatrix.map((d, i) =>
+                    !d ? (
+                      <div key={i} className="h-8" />
+                    ) : (
                       <button
-                        key={idx}
-                        type="button"
-                        disabled={disabled}
-                        onClick={() => handleDaySelect(date)}
-                        className={`h-8 w-8 mx-auto my-[2px] rounded-md flex items-center justify-center ${
-                          disabled
-                            ? "text-[#C5CFDF] cursor-not-allowed"
-                            : isSelected
-                            ? "border-[#F7A450] bg-[#FFE6C8] shadow-sm"
-                            : "text-[#0D2451] hover:bg-[#E6F0FB]"
+                        key={i}
+                        onClick={() => handleDaySelect(d)}
+                        disabled={d > today}
+                        className={`h-8 w-8 mx-auto my-[2px] rounded-md ${
+                          isSameDay(d, sel)
+                            ? "bg-[#FFE6C8] border-[#F7A450]"
+                            : "hover:bg-[#E6F0FB]"
                         }`}
                       >
-                        {date.getDate()}
+                        {d.getDate()}
                       </button>
-                    );
-                  })}
+                    )
+                  )}
                 </div>
               </div>
             )}
@@ -883,55 +522,39 @@ const handleOtpSubmit = () => {
       );
     }
 
+    /** SELECT **/
     if (q.type === "select") {
       return (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="w-full sm:w-[380px]">
-            <select
-              className="flex-1 rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none 
-             max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-[#C9D6E5]"
-              value={answers[q.id] || ""}
-              onChange={(e) => setField(q.id, e.target.value)}
-            >
-              <option value="">Select</option>
-              {q.options.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <CustomSelect
+          value={answers[q.id] || ""}
+          onChange={(v) => setAnswers((p) => ({ ...p, [q.id]: v }))}
+          placeholder="Select"
+          options={q.options}
+        />
       );
     }
 
+    /** BUTTON QUESTIONS **/
     if (q.type === "buttons") {
       return (
         <div className="mt-6 flex flex-col items-center">
-          {q.helper && (
-            <p className="text-sm text-[#3E5678] max-w-xl mb-4 text-left">
-              {q.helper}
-            </p>
-          )}
-          {/* BUTTONS CENTERED */}
+          {q.helper && <p className="mb-4 text-sm">{q.helper}</p>}
+
           <div className="flex flex-col gap-3 w-full sm:w-[420px]">
             {q.options.map((opt) => {
               const selected = answers[q.id] === opt;
               return (
                 <button
                   key={opt}
-                  type="button"
                   onClick={() => {
-                    setAnswers(prev => ({ ...prev, [q.id]: opt }));
-                    setTimeout(() => validateAndNext(), 0);
+                    setAnswers((p) => ({ ...p, [q.id]: opt }));
+                    setTimeout(validateAndNext, 0);
                   }}
-
-                  className={`w-full rounded-lg border px-4 py-2 text-sm text-[#0D2451] transition
-                    ${
-                      selected
-                        ? "border-[#F7A450] bg-[#FFE6C8] shadow-sm"
-                        : "border-[#F7CFA5] bg-[#FFF6EA] hover:bg-[#FFEAD3]"
-                    }`}
+                  className={`w-full rounded-lg border px-4 py-2 text-sm transition ${
+                    selected
+                      ? "border-[#F7A450] bg-[#FFE6C8]"
+                      : "border-[#F7CFA5] bg-[#FFF6EA]"
+                  }`}
                 >
                   {opt}
                 </button>
@@ -942,85 +565,57 @@ const handleOtpSubmit = () => {
       );
     }
 
+    /** CHECKBOXES **/
     if (q.type === "checkboxes") {
-      const selected = answers.majorConditions || [];
-      const hasOthers = selected.some((i) => i !== "None of the above");
-      const isNotEligible = selected.length > 3 || hasOthers;
-
       return (
         <div className="mt-6 flex flex-col items-center">
-          {/* ONLY THE LIST SCROLLS */}
-          <div className="w-full sm:w-[480px] max-h-72 overflow-y-auto pr-2 text-left">
-            {q.checkboxOptions.map((label) => {
-              const selectedItem =
-                answers.majorConditions &&
-                answers.majorConditions.includes(label);
-              return (
-                <label
-                  key={label}
-                  className="flex items-start gap-2 text-sm text-[#0D2451] mb-2 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedItem}
-                    onChange={() => toggleCondition(label)}
-                    className="mt-[2px] h-4 w-4 rounded border border-[#9FB4D3]"
-                  />
-                  <span
-                    className={
-                      label === "None of the above" ? "font-semibold" : ""
-                    }
-                  >
-                    {label}
-                  </span>
-                </label>
-              );
-            })}
+          <div className="w-full sm:w-[480px] max-h-72 overflow-y-auto pr-2">
+            {q.checkboxOptions.map((label) => (
+              <label key={label} className="flex items-start gap-2 mb-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={answers.majorConditions.includes(label)}
+                  onChange={() => {
+                    setAnswers((p) => {
+                      const set = new Set(p.majorConditions);
+                      if (label === "None of the above") {
+                        set.clear();
+                        set.add(label);
+                      } else {
+                        set.delete("None of the above");
+                        set.has(label) ? set.delete(label) : set.add(label);
+                      }
+                      return { ...p, majorConditions: [...set] };
+                    });
+                    setError("");
+                  }}
+                />
+                <span className={label === "None of the above" ? "font-semibold" : ""}>
+                  {label}
+                </span>
+              </label>
+            ))}
           </div>
-
-          {/* NOT ELIGIBLE ALERT */}
-          {isNotEligible && (
-            <div className="mt-6 bg-[#FDECEC] border border-[#F3C1C1] text-[#B84646] rounded-lg px-4 py-3 text-sm flex gap-3 max-w-md">
-              <span className="text-lg">❌</span>
-              <div>
-                <p className="font-semibold">Unable to prescribe</p>
-                <p>
-                  You cannot be prescribed this medication online. Please
-                  consult your doctor.
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       );
     }
 
+    /** INFO SCREEN **/
     if (q.type === "info") {
       return (
         <div className="mt-6 flex flex-col items-center">
-          <div className="w-full sm:w-[520px] rounded-xl bg-[#D7EDF4] px-5 py-4 flex gap-4 items-center">
-            <img
-              src={doctorAvatar}
-              alt="Doctor"
-              className="h-20 w-20 rounded-full object-cover flex-shrink-0"
-            />
-            <div className="text-sm text-[#0D2451]">
+          <div className="w-full sm:w-[520px] bg-[#D7EDF4] px-5 py-4 rounded-xl flex gap-4">
+            <img src={doctorAvatar} className="h-20 w-20 rounded-full object-cover" />
+            <div className="text-sm">
               <p className="font-semibold mb-1">
-                Good news: based on your answers so far, you may be suitable for
-                a medical weight management program.
+                Good news: based on your answers you may be suitable for treatment.
               </p>
               <p className="text-xs">
-                The next steps will help our doctors understand your health
-                history better and confirm if a treatment is appropriate.
+                The next steps help our doctors understand your health better.
               </p>
               <p className="mt-2 text-xs font-semibold">FitYou Medical Team</p>
             </div>
           </div>
-
-          <p className="mt-4 text-xs text-[#0D2451]">
-            This is a screening tool and does not replace an in-person medical
-            consultation.
-          </p>
         </div>
       );
     }
@@ -1028,220 +623,23 @@ const handleOtpSubmit = () => {
     return null;
   };
 
-  // 🔵 REVIEW SCREEN + POPUPS (AKTIVE STYLE)
-  if (showReviewScreen) {
-    const formattedTimer = `0${Math.floor(otpTimer / 60)}:${String(
-      otpTimer % 60
-    ).padStart(2, "0")}`;
-
-    return (
-      <div className="min-h-screen w-full bg-[#E8F4F7] flex flex-col items-center pt-24 pb-10 text-[#063363] relative">
-        {/* TITLE (EXACT AKTIVE STYLE) */}
-        <h2 className="text-[18px] font-semibold mb-12">
-          Reviewing your medical information:
-        </h2>
-
-        {/* THREE CHECK LINES */}
-        <div className="flex flex-col gap-9">
-          {/* ---------------- LINE 1 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking BMI qualification</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
-
-            {reviewStep >= 1 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
-
-          {/* ---------------- LINE 2 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking contraindications</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
-
-            {reviewStep >= 2 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
-
-          {/* ---------------- LINE 3 ---------------- */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <p className="text-[15px] mb-1">Checking safety and suitability</p>
-              <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-                <div
-                  className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                  style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
-                />
-              </div>
-            </div>
-
-            {reviewStep >= 3 && (
-              <span className="text-[#0D4F8B] text-[20px] font-semibold">
-                ✔
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* 📱 PHONE POPUP */}
-        {showPhonePopup && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-            <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
-              <h3 className="text-lg md:text-xl font-semibold text-[#0D2451] mb-6">
-                Please enter your mobile number to see your personalised plan
-              </h3>
-
-              <div className="flex flex-col gap-3 items-stretch mb-5">
-                <div className="flex">
-                  <button className="px-4 py-3 border border-r-0 border-[#C8D7E8] rounded-l-lg text-sm bg-[#F7FAFF] text-[#0D2451]">
-                    India(+91)
-                  </button>
-                  <input
-                    type="tel"
-                    className="flex-1 border border-l-0 border-[#C8D7E8] rounded-r-lg px-4 py-3 text-sm outline-none"
-                    placeholder="Mobile number"
-                    value={phoneNumber}
-                    onChange={(e) => {
-                      setPhoneNumber(e.target.value);
-                      setPhoneError("");
-                    }}
-                  />
-                </div>
-
-                {phoneError && (
-                  <p className="text-xs text-red-500 text-left">{phoneError}</p>
-                )}
-              </div>
-
-              <button
-                onClick={handleSendCode}
-                className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
-              >
-                Send code
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 🔐 OTP POPUP */}
-        {showOtpPopup && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-            <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
-              <div className="mb-4 text-sm text-[#0D2451]">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4FAFF] border border-[#C8D7E8]">
-                  <span className="text-xs text-[#7C8CA3]">+91</span>
-                  <span className="font-semibold">
-                    {phoneNumber || "Your number"}
-                  </span>
-                </div>
-              </div>
-
-              <p className="text-sm text-[#0D2451] mb-5">
-                We have sent a passcode to the above number. Please enter your
-                code.
-              </p>
-
-              <div className="mb-4 flex justify-center">
-                <input
-                  type="text"
-                  maxLength={6}
-                  className="w-32 border border-[#C8D7E8] rounded-lg text-center px-4 py-3 tracking-[0.3em] text-lg outline-none"
-                  value={otpCode}
-                  onChange={(e) => {
-                    setOtpCode(e.target.value);
-                    setOtpError("");
-                  }}
-                />
-              </div>
-
-              {otpError && (
-                <p className="text-xs text-red-500 mb-2">{otpError}</p>
-              )}
-
-              <div className="flex items-center justify-between text-xs text-[#7C8CA3] mb-4">
-                <button
-                  type="button"
-                  className="underline underline-offset-2"
-                  onClick={() => setOtpTimer(60)}
-                >
-                  Resend passcode
-                </button>
-                <span>{formattedTimer}</span>
-              </div>
-
-              <button
-                onClick={handleOtpSubmit}
-                className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
-              >
-                Submit
-              </button>
-
-              <p className="mt-4 text-[10px] text-[#7C8CA3]">
-                By continuing, you accept our Terms & Conditions and Privacy
-                Policy.
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // ---- CONTINUE BUTTON VISIBILITY LOGIC ----
-  const showContinueButton =
-    currentQuestion &&
-    (currentQuestion.type !== "buttons" || hasNavigatedBack);
-if (storedQuiz) {
-  return router.push("/recommendations");
-}
-
-  // ---- MAIN RENDER ----
   return (
     <div className="min-h-screen bg-[#F6FAFF] text-[#0D2451] font-laila flex flex-col">
-      {/* HEADER + PROGRESS (sticky on top) */}
+      
+      {/* HEADER PROGRESS */}
       {introDone && (
-        <header className="w-full border-b border-[#E5EEF6] bg-[#F6FAFF] sticky top-0 z-20">
+        <header className="sticky top-0 bg-gradient-to-b from-[#E6F3FB] to-[#F6FAFF] border-b z-20">
           <div className="max-w-5xl mx-auto px-4 pt-4 pb-3">
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                onClick={handleBack}
-                disabled={!canGoBack}
-                className="flex items-center text-xs text-[#0D2451] disabled:opacity-40"
-              >
-                <ChevronLeft size={18} className="mr-1" />
-                Back
+            <div className="flex justify-between">
+              <button onClick={handleBack} className="text-xs flex items-center">
+                <ChevronLeft size={18} className="mr-1" /> Back
               </button>
-
-              <button
-                type="button"
-                className="p-2 rounded-full border border-[#D6E4F2] bg-white"
-              >
-                <Info size={16} className="text-[#0D2451]" />
+              <button className="p-2 border rounded-full">
+                <Info size={16} />
               </button>
             </div>
 
-            {/* progress line + running girl + moving tagline */}
             <div className="mt-4 relative h-20">
-              {/* line */}
               <div className="absolute bottom-4 left-0 right-0">
                 <div className="w-full h-[4px] bg-[#E3EDF7] rounded-full overflow-hidden">
                   <div
@@ -1251,37 +649,21 @@ if (storedQuiz) {
                 </div>
               </div>
 
-              {/* runner */}
               <div
-                className="absolute bottom-4 h-14 w-14 transition-all duration-500"
+                className="absolute bottom-4 h-14 w-14 transition-all"
                 style={{ left: `calc(${progressPercent}% - 28px)` }}
               >
                 {marathonAnim && (
-                  <Lottie
-                    animationData={marathonAnim}
-                    loop
-                    style={{ height: "56px", width: "56px" }}
-                  />
+                  <Lottie animationData={marathonAnim} loop style={{ width: 56, height: 56 }} />
                 )}
               </div>
 
-              {/* percentage static in centre */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[11px] font-semibold text-[#0D2451]">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[11px] font-semibold">
                 {progressPercent}%
               </div>
 
-              {/* tagline that moves with girl (responsive, not cropped) */}
               <div
-                className="
-                  absolute bottom-0
-                  text-[11px] text-[#60738C]
-                  transition-all duration-500
-                  whitespace-nowrap
-                  max-w-[180px]
-                  sm:max-w-[260px]
-                  overflow-hidden
-                  px-2
-                "
+                className="absolute bottom-0 text-[11px] text-[#60738C] transition-all max-w-[180px] px-2"
                 style={{
                   left: `clamp(0px, calc(${progressPercent}% - 90px), calc(100% - 180px))`,
                 }}
@@ -1293,99 +675,65 @@ if (storedQuiz) {
         </header>
       )}
 
-      {/* CONTENT */}
+      {/* MAIN */}
       <main className="flex-1">
         {!introDone ? (
-          /* ---------------- INTRO PAGE ---------------- */
-          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
-            <h1 className="text-3xl font-semibold text-[#0D2451]">
-              Medical consultation
-            </h1>
+          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20">
+            <h1 className="text-3xl font-semibold">Medical consultation</h1>
 
             <div className="mt-8 flex justify-center">
-              <div className="flex items-center gap-4 rounded-xl bg-[#D7EDF4] px-6 py-4 max-w-xl text-left">
-                <img
-                  src={doctorAvatar}
-                  alt="Doctor"
-                  className="h-24 w-24 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="text-sm text-[#0D2451]">
+              <div className="flex gap-4 bg-[#D7EDF4] px-6 py-4 rounded-xl">
+                <img src={doctorAvatar} className="h-24 w-24 rounded-full object-cover" />
+                <div className="text-sm">
                   <p>
-                    Answer the medical questions in this online consultation and
-                    we&apos;ll assess if treatment is safe for you to use.
-                    It&apos;s free.
+                    Answer these medical questions and we'll assess if treatment is safe for you.
                   </p>
                   <p className="mt-2 font-semibold">FitYou Medical Team</p>
                 </div>
               </div>
             </div>
 
-            <p className="mt-6 text-sm text-[#3E5678] max-w-xl mx-auto">
-              This consultation is a set of online questions about your health
-              and lifestyle. It takes a few minutes and helps our doctors
-              understand whether a medical program is appropriate for you.
+            <p className="mt-6 text-sm max-w-xl mx-auto">
+              This takes a few minutes and helps doctors determine if the program is appropriate.
             </p>
 
             <div className="mt-8 flex justify-center">
               <button
-                type="button"
                 onClick={validateAndNext}
-                className="w-full sm:w-[340px] rounded-md bg-[#8DB9C9] px-6 py-3 text-sm font-semibold text-white hover:bg-[#7AA7B8] transition"
+                className="w-full sm:w-[340px] bg-[#8DB9C9] text-white py-3 rounded-md font-semibold"
               >
-                I&apos;m ready
+                I'm ready
               </button>
             </div>
 
-            <p className="mt-6 text-xs text-[#3E5678] text-center">
+            <p className="mt-6 text-xs text-center">
               Already have a personalised plan?{" "}
-              <span className="underline cursor-pointer">
-                Login with your mobile number
-              </span>
+              <span className="underline cursor-pointer">Login with your mobile number</span>
             </p>
 
-            <p className="mt-10 text-[10px] text-[#8CA0C0] text-center">
-              This consultation does not replace an in-person medical
-              evaluation.
+            <p className="mt-10 text-[10px] text-center text-[#8CA0C0]">
+              This consultation does not replace a medical evaluation.
             </p>
           </section>
         ) : (
-          /* ---------------- QUESTION / INFO SCREEN ---------------- */
           <section className="px-4 pt-14 pb-20 flex justify-center">
             <div className="w-full max-w-xl mx-auto">
-              {/* QUESTION HEADING */}
+              
               {currentQuestion?.type !== "info" && (
-                <h2 className="text-[17px] md:text-[22px] font-semibold text-[#0D2451] leading-snug text-left mb-6 max-w-xl mx-auto">
-                  {currentQuestion.title}
-                </h2>
+                <h2 className="text-[20px] font-semibold mb-6">{currentQuestion.title}</h2>
               )}
 
-              {/* QUESTION BODY */}
               {renderQuestionBody()}
 
-              {/* ERROR MESSAGE */}
-              {error && (
-                <p className="mt-4 text-xs text-red-500 font-medium">{error}</p>
-              )}
+              {error && <p className="mt-4 text-xs text-red-500">{error}</p>}
 
-              {/* CONTINUE BUTTON – show for everything except peach buttons,
-                  but DO show for buttons when user has navigated back */}
               {showContinueButton && (
-                <div className="mt-8">
-                  <button
-                    type="button"
-                    onClick={isNotEligibleMajor ? undefined : validateAndNext}
-                    disabled={isNotEligibleMajor}
-                    className={`w-full rounded-md px-6 py-3 text-sm font-semibold transition
-                      ${
-                        isNotEligibleMajor
-                          ? "bg-[#C7D7DE] text-white opacity-60 cursor-not-allowed"
-                          : "bg-[#8DB9C9] text-white hover:bg-[#7AA7B8]"
-                      }
-                    `}
-                  >
-                    Continue
-                  </button>
-                </div>
+                <button
+                  onClick={validateAndNext}
+                  className="mt-8 w-full bg-[#8DB9C9] text-white py-3 rounded-md font-semibold"
+                >
+                  Continue
+                </button>
               )}
             </div>
           </section>
@@ -1393,12 +741,9 @@ if (storedQuiz) {
       </main>
 
       {/* FOOTER */}
-      <footer className="w-full border-t border-[#E5EEF6] bg-[#F6FAFF]">
-        <div className="max-w-5xl mx-auto px-4 py-4 text-center">
-          <p className="text-[10px] text-[#8CA0C0]">
-            Your answers help our doctors guide you safely — this is not a
-            diagnosis.
-          </p>
+      <footer className="border-t bg-[#F6FAFF]">
+        <div className="max-w-5xl mx-auto px-4 py-4 text-center text-[10px] text-[#8CA0C0]">
+          Your answers help our doctors guide you safely — this is not a diagnosis.
         </div>
       </footer>
     </div>

@@ -71,3 +71,10 @@ html.dark .text-light-primary {
     opacity: 1;
   }
 }
+
+
+/* Fade-in used for bubbles (optional) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

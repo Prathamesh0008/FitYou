@@ -21,52 +21,46 @@ export default function StepsSection() {
 
           {/* STEP BLOCK TEMPLATE */}
           {[
-            {
-              img: "/guide/how-it-work-img1.jpg",
-              num: "1",
-              text: "Answer a few medical questions to see if our treatment is safe for you."
-            },
-            {
-              img: "/guide/how-it-work-img2.jpg",
-              num: "2",
-              text: "Based on your results, we create a personalised Aktive programme for you."
-            },
-            {
-              img: "/guide/how-it-work-img3.jpg",
-              num: "3",
-              text:
-                "If the doctor approves you for treatment, you will receive your injections’ first month’s supply in a few days."
-            }
-          ].map((step, i) => (
-            <div className="flex flex-col items-center text-center">
+  {
+    img: "/guide/how-it-work-img1.jpg",
+    num: "1",
+    text: "Answer a few medical questions to see if our treatment is safe for you."
+  },
+  {
+    img: "/guide/how-it-work-img2.jpg",
+    num: "2",
+    text: "Based on your results, we create a personalised Aktive programme for you."
+  },
+  {
+    img: "/guide/how-it-work-img3.jpg",
+    num: "3",
+    text:
+      "If the doctor approves you for treatment, you will receive your injections’ first month’s supply in a few days."
+  }
+].map((step, i) => (
+  <div key={i} className="flex flex-col items-center text-center">
 
-  {/* IMAGE BOX WITH BADGE OVERLAY */}
-  <div className="relative w-[260px] h-[170px] rounded-xl overflow-hidden shadow-sm">
+    <div className="relative w-[260px] h-[170px] rounded-xl overflow-hidden shadow-sm">
+      <Image
+        src={step.img}
+        alt=""
+        fill
+        className="object-cover"
+      />
 
-    <Image
-      src={step.img}
-      alt=""
-      fill
-      className="object-cover"
-    />
-
-    {/* NUMBER BADGE — NOW CORRECT POSITION */}
-    <div className="absolute bottom-[8px] left-6 w-12 h-12 bg-[#FFD4AC] 
-    rounded-full flex items-center justify-center text-[#1A365D] 
-    font-bold text-lg shadow-md">
-      {step.num}
+      <div className="absolute  bottom-[8px] left-3 w-12 h-12 bg-[#FFD4AC] 
+      rounded-full flex items-center justify-center text-[#1A365D] 
+      font-bold text-[2rem] shadow-md">
+        {step.num}
+      </div>
     </div>
+
+    <p className="mt-4 text-[#1A365D] text-[15px] leading-relaxed max-w-[230px]">
+      {step.text}
+    </p>
+
   </div>
-
-  {/* TEXT BELOW */}
-  <p className="mt-4 text-[#1A365D] text-[15px] leading-relaxed max-w-[230px]">
-    {step.text}
-  </p>
-
-</div>
-
-
-          ))}
+))}
         </div>
 
         {/* BUTTONS */}

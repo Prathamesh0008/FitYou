@@ -85,6 +85,14 @@ export default function Navbar() {
     return () => window.removeEventListener("otp-success", handler);
   }, []);
 
+  // 🔹 Listen for quiz → open login modal
+useEffect(() => {
+  const openLoginHandler = () => setLoginOpen(true);
+  window.addEventListener("open-login", openLoginHandler);
+  return () => window.removeEventListener("open-login", openLoginHandler);
+}, []);
+
+
   const handleLogout = () => {
     logout();
     router.push("/");
@@ -92,7 +100,11 @@ export default function Navbar() {
   };
 
   return (
+
+  
+
     <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
+
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
         
         {/* LOGO */}
