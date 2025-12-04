@@ -288,7 +288,7 @@ export default function OtpModal({ open, onClose }) {
           </p>
 
           {/* OTP BOXES */}
-          <div className="flex justify-between mt-7 px-4">
+          <div className="flex justify-between mt-7 max-[400px]:gap-1 max-[400px]:justify-center ">
             {otp.map((digit, index) => (
               <input
                 key={index}

@@ -28,6 +28,15 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("personal");
   const [profile, setProfile] = useState(null);
 
+useEffect(() => {
+  const handler = (e) => {
+    setActiveTab(e.detail); // switch tab
+  };
+  window.addEventListener("profile-tab-change", handler);
+  return () => window.removeEventListener("profile-tab-change", handler);
+}, []);
+
+
   // 1) Get logged-in email
   useEffect(() => {
     if (!user?.email && typeof window === "undefined") return;
@@ -110,7 +119,7 @@ export default function ProfilePage() {
       <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8 px-6">
 
         {/* LEFT SIDEBAR */}
-        <div className="col-span-12 md:col-span-3 space-y-3">
+     <div className="hidden md:block md:col-span-3">
 
           <SidebarItem
             icon={<Package size={18} />}
@@ -189,7 +198,7 @@ export default function ProfilePage() {
 
         {/* RIGHT CONTENT */}
         <div className="col-span-12 md:col-span-9">
-          <div className="bg-white rounded-xl shadow p-8 min-h-[260px]">
+          <div className="bg-white rounded-xl shadow p-8 min-h-[260px] mr-5">
             {activeTab === "personal" && (
               <PersonalDetailsCard profile={profile} updateProfile={updateProfile} />
             )}
@@ -260,6 +269,19 @@ function InfoRow({ label, value }) {
 
 function PersonalDetailsCard({ profile, updateProfile }) {
   const [saving, setSaving] = useState(false);
+const [dobPickerOpen, setDobPickerOpen] = useState(false);
+const months = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+const years = Array.from({ length: 120 }, (_, i) => new Date().getFullYear() - i);
+
+const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+const [monthOpen, setMonthOpen] = useState(false);
+const [yearOpen, setYearOpen] = useState(false);
 
   const handleSave = () => {
     setSaving(true);
@@ -308,18 +330,22 @@ function PersonalDetailsCard({ profile, updateProfile }) {
               className="w-full border border-[#D0D7E2] bg-[#F5FAFD] rounded-lg px-3 py-2 text-sm text-[#7A8BA4]"
             />
           </div>
+<div>
+  <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
+    Date of birth
+  </label>
 
-          <div>
-            <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
-              Date of birth
-            </label>
-            <input
-              type="date"
-              value={profile.dob}
-              onChange={(e) => updateProfile({ dob: e.target.value })}
-              className="w-full border border-[#D0D7E2] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D4F8B]/40"
-            />
-          </div>
+  <button
+    onClick={() => setDobPickerOpen(true)}
+    className="w-full border border-[#D0D7E2] rounded-lg px-3 py-2 text-sm text-left
+               text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 
+               focus:ring-[#0D4F8B]/40"
+  >
+    {profile.dob ? profile.dob : "Select date"}
+  </button>
+</div>
+
+
         </div>
 
         <button
@@ -328,6 +354,17 @@ function PersonalDetailsCard({ profile, updateProfile }) {
         >
           {saving ? "Saved" : "Save changes"}
         </button>
+        {dobPickerOpen && (
+  <DobCalendar
+    currentDate={profile.dob}
+    onSelect={(date) => {
+      updateProfile({ dob: date });
+      setDobPickerOpen(false);
+    }}
+    onClose={() => setDobPickerOpen(false)}
+  />
+)}
+
       </div>
     </>
   );
@@ -476,3 +513,166 @@ function PlaceholderCard({ title }) {
     </>
   );
 }
+
+
+function DobCalendar({ currentDate, onSelect, onClose }) {
+  const today = new Date();
+
+  // If user already has DOB → open that month
+  const initial = currentDate ? new Date(currentDate) : new Date(1990, 0, 1);
+
+  const [month, setMonth] = useState(initial.getMonth());
+  const [year, setYear] = useState(initial.getFullYear());
+const months = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+const years = Array.from({ length: 120 }, (_, i) => new Date().getFullYear() - i);
+
+const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+
+const [monthOpen, setMonthOpen] = useState(false);
+const [yearOpen, setYearOpen] = useState(false);
+
+  // Generate year list (1950 → current year)
+  // const years = Array.from(
+  //   { length: today.getFullYear() - 1950 + 1 },
+  //   (_, i) => today.getFullYear() - i
+  // );
+
+  const days = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+
+  const handleSelect = (day) => {
+    const formatted = `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      day
+    ).padStart(2, "0")}`;
+    onSelect(formatted);
+  };
+
+  return (
+    <>
+      {/* BACKDROP */}
+      <div
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+        onClick={onClose}
+      />
+
+      {/* CALENDAR MODAL */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div className="bg-white w-full max-w-xs rounded-2xl shadow-lg p-4">
+
+          {/* HEADER: Month + Year Dropdown */}
+<div className="flex items-center justify-between mb-4 relative">
+
+  {/* MONTH DROPDOWN */}
+  <div className="relative">
+    <button
+      onClick={() => {
+        setMonthOpen(!monthOpen);
+        setYearOpen(false);
+      }}
+      className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
+    >
+      {months[currentMonth]}
+      <span className="text-xs">▼</span>
+    </button>
+
+    {monthOpen && (
+      <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-40 max-h-60 overflow-y-auto">
+        {months.map((m, i) => (
+          <button
+            key={i}
+            className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
+              i === currentMonth ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
+            }`}
+            onClick={() => {
+              setCurrentMonth(i);
+              setMonthOpen(false);
+            }}
+          >
+            {m}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {/* YEAR DROPDOWN */}
+  <div className="relative">
+    <button
+      onClick={() => {
+        setYearOpen(!yearOpen);
+        setMonthOpen(false);
+      }}
+      className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
+    >
+      {currentYear}
+      <span className="text-xs">▼</span>
+    </button>
+
+    {yearOpen && (
+      <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-28 max-h-60 overflow-y-auto">
+        {years.map((y) => (
+          <button
+            key={y}
+            className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
+              y === currentYear ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
+            }`}
+            onClick={() => {
+              setCurrentYear(y);
+              setYearOpen(false);
+            }}
+          >
+            {y}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+
+</div>
+
+
+          {/* DAYS GRID */}
+<div className="grid grid-cols-7 text-center text-sm font-semibold text-[#0D4F8B]">
+  {["S", "M", "T", "W", "T", "F", "S"].map((d, index) => (
+    <div key={index} className="py-1">
+      {d}
+    </div>
+  ))}
+</div>
+
+
+          <div className="grid grid-cols-7 text-center text-sm">
+            {Array(firstDay)
+              .fill(null)
+              .map((_, i) => (
+                <div key={`empty-${i}`} />
+              ))}
+
+            {Array.from({ length: days }, (_, i) => i + 1).map((day) => (
+              <button
+                key={day}
+                onClick={() => handleSelect(day)}
+                className="py-2 hover:bg-[#E3F2FD] rounded-lg"
+              >
+                {day}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={onClose}
+            className="w-full mt-4 py-2 rounded-lg bg-[#0D4F8B] text-white"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+

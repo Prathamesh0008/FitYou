@@ -18,6 +18,15 @@ import {
   User2,
   Menu,
   X,
+  Package,
+  CheckCircle,
+  Image,
+  MessageCircle,
+  Stethoscope,
+  Gift,
+  MapPin,
+  Bell,
+  LogOut,
 } from "lucide-react";
 
 const navLinks = [
@@ -30,6 +39,20 @@ const navLinks = [
   { href: "/contact", label: "Contact", icon: BookOpen },
 ];
 
+// PROFILE MENU ITEMS
+const profileMenu = [
+  { key: "upcoming", label: "Upcoming shipment", icon: Package },
+  { key: "completed", label: "Completed shipments", icon: CheckCircle },
+  { key: "diary", label: "Weight loss diary + images", icon: Image },
+  { key: "messages", label: "Message centre", icon: MessageCircle },
+  { key: "consultation", label: "Medical consultation", icon: Stethoscope },
+  { key: "subscription", label: "My subscription", icon: Gift },
+  { key: "benefits", label: "My membership benefits", icon: Gift },
+  { key: "personal", label: "Personal details", icon: User2 },
+  { key: "address", label: "Delivery address", icon: MapPin },
+  { key: "notifications", label: "Notifications", icon: Bell },
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -40,26 +63,24 @@ export default function Navbar() {
   const [otpOpen, setOtpOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
+  const isProfilePage = pathname === "/profile";
+
   // OPEN OTP ON EVENT
   useEffect(() => {
-    const handler = () => {
-      setTimeout(() => setOtpOpen(true), 50); // FIX: ensures modal always opens
-    };
+    const handler = () => setTimeout(() => setOtpOpen(true), 50);
     window.addEventListener("open-otp", handler);
     return () => window.removeEventListener("open-otp", handler);
   }, []);
 
-  // OTP SUCCESS → SHOW TICK → REDIRECT
+  // OTP SUCCESS → SHOW TICK
   useEffect(() => {
     const handler = () => {
       setSuccessOpen(true);
-
       setTimeout(() => {
         setSuccessOpen(false);
         router.push("/");
       }, 1200);
     };
-
     window.addEventListener("otp-success", handler);
     return () => window.removeEventListener("otp-success", handler);
   }, []);
@@ -79,7 +100,6 @@ export default function Navbar() {
           <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#0D4F8B] text-white font-semibold">
             FY
           </div>
-
           <div className="flex flex-col">
             <span className="text-lg font-bold text-[#1A1A1A]">Fityou</span>
             <span className="text-[11px] tracking-[0.15em] uppercase text-[#6B7280]">
@@ -88,28 +108,28 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* RIGHT SIDE BUTTONS */}
+        {/* RIGHT BUTTONS */}
         <div className="flex items-center gap-4">
+          {!isProfilePage && (
+            <Link
+              href="/quiz"
+              className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
+                px-4 py-1.5 text-sm font-semibold text-[#1A1A1A] transition"
+            >
+              Do I qualify?
+            </Link>
+          )}
 
-          {/* CTA */}
-          <Link
-            href="/quiz"
-            className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
-              px-4 py-1.5 text-sm font-semibold text-[#1A1A1A] transition"
-          >
-            Do I qualify?
-          </Link>
-
-      {user ? (
-  <button onClick={() => router.push("/profile")}>
-    <User2 className="w-6 h-6 text-[#3A86FF]" />
-  </button>
-) : (
-  <button onClick={() => setLoginOpen(true)}>
-    <User2 className="w-6 h-6 text-[#3A86FF]" />
-  </button>
-)}
-
+          {/* USER ICON */}
+          {user ? (
+            <button onClick={() => router.push("/profile")}>
+              <User2 className="w-6 h-6 text-[#3A86FF]" />
+            </button>
+          ) : (
+            <button onClick={() => setLoginOpen(true)}>
+              <User2 className="w-6 h-6 text-[#3A86FF]" />
+            </button>
+          )}
 
           {/* HAMBURGER */}
           <button
@@ -123,84 +143,79 @@ export default function Navbar() {
 
       {/* SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-82 bg-white z-[999] border-l border-[#E5E7EB]
-          transition-transform duration-300 ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-80 bg-white z-[999] border-l border-[#E5E7EB]
+        transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex justify-end px-6 py-6">
           <button onClick={() => setOpen(false)}>
             <X className="w-7 h-7 text-[#0D4F8B]" />
           </button>
+          
         </div>
 
-        <div className="flex flex-col px-6 space-y-6 mt-2">
-          {navLinks.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href;
-
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-4 text-[16px] font-medium transition
-                  ${
-                    active
-                      ? "text-[#0D4F8B]"
-                      : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
-                  }
-                `}
+        {/* ----------- PROFILE MENU (ONLY ON /profile) ----------- */}
+        {isProfilePage ? (
+          <div className="flex flex-col px-6 space-y-6 mt-2">
+            {profileMenu.map(({ key, label, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("profile-tab-change", { detail: key }));
+                  setOpen(false);
+                }}
+                className="flex items-center gap-4 text-[16px] text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
               >
-                <Icon size={22} strokeWidth={1.6} className="text-[#0D4F8B]" />
+                <Icon size={20} className="text-[#0D4F8B]" />
                 {label}
-              </Link>
-            );
-          })}
-        </div>
+              </button>
+            ))}
 
-        <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
+            {/* LOGOUT */}
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="text-left text-red-500 mt-4"
+              >
+                Logout
+              </button>
+            )}
+          </div>
+        ) : (
+          /* ----------- NORMAL WEBSITE MENU ----------- */
+          <div className="flex flex-col px-6 space-y-6 mt-2">
+            {navLinks.map(({ href, label, icon: Icon }) => {
+              const active = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-4 text-[16px] font-medium transition ${
+                    active ? "text-[#0D4F8B]" : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
+                  }`}
+                >
+                  <Icon size={22} className="text-[#0D4F8B]" />
+                  {label}
+                </Link>
+              );
+            })}
 
-        {/* SIDEBAR BOTTOM LINKS */}
-<div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium">
-
-  {/* PROFILE BUTTON */}
-  <button
-    onClick={() => {
-      if (!user) setLoginOpen(true);
-      else router.push("/profile");
-      setOpen(false);
-    }}
-    className="text-left text-[#0D4F8B]"
-  >
-    Your Profile
-  </button>
-
-  {/* LOGOUT BUTTON (ONLY WHEN LOGGED IN) */}
-  {user && (
-    <button
-      onClick={() => {
-        handleLogout();
-        setOpen(false);
-      }}
-      className="text-left text-red-500"
-    >
-      Logout
-    </button>
-  )}
-
-  {/* CONTACT */}
-  <Link
-    href="/contact"
-    onClick={() => setOpen(false)}
-    className="text-[#0D4F8B]"
-  >
-    Contact us
-  </Link>
-</div>
-
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="text-left text-red-500 mt-4 font-bold cursor-pointer flex"
+              >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3-3h-9m9 0-3-3m3 3-3 3" />
+  </svg>
+                
+              <span>Logout</span>  
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* BACKDROP */}
       {open && (
         <div
           onClick={() => setOpen(false)}
@@ -208,7 +223,6 @@ export default function Navbar() {
         />
       )}
 
-      {/* MODALS */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
       <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
       <SuccessModal open={successOpen} />

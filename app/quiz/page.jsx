@@ -8,6 +8,7 @@ import { ChevronLeft, Info, Calendar as CalendarIcon } from "lucide-react";
 
 
 const doctorAvatar = "/doctor/doctor.png";
+const QUIZ_KEY_PREFIX = "fityou_quiz_";
 
 // weight options 40–200 kg (single unit)
 const WEIGHT_VALUES = Array.from({ length: 161 }, (_, i) => 40 + i);
@@ -246,6 +247,8 @@ const isSameDay = (a, b) =>
   a.getMonth() === b.getMonth() &&
   a.getDate() === b.getDate();
 
+
+
 // ---- MAIN PAGE ----
 export default function QuizPage() {
   const router = useRouter();
@@ -300,8 +303,58 @@ export default function QuizPage() {
   const [otpError, setOtpError] = useState("");
   const [otpTimer, setOtpTimer] = useState(60);
 
+  const saveQuizAndRedirect = () => {
+  const email = localStorage.getItem("fityou_email") || phoneNumber;
+
+  // --- compute BMI ---
+  let bmi = 0;
+  if (answers.heightCm && answers.weightKg) {
+    const h = Number(answers.heightCm) / 100;
+    const w = Number(answers.weightKg);
+    bmi = Number((w / (h * h)).toFixed(1));
+  }
+
+  // --- determine eligibility ---
+  let eligible = true;
+
+  if (bmi < 27) eligible = false;
+  if (answers.seriousThoughts === "Yes") eligible = false;
+  if (answers.familyMTC === "Yes") eligible = false;
+  if (answers.pregnancy === "Yes") eligible = false;
+
+  const selected = answers.majorConditions || [];
+  const hasOthersMajor = selected.some((i) => i !== "None of the above");
+  if (hasOthersMajor || selected.length > 3) eligible = false;
+
+  const payload = {
+    completedAt: Date.now(),
+    bmi,
+    eligible,
+    ...answers,
+  };
+
+  localStorage.setItem(QUIZ_KEY_PREFIX + email, JSON.stringify(payload));
+
+  router.push(`/recommendations?bmi=${bmi}`);
+};
+
   // 🔵 NEW: track if user has navigated back at least once
   const [hasNavigatedBack, setHasNavigatedBack] = useState(false);
+
+  const [storedQuiz, setStoredQuiz] = useState(null);
+
+useEffect(() => {
+  const email = localStorage.getItem("fityou_email");
+
+  if (!email) return;
+
+  const raw = localStorage.getItem(QUIZ_KEY_PREFIX + email);
+
+  if (raw) {
+    setStoredQuiz(JSON.parse(raw));
+  }
+}, []);
+
 
   useEffect(() => {
     fetch("/lottie/Marathon.json")
@@ -350,6 +403,30 @@ export default function QuizPage() {
 
   // 🔵 NEW: instead of redirecting immediately, show review animation
   const goToResult = () => {
+const userEmail = localStorage.getItem("fityou_email");
+
+if (userEmail) {
+  setShowReviewScreen(true);
+
+  // Run the animation (3 steps)
+  let i = 1;
+  const interval = setInterval(() => {
+    setReviewStep(i);
+    i++;
+    if (i > 3) {
+      clearInterval(interval);
+
+      // wait a moment for UI smoothness
+      setTimeout(() => {
+        saveQuizAndRedirect();
+      }, 400);
+    }
+  }, 1100);
+
+  return;
+}
+
+
     setShowReviewScreen(true);
     setReviewStep(0);
 
@@ -564,16 +641,56 @@ export default function QuizPage() {
     setShowOtpPopup(true);
   };
 
-  const handleOtpSubmit = () => {
-    if (!otpCode.trim()) {
-      setOtpError("Please enter the code.");
-      return;
-    }
-    setOtpError("");
-    // here you would normally verify OTP with backend
-    setShowOtpPopup(false);
-    redirectToResult();
+const handleOtpSubmit = () => {
+  if (!otpCode.trim()) {
+    setOtpError("Please enter the code.");
+    return;
+  }
+
+  const email = localStorage.getItem("fityou_email") || phoneNumber;
+
+  // --- compute BMI ---
+  let bmi = 0;
+  if (answers.heightCm && answers.weightKg) {
+    const h = Number(answers.heightCm) / 100;
+    const w = Number(answers.weightKg);
+    bmi = Number((w / (h * h)).toFixed(1));
+  }
+
+  // --- determine eligibility ---
+  let eligible = true;
+
+  // BMI check
+  if (bmi < 27) eligible = false;
+
+  // Serious medical exclusions
+  if (answers.seriousThoughts === "Yes") eligible = false;
+  if (answers.familyMTC === "Yes") eligible = false;
+  if (answers.pregnancy === "Yes") eligible = false;
+
+  // Major conditions list
+  const selected = answers.majorConditions || [];
+  const hasOthersMajor = selected.some((i) => i !== "None of the above");
+  if (hasOthersMajor || selected.length > 3) {
+    eligible = false;
+  }
+
+  // store quiz result
+  const payload = {
+    completedAt: Date.now(),
+    bmi,
+    eligible,
+    ...answers,
   };
+
+  localStorage.setItem(QUIZ_KEY_PREFIX + email, JSON.stringify(payload));
+
+  setOtpError("");
+  setShowOtpPopup(false);
+
+  router.push("/recommendations");
+};
+
 
   // ---- RENDER HELPERS ----
   const renderQuestionBody = () => {
@@ -1092,6 +1209,9 @@ export default function QuizPage() {
   const showContinueButton =
     currentQuestion &&
     (currentQuestion.type !== "buttons" || hasNavigatedBack);
+if (storedQuiz) {
+  return router.push("/recommendations");
+}
 
   // ---- MAIN RENDER ----
   return (
