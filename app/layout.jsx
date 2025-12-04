@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
 import { Laila } from "next/font/google";
+import FloatingButton from "@/components/chatbot/FloatingButton";
 
 export const metadata = {
   title: "Fityou",
@@ -43,7 +44,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
           {/* </PageTransition> */}
-
+          <FloatingButton/>
           <Footer />
         </AuthProvider>
       </body>
