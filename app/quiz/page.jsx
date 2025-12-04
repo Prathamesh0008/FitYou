@@ -5,6 +5,9 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import { ChevronLeft, Info, Calendar as CalendarIcon } from "lucide-react";
+import CustomSelect from "@/components/CustomSelect";
+
+
 
 const doctorAvatar = "/doctor/doctor.png";
 
@@ -299,6 +302,11 @@ export default function QuizPage() {
   const [otpError, setOtpError] = useState("");
   const [otpTimer, setOtpTimer] = useState(60);
 
+  
+  // Track which button-questions were visited via Back
+const [backVisitedQuestions, setBackVisitedQuestions] = useState(new Set());
+
+
   useEffect(() => {
     fetch("/lottie/Marathon.json")
       .then((res) => res.json())
@@ -316,6 +324,7 @@ export default function QuizPage() {
   const currentQuestion = introDone ? QUESTIONS[stepIndex] : null;
 
   const today = useMemo(() => new Date(), []);
+  // eslint-disable-next-line no-unused-vars
   const todayStr = useMemo(() => formatDateYMD(today), [today]);
 
   const setField = (name, value) => {
@@ -331,7 +340,9 @@ export default function QuizPage() {
       setIntroDone(false);
       return;
     }
-    setStepIndex((i) => Math.max(0, i - 1));
+   setBackVisitedQuestions(prev => new Set(prev).add(stepIndex - 1));
+setStepIndex(i => Math.max(0, i - 1));
+
   };
 
   // build URL for result page
@@ -339,7 +350,7 @@ export default function QuizPage() {
     const params = new URLSearchParams();
     if (answers.heightCm) params.set("height", answers.heightCm);
     if (answers.weightKg) params.set("weight", answers.weightKg);
-    router.push(`/quiz/result?${params.toString()}`);
+    router.push(`/recommendations?${params.toString()}`);
   };
 
   // 🔵 NEW: instead of redirecting immediately, show review animation
@@ -434,12 +445,7 @@ export default function QuizPage() {
       }
     }
 
-    if (q.type === "buttons") {
-      if (!answers[q.id]) {
-        setError("Please select one of the options.");
-        return;
-      }
-    }
+    
 
     if (q.type === "checkboxes") {
       if (!answers.majorConditions || answers.majorConditions.length === 0) {
@@ -549,25 +555,32 @@ export default function QuizPage() {
   }, [showOtpPopup]);
 
   const handleSendCode = () => {
-    if (!phoneNumber.trim()) {
-      setPhoneError("Please enter your mobile number.");
-      return;
-    }
-    setPhoneError("");
-    setShowPhonePopup(false);
-    setShowOtpPopup(true);
-  };
+  if (phoneNumber.length !== 10) {
+    setPhoneError("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  // ⭐ SAVE PHONE NUMBER FOR PAYMENT PAGE
+  localStorage.setItem("fityou_phone", phoneNumber);
+
+  setPhoneError("");
+  setShowPhonePopup(false);
+  setShowOtpPopup(true);
+};
+
+
 
   const handleOtpSubmit = () => {
-    if (!otpCode.trim()) {
-      setOtpError("Please enter the code.");
-      return;
-    }
-    setOtpError("");
-    // here you would normally verify OTP with backend
-    setShowOtpPopup(false);
-    redirectToResult();
-  };
+  if (otpCode.length !== 4) {
+    setOtpError("Please enter the 4-digit code.");
+    return;
+  }
+
+  setOtpError("");
+  setShowOtpPopup(false);
+  redirectToResult();
+};
+
 
   // ---- RENDER HELPERS ----
   const renderQuestionBody = () => {
@@ -577,58 +590,46 @@ export default function QuizPage() {
     if (q.type === "height") {
       return (
         <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-[360px]">
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none"
-              value={answers.heightFeet}
-              onChange={(e) => setField("heightFeet", e.target.value)}
-            >
-              <option value="">Feet</option>
-              <option value="4">4 ft</option>
-              <option value="5">5 ft</option>
-              <option value="6">6 ft</option>
-              <option value="7">7 ft</option>
-              <option value="8">8 ft</option>
-            </select>
+  <div className="flex w-full sm:w-[360px] gap-3">
+    
+    {/* Feet */}
+    <CustomSelect
+      value={answers.heightFeet}
+      onChange={(v) => setField("heightFeet", v)}
+      placeholder="Feet"
+      options={["4","5","6","7","8"]}
+    />
 
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none"
-              value={answers.heightInches}
-              onChange={(e) => setField("heightInches", e.target.value)}
-            >
-              <option value="">Inches</option>
-              {Array.from({ length: 12 }, (_, i) => i).map((v) => (
-                <option key={v} value={v}>
-                  {v} in
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+    {/* Inches */}
+    <CustomSelect
+      value={answers.heightInches}
+      onChange={(v) => setField("heightInches", v)}
+      placeholder="Inches"
+      options={Array.from({ length: 12 }, (_, i) => String(i))}
+    />
+
+  </div>
+</div>
+
       );
     }
 
     if (q.type === "weight") {
       return (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="w-full sm:w-[360px]">
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none max-h-64 overflow-y-auto"
-              value={answers.weightKg}
-              onChange={(e) => {
-                setField("weightKg", e.target.value);
-                setField("weightRaw", e.target.value);
-              }}
-            >
-              <option value="">Select</option>
-              {WEIGHT_VALUES.map((kg) => (
-                <option key={kg} value={kg}>
-                  {kg} kg
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+       <div className="mt-6 flex flex-col items-center gap-4">
+  <div className="w-full sm:w-[360px]">
+    <CustomSelect
+      value={answers.weightKg}
+      onChange={(v) => {
+        setField("weightKg", v);
+        setField("weightRaw", v);
+      }}
+      placeholder="Select weight"
+      options={WEIGHT_VALUES.map((kg) => `${kg}`)}
+    />
+  </div>
+</div>
+
       );
     }
 
@@ -640,7 +641,7 @@ export default function QuizPage() {
             <button
               type="button"
               onClick={() => setCalendarOpen((prev) => !prev)}
-              className="flex items-center justify-between gap-3 w-full rounded-lg border border-[#DFE8F1] bg-white px-4 py-3 text-sm text-[#0D2451] shadow-sm hover:border-[#C7D7EC] transition"
+              className="flex items-center justify-center gap-0 w-full rounded-lg border border-[#DFE8F1] bg-white px-4 py-3 text-sm text-[#0D2451] shadow-sm hover:border-[#C7D7EC] transition"
             >
               <div className="flex items-center gap-2">
                 <div className="flex gap-2">
@@ -656,7 +657,7 @@ export default function QuizPage() {
                 </div>
               </div>
 
-              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border border-[#BCD6EA]">
+              <span className="flex items-center justify-center w-10 h-10 rounded-md bg-[#D0E6F4] border border-[#BCD6EA] ml-2">
                 <CalendarIcon size={18} className="text-[#0D4F8B]" />
               </span>
             </button>
@@ -742,7 +743,7 @@ export default function QuizPage() {
                           disabled
                             ? "text-[#C5CFDF] cursor-not-allowed"
                             : isSelected
-                            ? "bg-[#0D4F8B] text-white font-semibold"
+                            ? "border-[#F7A450] bg-[#FFE6C8] shadow-sm"
                             : "text-[#0D2451] hover:bg-[#E6F0FB]"
                         }`}
                       >
@@ -754,32 +755,19 @@ export default function QuizPage() {
               </div>
             )}
           </div>
-
-          <p className="text-[11px] text-[#60738C]">
-            You can’t select a future date.
-          </p>
         </div>
       );
     }
 
     if (q.type === "select") {
       return (
-        <div className="mt-6 flex flex-col items-center gap-4">
-          <div className="w-full sm:w-[380px]">
-            <select
-              className="w-full rounded-lg border border-[#DFE8F1] bg-white px-3 py-2 text-sm outline-none"
-              value={answers[q.id] || ""}
-              onChange={(e) => setField(q.id, e.target.value)}
-            >
-              <option value="">Select</option>
-              {q.options.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <CustomSelect
+  value={answers[q.id] || ""}
+  onChange={(v) => setField(q.id, v)}
+  placeholder="Select"
+  options={q.options}
+/>
+
       );
     }
 
@@ -799,11 +787,15 @@ export default function QuizPage() {
                 <button
                   key={opt}
                   type="button"
-                  onClick={() => setField(q.id, opt)}
+                  onClick={() => {
+                    setAnswers(prev => ({ ...prev, [q.id]: opt }));
+                    setTimeout(() => validateAndNext(), 0);
+                  }}
+
                   className={`w-full rounded-lg border px-4 py-2 text-sm text-[#0D2451] transition
                     ${
                       selected
-                        ? "border-[#F7A450] bg-[#FFEFD9]"
+                        ? "border-[#F7A450] bg-[#FFE6C8] shadow-sm"
                         : "border-[#F7CFA5] bg-[#FFF6EA] hover:bg-[#FFEAD3]"
                     }`}
                 >
@@ -903,181 +895,209 @@ export default function QuizPage() {
   };
 
   // 🔵 REVIEW SCREEN + POPUPS (AKTIVE STYLE)
-if (showReviewScreen) {
-  const formattedTimer = `0${Math.floor(otpTimer / 60)}:${String(
-    otpTimer % 60
-  ).padStart(2, "0")}`;
+  if (showReviewScreen) {
+    const formattedTimer = `0${Math.floor(otpTimer / 60)}:${String(
+      otpTimer % 60
+    ).padStart(2, "0")}`;
 
-  return (
-    <div className="min-h-screen w-full bg-[#E8F4F7] flex flex-col items-center pt-24 pb-10 text-[#063363] relative">
+    return (
+      <div className="min-h-screen w-full bg-[#E8F4F7] flex flex-col items-center pt-24 pb-10 text-[#063363] relative">
+        {/* TITLE (EXACT AKTIVE STYLE) */}
+        <h2 className="text-[18px] font-semibold mb-12">
+          Reviewing your medical information:
+        </h2>
 
-      {/* TITLE (EXACT AKTIVE STYLE) */}
-      <h2 className="text-[18px] font-semibold mb-12">
-        Reviewing your medical information:
-      </h2>
-
-      {/* THREE CHECK LINES */}
-      <div className="flex flex-col gap-9">
-
-        {/* ---------------- LINE 1 ---------------- */}
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col">
-            <p className="text-[15px] mb-1">Checking BMI qualification</p>
-            <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-              <div
-                className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
-              />
-            </div>
-          </div>
-
-          {reviewStep >= 1 && (
-            <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-          )}
-        </div>
-
-        {/* ---------------- LINE 2 ---------------- */}
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col">
-            <p className="text-[15px] mb-1">Checking contraindications</p>
-            <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-              <div
-                className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
-              />
-            </div>
-          </div>
-
-          {reviewStep >= 2 && (
-            <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-          )}
-        </div>
-
-        {/* ---------------- LINE 3 ---------------- */}
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col">
-            <p className="text-[15px] mb-1">Checking safety and suitability</p>
-            <div className="w-[155px] h-[12px] rounded-md bg-[#A6CDD8] overflow-hidden">
-              <div
-                className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out"
-                style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
-              />
-            </div>
-          </div>
-
-          {reviewStep >= 3 && (
-            <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-          )}
-        </div>
-
+        {/* THREE CHECK LINES */}
+        <div className="flex flex-col gap-9">
+          {/* ---- LINE 1 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 0 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking BMI qualification</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
+        />
       </div>
+    </div>
+    {reviewStep >= 1 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
 
-      {/* 📱 PHONE POPUP (UNCHANGED) */}
-      {showPhonePopup && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
-            <h3 className="text-lg md:text-xl font-semibold text-[#0D2451] mb-6">
-              Please enter your mobile number to see your personalised plan
-            </h3>
+  {/* ---- LINE 2 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 1 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking contraindications</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
+        />
+      </div>
+    </div>
+    {reviewStep >= 2 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
 
-            <div className="flex flex-col gap-3 items-stretch mb-5">
-              <div className="flex">
-                <button className="px-4 py-3 border border-r-0 border-[#C8D7E8] rounded-l-lg text-sm bg-[#F7FAFF] text-[#0D2451]">
-                  India(+91)
-                </button>
+  {/* ---- LINE 3 ---- */}
+  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
+    reviewStep >= 2 ? "opacity-100" : "opacity-0"
+  }`}>
+    <div className="flex flex-col">
+      <p className="text-[15px] mb-1">Checking safety and suitability</p>
+      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+        <div
+          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
+          style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
+        />
+      </div>
+    </div>
+    {reviewStep >= 3 && (
+      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+    )}
+  </div>
+
+        </div>
+
+        {/* 📱 PHONE POPUP */}
+        {showPhonePopup && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 px-4">
+        <div className="bg-white w-full max-w-md rounded-2xl p-6 sm:p-8 shadow-2xl text-center">
+              <h3 className="text-lg md:text-xl font-semibold text-[#0D2451] mb-6">
+                Please enter your mobile number to see your personalised plan
+              </h3>
+
+              <div className="flex flex-col gap-3 items-stretch mb-5">
+                <div className="flex w-full">
+                    <button className="px-3 sm:px-4 py-3 border border-r-0 border-[#C8D7E8] rounded-l-lg text-xs sm:text-sm bg-[#F7FAFF] text-[#0D2451] whitespace-nowrap">
+                      India(+91)
+                    </button>
+
+                    <input
+                      type="tel"
+                      className="flex-1 border border-l-0 border-[#C8D7E8] rounded-r-lg px-3 sm:px-4 py-3 text-sm outline-none w-full"
+                      placeholder="Mobile number"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setPhoneNumber(val);
+                        setPhoneError("");
+                      }}
+                    />
+                  </div>
+
+
+                {phoneError && (
+                  <p className="text-xs text-red-500 text-left">{phoneError}</p>
+                )}
+              </div>
+
+              <button
+                onClick={handleSendCode}
+                className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
+              >
+                Send code
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 🔐 OTP POPUP */}
+        {showOtpPopup && (
+          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+            <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
+              <div className="mb-4 text-sm text-[#0D2451]">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4FAFF] border border-[#C8D7E8]">
+                  <span className="text-xs text-[#7C8CA3]">+91</span>
+                  <span className="font-semibold">
+                    {phoneNumber || "Your number"}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-sm text-[#0D2451] mb-5">
+                We have sent a passcode to the above number. Please enter your
+                code.
+              </p>
+
+              <div className="mb-4 flex justify-center">
                 <input
-                  type="tel"
-                  className="flex-1 border border-l-0 border-[#C8D7E8] rounded-r-lg px-4 py-3 text-sm outline-none"
-                  placeholder="Mobile number"
-                  value={phoneNumber}
+                  type="text"
+                  maxLength={4}
+                  className="w-32 border border-[#C8D7E8] rounded-lg text-center px-4 py-3 tracking-[0.3em] text-lg outline-none"
+                  value={otpCode}
                   onChange={(e) => {
-                    setPhoneNumber(e.target.value);
-                    setPhoneError("");
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 4);
+                    setOtpCode(val);
+                    setOtpError("");
                   }}
+
+                  
+
                 />
               </div>
 
-              {phoneError && (
-                <p className="text-xs text-red-500 text-left">{phoneError}</p>
+              {otpError && (
+                <p className="text-xs text-red-500 mb-2">{otpError}</p>
               )}
-            </div>
 
-            <button
-              onClick={handleSendCode}
-              className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
-            >
-              Send code
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 🔐 OTP POPUP (UNCHANGED) */}
-      {showOtpPopup && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-          <div className="bg-white w-[90%] max-w-md rounded-2xl p-8 shadow-2xl text-center">
-
-            <div className="mb-4 text-sm text-[#0D2451]">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#F4FAFF] border border-[#C8D7E8]">
-                <span className="text-xs text-[#7C8CA3]">+91</span>
-                <span className="font-semibold">{phoneNumber || "Your number"}</span>
+              <div className="flex items-center justify-between text-xs text-[#7C8CA3] mb-4">
+                <button
+                  type="button"
+                  className="underline underline-offset-2"
+                  onClick={() => setOtpTimer(60)}
+                >
+                  Resend passcode
+                </button>
+                <span>{formattedTimer}</span>
               </div>
-            </div>
 
-            <p className="text-sm text-[#0D2451] mb-5">
-              We have sent a passcode to the above number. Please enter your code.
-            </p>
-
-            <div className="mb-4 flex justify-center">
-              <input
-                type="text"
-                maxLength={6}
-                className="w-32 border border-[#C8D7E8] rounded-lg text-center px-4 py-3 tracking-[0.3em] text-lg outline-none"
-                value={otpCode}
-                onChange={(e) => {
-                  setOtpCode(e.target.value);
-                  setOtpError("");
-                }}
-              />
-            </div>
-
-            {otpError && <p className="text-xs text-red-500 mb-2">{otpError}</p>}
-
-            <div className="flex items-center justify-between text-xs text-[#7C8CA3] mb-4">
               <button
-                type="button"
-                className="underline underline-offset-2"
-                onClick={() => setOtpTimer(60)}
+                onClick={handleOtpSubmit}
+                className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
               >
-                Resend passcode
+                Submit
               </button>
-              <span>{formattedTimer}</span>
+
+              <p className="mt-4 text-[10px] text-[#7C8CA3]">
+                By continuing, you accept our Terms & Conditions and Privacy
+                Policy.
+              </p>
             </div>
-
-            <button
-              onClick={handleOtpSubmit}
-              className="w-full bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white font-semibold py-3 rounded-lg text-sm transition"
-            >
-              Submit
-            </button>
-
-            <p className="mt-4 text-[10px] text-[#7C8CA3]">
-              By continuing, you accept our Terms & Conditions and Privacy Policy.
-            </p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+    );
+  }
 
-    </div>
-  );
-}
+  // ---- CONTINUE BUTTON VISIBILITY LOGIC ----
+// Always show continue button (even for peach buttons)
+const showContinueButton = (() => {
+  if (!currentQuestion) return false;
+
+  // Non-button type always shows Continue
+  if (currentQuestion.type !== "buttons") return true;
+
+  // Button question shows Continue ONLY if user has returned to it
+  return backVisitedQuestions.has(stepIndex);
+})();
+
+
+
+
 
   // ---- MAIN RENDER ----
   return (
     <div className="min-h-screen bg-[#F6FAFF] text-[#0D2451] font-laila flex flex-col">
       {/* HEADER + PROGRESS (sticky on top) */}
       {introDone && (
-        <header className="w-full border-b border-[#E5EEF6] bg-[#F6FAFF] sticky top-0 z-20">
+        <header className="w-full border-b border-[#E5EEF6] bg-gradient-to-b from-[#E6F3FB] to-[#F6FAFF] sticky top-0 z-20">
           <div className="max-w-5xl mx-auto px-4 pt-4 pb-3">
             <div className="flex items-center justify-between">
               <button
@@ -1129,10 +1149,21 @@ if (showReviewScreen) {
                 {progressPercent}%
               </div>
 
-              {/* tagline that moves with girl */}
+              {/* tagline that moves with girl (responsive, not cropped) */}
               <div
-                className="absolute bottom-0 text-[11px] text-[#60738C] transition-all duration-500 whitespace-nowrap"
-                style={{ left: `calc(${progressPercent}% - 70px)` }}
+                className="
+                  absolute bottom-0
+                  text-[11px] text-[#60738C]
+                  transition-all duration-500
+                  whitespace-nowrap
+                  max-w-[180px]
+                  sm:max-w-[260px]
+                  overflow-hidden
+                  px-2
+                "
+                style={{
+                  left: `clamp(0px, calc(${progressPercent}% - 90px), calc(100% - 180px))`,
+                }}
               >
                 {progressTagline}
               </div>
@@ -1142,108 +1173,103 @@ if (showReviewScreen) {
       )}
 
       {/* CONTENT */}
-<main className="flex-1">
-  {!introDone ? (
-    /* ---------------- INTRO PAGE ---------------- */
-    <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
+      <main className="flex-1">
+        {!introDone ? (
+          /* ---------------- INTRO PAGE ---------------- */
+          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
+            <h1 className="text-3xl font-semibold text-[#0D2451]">
+              Medical consultation
+            </h1>
 
-      <h1 className="text-3xl font-semibold text-[#0D2451]">
-        Medical consultation
-      </h1>
+            <div className="mt-8 flex justify-center">
+              <div className="flex items-center gap-4 rounded-xl bg-[#D7EDF4] px-6 py-4 max-w-xl text-left">
+                <img
+                  src={doctorAvatar}
+                  alt="Doctor"
+                  className="h-24 w-24 rounded-full object-cover flex-shrink-0"
+                />
+                <div className="text-sm text-[#0D2451]">
+                  <p>
+                    Answer the medical questions in this online consultation and
+                    we&apos;ll assess if treatment is safe for you to use.
+                    It&apos;s free.
+                  </p>
+                  <p className="mt-2 font-semibold">FitYou Medical Team</p>
+                </div>
+              </div>
+            </div>
 
-      <div className="mt-8 flex justify-center">
-        <div className="flex items-center gap-4 rounded-xl bg-[#D7EDF4] px-6 py-4 max-w-xl text-left">
-          <img
-            src={doctorAvatar}
-            alt="Doctor"
-            className="h-24 w-24 rounded-full object-cover flex-shrink-0"
-          />
-          <div className="text-sm text-[#0D2451]">
-            <p>
-              Answer the medical questions in this online consultation and
-              we&apos;ll assess if treatment is safe for you to use. It&apos;s free.
+            <p className="mt-6 text-sm text-[#3E5678] max-w-xl mx-auto">
+              This consultation is a set of online questions about your health
+              and lifestyle. It takes a few minutes and helps our doctors
+              understand whether a medical program is appropriate for you.
             </p>
-            <p className="mt-2 font-semibold">FitYou Medical Team</p>
-          </div>
-        </div>
-      </div>
 
-      <p className="mt-6 text-sm text-[#3E5678] max-w-xl mx-auto">
-        This consultation is a set of online questions about your health and lifestyle.
-        It takes a few minutes and helps our doctors understand whether a medical
-        program is appropriate for you.
-      </p>
+            <div className="mt-8 flex justify-center">
+              <button
+                type="button"
+                onClick={validateAndNext}
+                className="w-full sm:w-[340px] rounded-md bg-[#8DB9C9] px-6 py-3 text-sm font-semibold text-white hover:bg-[#7AA7B8] transition"
+              >
+                I&apos;m ready
+              </button>
+            </div>
 
-      <div className="mt-8 flex justify-center">
-        <button
-          type="button"
-          onClick={validateAndNext}
-          className="w-full sm:w-[340px] rounded-md bg-[#8DB9C9] px-6 py-3 text-sm font-semibold text-white hover:bg-[#7AA7B8] transition"
-        >
-          I&apos;m ready
-        </button>
-      </div>
+            <p className="mt-6 text-xs text-[#3E5678] text-center">
+              Already have a personalised plan?{" "}
+              <span className="underline cursor-pointer">
+                Login with your mobile number
+              </span>
+            </p>
 
-      <p className="mt-6 text-xs text-[#3E5678] text-center">
-        Already have a personalised plan?{" "}
-        <span className="underline cursor-pointer">Login with your mobile number</span>
-      </p>
+            <p className="mt-10 text-[10px] text-[#8CA0C0] text-center">
+              This consultation does not replace an in-person medical
+              evaluation.
+            </p>
+          </section>
+        ) : (
+          /* ---------------- QUESTION / INFO SCREEN ---------------- */
+          <section className="px-4 pt-14 pb-20 flex justify-center">
+            <div className="w-full max-w-xl mx-auto">
+              {/* QUESTION HEADING */}
+              {currentQuestion?.type !== "info" && (
+                <h2 className="text-[17px] md:text-[22px] font-semibold text-[#0D2451] leading-snug text-left mb-6 max-w-xl mx-auto">
+                  {currentQuestion.title}
+                </h2>
+              )}
 
-      <p className="mt-10 text-[10px] text-[#8CA0C0]">
-        This consultation does not replace an in-person medical evaluation.
-      </p>
-    </section>
-  ) : (
-    /* ---------------- QUESTION / INFO SCREEN ---------------- */
-    <section className="px-4 pt-14 pb-20 flex justify-center">
-      <div className="w-full max-w-xl">
+              {/* QUESTION BODY */}
+              {renderQuestionBody()}
 
-        {/* QUESTION HEADING */}
-        {currentQuestion?.type !== "info" && (
-          <h2
-            className="
-              text-[15px] md:text-[22px]
-              font-semibold text-[#0D2451]
-              leading-snug
-              text-left
-              mb-6
-            "
-          >
-            {currentQuestion.title}
-          </h2>
+              {/* ERROR MESSAGE */}
+              {error && (
+                <p className="mt-4 text-xs text-red-500 font-medium">{error}</p>
+              )}
+
+              {/* CONTINUE BUTTON – show for everything except peach buttons,
+                  but DO show for buttons when user has navigated back */}
+              {showContinueButton && (
+                <div className="mt-8">
+                  <button
+                    type="button"
+                    onClick={isNotEligibleMajor ? undefined : validateAndNext}
+                    disabled={isNotEligibleMajor}
+                    className={`w-full rounded-md px-6 py-3 text-sm font-semibold transition
+                      ${
+                        isNotEligibleMajor
+                          ? "bg-[#C7D7DE] text-white opacity-60 cursor-not-allowed"
+                          : "bg-[#8DB9C9] text-white hover:bg-[#7AA7B8]"
+                      }
+                    `}
+                  >
+                    Continue
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
         )}
-
-        {/* QUESTION BODY */}
-        {renderQuestionBody()}
-
-        {/* ERROR MESSAGE */}
-        {error && (
-          <p className="mt-4 text-xs text-red-500 font-medium">{error}</p>
-        )}
-
-        {/* CONTINUE BUTTON */}
-        <div className="mt-8">
-          <button
-            type="button"
-            onClick={isNotEligibleMajor ? undefined : validateAndNext}
-            disabled={isNotEligibleMajor}
-            className={`w-full rounded-md px-6 py-3 text-sm font-semibold transition
-              ${
-                isNotEligibleMajor
-                  ? "bg-[#C7D7DE] text-white opacity-60 cursor-not-allowed"
-                  : "bg-[#8DB9C9] text-white hover:bg-[#7AA7B8]"
-              }
-            `}
-          >
-            Continue
-          </button>
-        </div>
-
-      </div>
-    </section>
-  )}
-</main>
-
+      </main>
 
       {/* FOOTER */}
       <footer className="w-full border-t border-[#E5EEF6] bg-[#F6FAFF]">

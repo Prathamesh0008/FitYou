@@ -1,3 +1,4 @@
+//FitYou\components\NewsSection.jsx
 "use client";
 
 import { useRef, useEffect } from "react";

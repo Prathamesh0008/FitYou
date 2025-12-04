@@ -1,15 +1,12 @@
-
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
-
 // import PageTransition from "@/components/PageTransition";
 
 import { Laila } from "next/font/google";
 // import FloatingButton from "@/components/chatbot/FloatingButton";
-
 
 export const metadata = {
   title: "Fityou",
@@ -24,17 +21,13 @@ const laila = Laila({
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={laila.variable}
-    >
+    <html lang="en" suppressHydrationWarning className={laila.variable}>
       <body
         className="
-          font-laila 
-          min-h-screen 
-          bg-white 
-          text-[#1A1A1A] 
+          font-laila
+          min-h-screen
+          bg-white
+          text-[#1A1A1A]
           transition-all
         "
       >
@@ -43,16 +36,13 @@ export default function RootLayout({ children }) {
 
           <Navbar />
 
-
+          {/* If you want page transitions, enable this */}
           {/* <PageTransition> */}
-            <main>
-              {children}
-            </main>
+          <main>{children}</main>
           {/* </PageTransition> */}
-          {/* <FloatingButton/> */}
 
-          {/* <main>{children}</main> */}
-
+          {/* If you want chatbot, enable this */}
+          {/* <FloatingButton /> */}
 
           <Footer />
         </AuthProvider>
