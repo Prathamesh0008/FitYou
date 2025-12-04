@@ -9,6 +9,7 @@ import WhyQualify from "@/components/recommendations/WhyQualify";
 import ActionSteps from "@/components/recommendations/ActionSteps";
 import Milestones from "@/components/recommendations/Milestones";
 import MiddleImage from "@/components/recommendations/MiddleImage";
+import NewsSection from "@/components/NewsSection";
 
 
 export default function RecommendationsPage() {
@@ -38,6 +39,8 @@ export default function RecommendationsPage() {
 
       {/* MILESTONES */}
       <Milestones />
+
+      <NewsSection/>
 
     </div>
   );

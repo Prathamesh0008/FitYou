@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/AuthProvider";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
-import ScrollTopButton from "@/components/ScrollTopButton"; // <-- Add this
 import { Laila } from "next/font/google";
 
 export const metadata = {
@@ -28,8 +27,7 @@ export default function RootLayout({ children }) {
 
           <main>{children}</main>
 
-          {/* Floating Scroll To Top Button */}
-          <ScrollTopButton />
+          
 
           <Footer />
         </AuthProvider>
