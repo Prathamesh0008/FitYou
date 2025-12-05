@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Lottie from "lottie-react";
 import { ChevronLeft, Info, Calendar as CalendarIcon } from "lucide-react";
 import CustomSelect from "@/components/CustomSelect";
+import { QUESTIONS } from "./questions";
+
 
 
 
@@ -14,224 +16,7 @@ const doctorAvatar = "/doctor/doctor.png";
 // weight options 40–200 kg (single unit)
 const WEIGHT_VALUES = Array.from({ length: 161 }, (_, i) => 40 + i);
 
-// ---- QUESTION CONFIG ----
-const QUESTIONS = [
-  // 0 – Height
-  {
-    id: "height",
-    type: "height",
-    title: "Please provide your height.",
-  },
-  // 1 – Weight
-  {
-    id: "weight",
-    type: "weight",
-    title: "Please provide your current weight.",
-  },
-  // 2 – Last weight check date
-  {
-    id: "lastWeightCheck",
-    type: "date",
-    title: "When did you last check your weight?",
-  },
-  // 3 – Target weight
-  {
-    id: "targetWeightGoal",
-    type: "select",
-    title: "What is your target weight for the next 12 months?",
-    options: [
-      "I have no target weight in mind",
-      "Lose 0–5 kg",
-      "Lose 5–10 kg",
-      "Lose more than 10 kg",
-      "Maintain my current weight",
-    ],
-  },
-  // 4 – Calories
-  {
-    id: "calories",
-    type: "buttons",
-    title: "How many calories do you think you consume daily?",
-    options: [
-      "Less than 1500",
-      "1500 – 2000",
-      "2000 – 3000",
-      "3000 – 4000",
-      "More than 4000",
-      "I know the exact amount",
-      "I don't count calories",
-    ],
-  },
-  // 5 – Exercise
-  {
-    id: "exercise",
-    type: "buttons",
-    title: "How many times a week do you exercise for more than 20 minutes?",
-    helper:
-      "Exercise is any activity that increases your heart rate, including an active job or a brisk walk.",
-    options: [
-      "Little or no exercise",
-      "1 to 2 times",
-      "3 to 4 times",
-      "5 to 6 times",
-      "7 times +",
-    ],
-  },
-  // 6 – Alcohol
-  {
-    id: "alcohol",
-    type: "buttons",
-    title: "Do you drink alcohol?",
-    options: [
-      "No",
-      "Yes – 1–2 units/week",
-      "Yes – 3–5 units/week",
-      "Yes – 6 or more units/week",
-    ],
-  },
-  // 7 – Previous weight-loss medicines
-  {
-    id: "prevMeds",
-    type: "buttons",
-    title: "Have you previously taken any medicine(s) to help with weight loss?",
-    options: ["Yes", "No"],
-  },
-  // 8 – Sleep
-  {
-    id: "sleep",
-    type: "select",
-    title: "How many hours do you usually sleep per night?",
-    options: ["<5 hours", "5–7 hours", "7–9 hours", "9+ hours"],
-  },
-  // 9 – Gender
-  {
-    id: "gender",
-    type: "buttons",
-    title: "Are you male or female?",
-    options: ["Male", "Female"],
-  },
-  // 10 – High blood pressure
-  {
-    id: "highBp",
-    type: "buttons",
-    title:
-      "Have you been diagnosed with high blood pressure (with or without treatment)?",
-    options: ["Yes", "No"],
-  },
-  // 11 – Diabetes
-  {
-    id: "diabetes",
-    type: "buttons",
-    title:
-      "Have you been diagnosed with Diabetes (with or without treatment)?",
-    options: ["Yes", "No"],
-  },
-  // 12 – Underactive thyroid
-  {
-    id: "thyroid",
-    type: "buttons",
-    title:
-      "Have you been diagnosed with an underactive thyroid, for which you take Levothyroxine?",
-    options: ["Yes", "No"],
-  },
-  // 13 – Depression
-  {
-    id: "depression",
-    type: "buttons",
-    title: "Do you suffer from depression diagnosed by a psychiatrist?",
-    options: ["Yes", "No"],
-  },
-  // 14 – Serious thoughts about wellbeing/safety
-  {
-    id: "seriousThoughts",
-    type: "buttons",
-    title:
-      "Have you ever had very serious thoughts about your own safety or wellbeing?",
-    options: ["Yes", "No"],
-  },
-  // 15 – Big multi-diagnosis checkbox list
-  {
-    id: "majorConditions",
-    type: "checkboxes",
-    title: "Have you ever been diagnosed with any of the following?",
-    checkboxOptions: [
-      "Multiple Endocrine Neoplasia syndrome type 2 (MEN 2)",
-      "An eating disorder (e.g. anorexia or bulimia)",
-      "Cardiovascular (heart) problems",
-      "A stroke",
-      "Kidney or liver problems",
-      "Thyroid carcinoma",
-      "Pancreatitis",
-      "None of the above",
-    ],
-  },
 
-  // 🔥 NEW QUESTIONS 🔥
-
-  // 16 – Family history MTC
-  {
-    id: "familyMTC",
-    type: "buttons",
-    title: "Do you have a family history of Medullary Thyroid Carcinoma (MTC)?",
-    options: ["Yes", "No"],
-  },
-
-  // 17 – Pregnancy
-  {
-    id: "pregnancy",
-    type: "buttons",
-    title: "Are you pregnant, breastfeeding or planning on conceiving?",
-    options: ["Yes", "No"],
-  },
-
-  // 18 – Physical conditions
-  {
-    id: "physicalCondition",
-    type: "buttons",
-    title: "Do you have any physical conditions that prevent you from exercising?",
-    options: ["Yes", "No"],
-  },
-
-  // 19 – Medicines
-  {
-    id: "otherMeds",
-    type: "buttons",
-    title:
-      "Do you take any other medicines including prescription, over-the-counter or recreational drugs?",
-    options: ["Yes", "No"],
-  },
-
-  // 20 – Allergies
-  {
-    id: "allergies",
-    type: "buttons",
-    title: "Do you have any allergies?",
-    options: ["Yes", "No"],
-  },
-
-  // 21 – Additional info
-  {
-    id: "additionalInfo",
-    type: "buttons",
-    title:
-      "Have you ever had any medical conditions or surgery not previously mentioned in this form, or is there any further information you would like to provide the doctor?",
-    options: ["Yes", "No"],
-  },
-
-  // 22 – Injection preference
-  {
-    id: "injectionPreference",
-    type: "buttons",
-    title: "Are you comfortable using an injection?",
-    options: ["Yes", "No, I prefer a tablet"],
-  },
-
-  // 23 – Info screen before result
-  {
-    id: "lifestyleSummary",
-    type: "info",
-  },
-];
 
 // small helper for date formatting
 const formatDateYMD = (date) => {
@@ -285,6 +70,10 @@ export default function QuizPage() {
   });
 
   const [error, setError] = useState("");
+  const [eligibilityMessage, setEligibilityMessage] = useState("");
+  const [alcoholWarning, setAlcoholWarning] = useState("");
+
+
   const [marathonAnim, setMarathonAnim] = useState(null);
 
   // calendar UI state
@@ -328,9 +117,17 @@ const [backVisitedQuestions, setBackVisitedQuestions] = useState(new Set());
   const todayStr = useMemo(() => formatDateYMD(today), [today]);
 
   const setField = (name, value) => {
-    setAnswers((prev) => ({ ...prev, [name]: value }));
-    if (error) setError("");
-  };
+  setAnswers((prev) => ({ ...prev, [name]: value }));
+
+  // Clear all eligibility messages when user edits answer
+  setEligibilityMessage("");
+  
+  // Clear alcohol warning
+  if (name === "alcohol") setAlcoholWarning("");
+
+  if (error) setError("");
+};
+
 
   const canGoBack = introDone && stepIndex >= 0;
 
@@ -346,32 +143,72 @@ setStepIndex(i => Math.max(0, i - 1));
   };
 
   // build URL for result page
+
   const redirectToResult = () => {
-    const params = new URLSearchParams();
-    if (answers.heightCm) params.set("height", answers.heightCm);
-    if (answers.weightKg) params.set("weight", answers.weightKg);
-    router.push(`/recommendations?${params.toString()}`);
-  };
+  const params = new URLSearchParams();
 
-  // 🔵 NEW: instead of redirecting immediately, show review animation
-  const goToResult = () => {
-    setShowReviewScreen(true);
-    setReviewStep(0);
+  // send height, weight, and BMI
+  if (answers.heightCm) params.set("height", answers.heightCm);
+  if (answers.weightKg) params.set("weight", answers.weightKg);
 
-    let i = 1;
-    const interval = setInterval(() => {
-      setReviewStep(i);
-      i += 1;
+  // calculate BMI here and send it
+  const heightM = Number(answers.heightCm) / 100;
+  const bmi = (Number(answers.weightKg) / (heightM * heightM)).toFixed(1);
+  params.set("bmi", bmi);
 
-      if (i > 3) {
-        clearInterval(interval);
-        // after lines complete, open phone popup
-        setTimeout(() => {
-          setShowPhonePopup(true);
-        }, 500);
-      }
-    }, 1200);
-  };
+  // send target weight directly
+  if (answers.targetWeightGoal)
+    params.set("target", answers.targetWeightGoal);
+
+  // send calories (used in “you consume more calories” section)
+  if (answers.calories)
+    params.set("calories", answers.calories);
+
+  router.push(`/recommendations?${params.toString()}`);
+};
+
+
+  // NEW: Slower review animation - step-by-step
+const goToResult = () => {
+  setShowReviewScreen(true);
+  setReviewStep(0);
+
+  // Step duration (slower)
+  const STEP_TIME = 1800; // 1.8 seconds per step
+
+  // Step 1
+  setTimeout(() => {
+    setReviewStep(1); // Fill line 1
+  }, STEP_TIME);
+
+  setTimeout(() => {
+    setReviewStep(2); // Tick 1 + Show line 2
+  }, STEP_TIME * 2);
+
+  // Step 2
+  setTimeout(() => {
+    setReviewStep(3); // Fill line 2
+  }, STEP_TIME * 3);
+
+  setTimeout(() => {
+    setReviewStep(4); // Tick 2 + Show line 3
+  }, STEP_TIME * 4);
+
+  // Step 3
+  setTimeout(() => {
+    setReviewStep(5); // Fill line 3
+  }, STEP_TIME * 5);
+
+  setTimeout(() => {
+    setReviewStep(6); // Tick 3 -> Then show phone popup
+  }, STEP_TIME * 6);
+
+  // After all steps — show phone popup
+  setTimeout(() => {
+    setShowPhonePopup(true);
+  }, STEP_TIME * 7);
+};
+
 
   const ensureHeightWeight = () => {
     const ft = Number(answers.heightFeet) || 0;
@@ -402,66 +239,187 @@ setStepIndex(i => Math.max(0, i - 1));
     isMajorConditionsStep && (selectedMajor.length > 3 || hasOthersMajor);
 
   const validateAndNext = () => {
-    if (!introDone) {
-      setIntroDone(true);
-      setStepIndex(0);
-      return;
+  const q = currentQuestion;
+
+  // ⭐ Start quiz when clicking "I'm ready"
+  if (!introDone) {
+    setIntroDone(true);
+    setStepIndex(0);
+    return true;
+  }
+
+  if (!q) return false;
+
+  
+
+
+  // HEIGHT
+  if (q.type === "height") {
+    if (!answers.heightFeet) {
+      setError("Please select your height in feet.");
+      return false;
+    }
+    if (answers.heightInches === "") {
+      setError("Please select inches.");
+      return false;
+    }
+    ensureHeightWeight();
+  }
+
+  // WEIGHT
+  if (q.type === "weight") {
+    if (!answers.weightKg) {
+      setError("Please select your weight.");
+      return false;
+    }
+  }
+
+  // BMI BLOCK
+  if (q.id === "weight") {
+    const heightM = Number(answers.heightCm) / 100;
+    const weight = Number(answers.weightKg);
+    const bmi = weight / (heightM * heightM);
+
+    if (bmi < 26) {
+      setEligibilityMessage("Your BMI is too low for safe medical treatment.");
+      return false;
+    }
+    if (bmi > 50) {
+      setEligibilityMessage("Your BMI is too high. You must consult a doctor offline.");
+      return false;
+    }
+  }
+
+  // DATE
+  if (q.type === "date") {
+    if (!answers.lastWeightDate) {
+      setError("Please select the date.");
+      return false;
+    }
+  }
+
+  // SELECT
+  if (q.type === "select") {
+    if (!answers[q.id]) {
+      setError("Please choose an option.");
+      return false;
+    }
+  }
+
+  // CALORIES
+  if (q.id === "calories" && Number(answers.calories) > 4000) {
+    setEligibilityMessage("Your daily calorie intake is too high for safe online prescribing.");
+    return false;
+  }
+
+  // FAMILY MTC
+  if (q.id === "familyMTC" && answers.familyMTC === "Yes") {
+    setEligibilityMessage("This medication cannot be prescribed due to your family history.");
+    return false;
+  }
+
+  // GENDER → AUTO SKIP
+  if (q.id === "gender" && answers.gender === "Male") {
+    setAnswers(prev => ({ ...prev, pregnancy: "No" }));
+  }
+
+  // PREGNANCY
+  if (q.id === "pregnancy" && answers.gender === "Female") {
+    if (answers.pregnancy === "Yes") {
+      setEligibilityMessage("Treatment cannot be prescribed during pregnancy.");
+      return false;
+    }
+  }
+
+  // MAJOR CONDITIONS
+  if (q.id === "majorConditions") {
+    const selected = answers.majorConditions || [];
+    const danger = [
+      "Cardiovascular (heart) problems",
+      "A stroke",
+      "Kidney or liver problems",
+      "Thyroid carcinoma"
+    ];
+
+    if (selected.some(x => danger.includes(x))) {
+      setEligibilityMessage("A doctor's consultation is required.");
+      return false;
     }
 
-    const q = currentQuestion;
-    if (!q) return;
-
-    // validation per type
-    if (q.type === "height") {
-      if (!answers.heightFeet) {
-        setError("Please select your height in feet.");
-        return;
-      }
-      if (answers.heightInches === "") {
-        setError("Please select inches.");
-        return;
-      }
-      ensureHeightWeight();
+    if (selected.length > 3) {
+      setEligibilityMessage("Unable to prescribe due to multiple conditions.");
+      return false;
     }
+  }
 
-    if (q.type === "weight") {
-      if (!answers.weightKg) {
-        setError("Please select your weight.");
-        return;
-      }
-    }
+  // MENTAL HEALTH
+  if (q.id === "seriousThoughts" && answers.seriousThoughts === "Yes") {
+    setEligibilityMessage("We cannot proceed due to your mental health responses.");
+    return false;
+  }
 
-    if (q.type === "date") {
-      if (!answers.lastWeightDate) {
-        setError("Please select the date.");
-        return;
-      }
-    }
+  // THYROID
+  if (q.id === "thyroid" && answers.thyroid === "Unstable") {
+    setEligibilityMessage("Cannot prescribe due to unstable thyroid condition.");
+    return false;
+  }
 
-    if (q.type === "select") {
-      if (!answers[q.id]) {
-        setError("Please choose an option.");
-        return;
-      }
-    }
+  // INFO PAGE
+  if (q.type === "info" && stepIndex === totalSteps - 1) {
+    goToResult();
+    return false;
+  }
 
-    
+  // MOVE FORWARD
+  // ✔ Move ONLY if no eligibility message AND no error
+// AFTER all validation above is complete
+// FINAL VALIDATION GATE
+// If ANY validation above returned false → DO NOT move
+if (error || eligibilityMessage) {
+  return false;
+}
 
-    if (q.type === "checkboxes") {
-      if (!answers.majorConditions || answers.majorConditions.length === 0) {
-        setError("Please select at least one option.");
-        return;
-      }
-    }
+// BUTTON QUESTIONS DO NOT AUTO-NEXT
+// -------- BUTTON (PEACH OPTION) LOGIC --------
+if (q.type === "buttons") {
+  // Do NOT block for 'Please select an option' — user already clicked the button
 
-    // final info screen -> result
-    if (q.type === "info" && stepIndex === totalSteps - 1) {
-      goToResult();
-      return;
-    }
+  if (eligibilityMessage) return false;
 
-    setStepIndex((i) => Math.min(totalSteps - 1, i + 1));
-  };
+  // If user came from back → do not auto-next (show Continue button)
+  if (backVisitedQuestions.has(stepIndex)) return false;
+
+  // AUTO NEXT — WORKS LIKE AKTIVE
+  setStepIndex(i => Math.min(i + 1, totalSteps - 1));
+  return true;
+}if (q.type === "buttons") {
+  const selected = answers[q.id];
+
+  // 1️⃣ If validation produced an eligibility message → DO NOT move
+  if (eligibilityMessage) {
+    // Block auto-next. Stay on same question.
+    return false;
+  }
+
+  // 2️⃣ If user came via BACK → do not auto-next (show Continue instead)
+  if (backVisitedQuestions.has(stepIndex)) {
+    return false;
+  }
+
+  // 3️⃣ Otherwise user is eligible → AUTO NEXT
+  setStepIndex((i) => Math.min(i + 1, totalSteps - 1));
+  return true;
+}
+
+
+
+// ---- DEFAULT AUTO-NEXT FOR ALL OTHER QUESTIONS ----
+setStepIndex((i) => Math.min(i + 1, totalSteps - 1));
+return true;
+};
+
+
+
 
   // ---- CHECKBOX LOGIC ----
   const toggleCondition = (label) => {
@@ -576,8 +534,12 @@ setStepIndex(i => Math.max(0, i - 1));
     return;
   }
 
+  // ⭐ SAVE ALL QUIZ ANSWERS HERE
+  localStorage.setItem("fityou_quiz_answers", JSON.stringify(answers));
+
   setOtpError("");
   setShowOtpPopup(false);
+
   redirectToResult();
 };
 
@@ -789,7 +751,14 @@ setStepIndex(i => Math.max(0, i - 1));
                   type="button"
                   onClick={() => {
                     setAnswers(prev => ({ ...prev, [q.id]: opt }));
-                    setTimeout(() => validateAndNext(), 0);
+                    setError("");          // Clear previous errors
+                    setEligibilityMessage(""); // Clear previous warnings
+
+                    // Delay ensures answer state is updated first
+                    setTimeout(() => {
+                      // Run validation ONCE the answer is applied
+                      validateAndNext();
+                    }, 0);
                   }}
 
                   className={`w-full rounded-lg border px-4 py-2 text-sm text-[#0D2451] transition
@@ -910,58 +879,60 @@ setStepIndex(i => Math.max(0, i - 1));
         {/* THREE CHECK LINES */}
         <div className="flex flex-col gap-9">
           {/* ---- LINE 1 ---- */}
-  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
-    reviewStep >= 0 ? "opacity-100" : "opacity-0"
-  }`}>
-    <div className="flex flex-col">
-      <p className="text-[15px] mb-1">Checking BMI qualification</p>
-      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
-        <div
-          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
-          style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
-        />
-      </div>
+<div className={`flex items-center gap-4 transition-opacity duration-300 ${reviewStep >= 0 ? "opacity-100" : "opacity-0"}`}>
+  <div className="flex flex-col">
+    <p className="text-[15px] mb-1">Checking BMI qualification</p>
+
+    <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+      <div
+        className="h-full bg-[#6FA7B5] transition-all duration-[1600ms] ease-out rounded-lg"
+        style={{ width: reviewStep >= 1 ? "100%" : "0%" }}
+      />
     </div>
-    {reviewStep >= 1 && (
-      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-    )}
   </div>
+
+  {reviewStep >= 2 && (
+    <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+  )}
+</div>
 
   {/* ---- LINE 2 ---- */}
-  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
-    reviewStep >= 1 ? "opacity-100" : "opacity-0"
-  }`}>
-    <div className="flex flex-col">
-      <p className="text-[15px] mb-1">Checking contraindications</p>
-      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
-        <div
-          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
-          style={{ width: reviewStep >= 2 ? "100%" : "0%" }}
-        />
-      </div>
+<div className={`flex items-center gap-4 transition-opacity duration-300 ${reviewStep >= 2 ? "opacity-100" : "opacity-0"}`}>
+  <div className="flex flex-col">
+    <p className="text-[15px] mb-1">Checking contraindications</p>
+
+    <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+      <div
+        className="h-full bg-[#6FA7B5] transition-all duration-[1600ms] ease-out rounded-lg"
+        style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
+      />
     </div>
-    {reviewStep >= 2 && (
-      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-    )}
   </div>
 
+  {reviewStep >= 4 && (
+    <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+  )}
+</div>
+
+
   {/* ---- LINE 3 ---- */}
-  <div className={`flex items-center gap-4 transition-opacity duration-300 ${
-    reviewStep >= 2 ? "opacity-100" : "opacity-0"
-  }`}>
-    <div className="flex flex-col">
-      <p className="text-[15px] mb-1">Checking safety and suitability</p>
-      <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
-        <div
-          className="h-full bg-[#6FA7B5] transition-all duration-[1100ms] ease-in-out rounded-lg"
-          style={{ width: reviewStep >= 3 ? "100%" : "0%" }}
-        />
-      </div>
+<div className={`flex items-center gap-4 transition-opacity duration-300 ${reviewStep >= 4 ? "opacity-100" : "opacity-0"}`}>
+  <div className="flex flex-col">
+    <p className="text-[15px] mb-1">Checking safety and suitability</p>
+
+    <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+      <div
+        className="h-full bg-[#6FA7B5] transition-all duration-[1600ms] ease-out rounded-lg"
+        style={{ width: reviewStep >= 5 ? "100%" : "0%" }}
+      />
     </div>
-    {reviewStep >= 3 && (
-      <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
-    )}
   </div>
+
+  {reviewStep >= 6 && (
+    <span className="text-[#0D4F8B] text-[20px] font-semibold">✔</span>
+  )}
+</div>
+
 
         </div>
 
@@ -1078,20 +1049,26 @@ setStepIndex(i => Math.max(0, i - 1));
 
   // ---- CONTINUE BUTTON VISIBILITY LOGIC ----
 // Always show continue button (even for peach buttons)
+// ---- CONTINUE BUTTON VISIBILITY LOGIC ----
 const showContinueButton = (() => {
   if (!currentQuestion) return false;
 
-  // Non-button type always shows Continue
+  // Show continue button if:
+  // 1. User NOT eligible
+  if (eligibilityMessage) return true;
+
+  // 2. User returned using BACK
+  if (backVisitedQuestions.has(stepIndex)) return true;
+
+  // 3. Non-button question (default enabled)
   if (currentQuestion.type !== "buttons") return true;
 
-  // Button question shows Continue ONLY if user has returned to it
-  return backVisitedQuestions.has(stepIndex);
+  // 4. Button question → show continue ONLY if non-eligible
+  return false;
 })();
 
-
-
-
-
+// Disable continue if any eligibility red message exists
+const disableContinue = Boolean(eligibilityMessage || error);
   // ---- MAIN RENDER ----
   return (
     <div className="min-h-screen bg-[#F6FAFF] text-[#0D2451] font-laila flex flex-col">
@@ -1175,59 +1152,69 @@ const showContinueButton = (() => {
       {/* CONTENT */}
       <main className="flex-1">
         {!introDone ? (
-          /* ---------------- INTRO PAGE ---------------- */
-          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
-            <h1 className="text-3xl font-semibold text-[#0D2451]">
-              Medical consultation
-            </h1>
+  /* ----------------------------------------
+     NEW INTRO PAGE (MATCHES medical/page.jsx)
+  ---------------------------------------- */
+  <div className="min-h-screen bg-white text-[#0D2451] font-laila">
 
-            <div className="mt-8 flex justify-center">
-              <div className="flex items-center gap-4 rounded-xl bg-[#D7EDF4] px-6 py-4 max-w-xl text-left">
-                <img
-                  src={doctorAvatar}
-                  alt="Doctor"
-                  className="h-24 w-24 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="text-sm text-[#0D2451]">
-                  <p>
-                    Answer the medical questions in this online consultation and
-                    we&apos;ll assess if treatment is safe for you to use.
-                    It&apos;s free.
-                  </p>
-                  <p className="mt-2 font-semibold">FitYou Medical Team</p>
-                </div>
-              </div>
-            </div>
+    {/* LIGHT BLUE HEADER (same as medical page) */}
+    <div className="w-full bg-[#F2F8FD] py-10">
+      <div className="max-w-xl mx-auto px-6">
+        <h1 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] text-left">
+          Medical consultation
+        </h1>
+      </div>
+    </div>
 
-            <p className="mt-6 text-sm text-[#3E5678] max-w-xl mx-auto">
-              This consultation is a set of online questions about your health
-              and lifestyle. It takes a few minutes and helps our doctors
-              understand whether a medical program is appropriate for you.
-            </p>
+    {/* MAIN BODY */}
+    <div className="max-w-xl mx-auto px-6 pt-10 pb-24 text-center">
 
-            <div className="mt-8 flex justify-center">
-              <button
-                type="button"
-                onClick={validateAndNext}
-                className="w-full sm:w-[340px] rounded-md bg-[#8DB9C9] px-6 py-3 text-sm font-semibold text-white hover:bg-[#7AA7B8] transition"
-              >
-                I&apos;m ready
-              </button>
-            </div>
+      {/* DOCTOR CARD (same design as medical/page.jsx) */}
+      <div className="w-full bg-[#D7EDF4] rounded-2xl p-6 flex items-center gap-5 shadow-sm">
+        <img
+          src="/doctor/doctor.png"
+          alt="Doctor"
+          className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+        />
+        <div className="text-sm leading-relaxed text-left">
+          <p>
+            Answer the medical questions in this online consultation and
+            we&apos;ll assess if treatment is safe for you to use. It&apos;s free.
+          </p>
+          <p className="mt-2 font-semibold">FitYou Medical Team</p>
+        </div>
+      </div>
 
-            <p className="mt-6 text-xs text-[#3E5678] text-center">
-              Already have a personalised plan?{" "}
-              <span className="underline cursor-pointer">
-                Login with your mobile number
-              </span>
-            </p>
+      {/* DESCRIPTION */}
+      <p className="mt-10 text-sm text-[#3E5678] leading-relaxed">
+        This consultation is a set of online questions about your health and
+        lifestyle. It takes a few minutes and it’s free.
+      </p>
 
-            <p className="mt-10 text-[10px] text-[#8CA0C0] text-center">
-              This consultation does not replace an in-person medical
-              evaluation.
-            </p>
-          </section>
-        ) : (
+      {/* I'M READY BUTTON (same width as doctor card) */}
+      <button
+        onClick={validateAndNext}    // <-- SAME FUNCTIONALITY
+        className="mt-10 w-full bg-[#8DB9C9] hover:bg-[#7AA7B8]
+                   text-white font-semibold py-3 rounded-md text-sm transition"
+      >
+        I'm ready
+      </button>
+
+      {/* LOGIN LINK */}
+      <p className="mt-6 text-xs text-[#3E5678]">
+        Already have a personalised plan?{" "}
+        <span className="underline cursor-pointer">Login with your mobile number</span>
+      </p>
+
+      {/* FOOTER */}
+      <p className="mt-16 text-[10px] text-[#8CA0C0]">
+        This consultation does not replace an in-person medical evaluation.
+      </p>
+    </div>
+  </div>
+
+) : (
+
           /* ---------------- QUESTION / INFO SCREEN ---------------- */
           <section className="px-4 pt-14 pb-20 flex justify-center">
             <div className="w-full max-w-xl mx-auto">
@@ -1238,25 +1225,38 @@ const showContinueButton = (() => {
                 </h2>
               )}
 
-              {/* QUESTION BODY */}
-              {renderQuestionBody()}
+             {renderQuestionBody()}
 
-              {/* ERROR MESSAGE */}
-              {error && (
-                <p className="mt-4 text-xs text-red-500 font-medium">{error}</p>
-              )}
+          {/* ERROR MESSAGE */}
+          {error && (
+            <p className="mt-4 text-xs text-red-500 font-medium">{error}</p>
+          )}
 
+          {/* ELIGIBILITY MESSAGE */}
+          {eligibilityMessage && (
+            <div className="mt-6 bg-[#FDECEC] border border-[#F5C2C2] text-[#B84646] rounded-lg px-4 py-4 text-sm leading-relaxed">
+              <div className="font-semibold mb-1">Unable to prescribe</div>
+              <div>{eligibilityMessage}</div>
+            </div>
+          )}
+          {/* ALCOHOL WARNING BOX (non-blocking, friendly) */}
+        {alcoholWarning && currentQuestion?.id === "alcohol" && (
+          <div className="mt-6 bg-[#FFF8E5] border border-[#F7DFA3] text-[#8A6D1A] rounded-lg px-4 py-4 text-sm leading-relaxed">
+            <div className="font-semibold mb-1">Just a quick note</div>
+            <div>{alcoholWarning}</div>
+          </div>
+        )}
               {/* CONTINUE BUTTON – show for everything except peach buttons,
                   but DO show for buttons when user has navigated back */}
               {showContinueButton && (
                 <div className="mt-8">
                   <button
                     type="button"
-                    onClick={isNotEligibleMajor ? undefined : validateAndNext}
-                    disabled={isNotEligibleMajor}
+                    onClick={!disableContinue ? validateAndNext : undefined}
+                    disabled={disableContinue}
                     className={`w-full rounded-md px-6 py-3 text-sm font-semibold transition
                       ${
-                        isNotEligibleMajor
+                        disableContinue
                           ? "bg-[#C7D7DE] text-white opacity-60 cursor-not-allowed"
                           : "bg-[#8DB9C9] text-white hover:bg-[#7AA7B8]"
                       }
@@ -1264,6 +1264,7 @@ const showContinueButton = (() => {
                   >
                     Continue
                   </button>
+
                 </div>
               )}
             </div>

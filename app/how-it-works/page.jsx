@@ -4,13 +4,13 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import boxImage from "@/public/how/box.png";
 import StepsSection from "@/components/StepsSection";
-
-
+import HowHeroSection from "@/components/HowHeroSection";
 
 export default function HowItWorksPage() {
   const bluePillsRef = useRef([]);
   const peachPillsRef = useRef([]);
 
+  // Fade/slide-in for all pills
   useEffect(() => {
     const items = [...bluePillsRef.current, ...peachPillsRef.current].filter(
       Boolean
@@ -38,98 +38,81 @@ export default function HowItWorksPage() {
     return () => observer.disconnect();
   }, []);
 
+  // Flip every time for BOTH blue + peach cards, individually
+  useEffect(() => {
+    const cards = [...bluePillsRef.current, ...peachPillsRef.current].filter(
+      Boolean
+    );
+    if (!cards.length || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          const index = Number(el.dataset.index || "0");
+
+          if (entry.isIntersecting) {
+            el.classList.remove("flip-out-x-bottom");
+            el.classList.add("flip-in-x-bottom");
+            el.style.animationDelay = `${index * 0.12}s`;
+          } else {
+            el.classList.remove("flip-in-x-bottom");
+            el.classList.add("flip-out-x-bottom");
+            el.style.animationDelay = "0s";
+          }
+        });
+      },
+      {
+        threshold: 0.3,
+      }
+    );
+
+    cards.forEach((card) => {
+      if (card) observer.observe(card);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <>
-      <main className="max-w-[1180px] mx-auto px-4 pb-32 text-[#103b7a]">
+    <> <HowHeroSection />
+    <StepsSection />
+      <main className="mx-auto px-4 pb-32 text-[#103b7a]">
         {/* SECTION 1 – Hero */}
-        <section className="flex items-center mt-10 mb-20 max-lg:flex-col">
-          {/* Left block */}
-          <div className="w-[40%] max-lg:w-full">
-            <h1 className="text-[69px] leading-tight font-normal text-[#103b7a] mb-8 max-md:text-[40px]">
-              {/* desktop: 3 lines, mobile: single bold line */}
-              <span className="hidden md:inline font-semibold">
-                How our
-                <br />
-                service
-                <br />
-                works
-              </span>
-               {/* mobile heading with larger font size */}
-              <span className="inline md:hidden block w-full text-left font-semibold text-[47px]">
-                How our service works
-              </span>
-            </h1>
-
-            <p className="text-[18px] leading-relaxed mb-8 max-w-[480px] text-left font-normal">
-              The essentials on how to start losing weight
-              <br />
-              with our scientifically proven treatment.
-            </p>
-
-            {/* DESKTOP/TABLET BUTTON – stays exactly where it was, hidden on mobile */}
-            <div className="w-full flex max-lg:justify-center max-sm:hidden">
-              <button
-                type="button"
-                className="inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition"
-              >
-                Start consultation
-              </button>
-            </div>
-          </div>
-
-          {/* Right block — image */}
-          <div className="w-[40%] max-lg:w-full flex justify-start max-lg:justify-center mt-8 lg:mt-0">
-            <div className="max-w-[560px] w-full">
-              <Image
-                src={boxImage}
-                alt="How Fityou service works illustration"
-                width={560}
-                height={560}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-
-          {/* MOBILE BUTTON – only visible on small screens, placed below image */}
-          <div className="w-full flex justify-center sm:hidden mt-6">
-            <button
-              type="button"
-              className="inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition"
-            >
-              Start consultation
-            </button>
-          </div>
-        </section>
+      
+         
+        
 
         {/* SECTION 2 – your steps component */}
         <div className="mb-16">
-       <StepsSection />
-       </div>
+          
+        </div>
 
         {/* SECTION 3 – Achieving your goals + 3 blue pills */}
         <section className="mb-20">
-          <h2 className="text-[40px] font-normal mb-6">
-            {/* desktop: original text block, mobile: 2 lines as requested */}
-            <span className="hidden md:block text-center">
-              Achieving your goals is as
-              <br />
-              easy as 1–2–3
-            </span>
-            <span className="block md:hidden w-full text-left">
-              <span className="block">Achieving your goals</span>
-              <span className="block">is as easy as 1–2–3</span>
-            </span>
-          </h2>
+        <h2 className="font-normal mb-6 text-[36px] md:text-[40px] leading-snug">
+    {/* Desktop (unchanged) */}
+    <span className="hidden md:block text-center">
+      Achieving your goals is as
+      <br />
+      easy as 1–2–3
+    </span>
 
-          <p className="text-3xl font-semibold text-center max-lg:text-left mb-10">
+    {/* Mobile: 3 lines like screenshot */}
+    <span className="block md:hidden w-full text-left">
+      <span className="block">Achieving your</span>
+      <span className="block">goals is as easy as</span>
+      <span className="block">1–2–3</span>
+    </span>
+  </h2>
+          <p className="text-2xl font-semibold text-center max-lg:text-left mb-10">
             What do you need to do?
           </p>
 
           <div className="space-y-4">
             {/* ITEM 1 */}
             <div
-              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4] opacity-0 transform [transform-style:preserve-3d]"
               ref={(el) => (bluePillsRef.current[0] = el)}
               data-index={0}
             >
@@ -160,7 +143,7 @@ export default function HowItWorksPage() {
 
             {/* ITEM 2 */}
             <div
-              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4] opacity-0 transform [transform-style:preserve-3d]"
               ref={(el) => (bluePillsRef.current[1] = el)}
               data-index={1}
             >
@@ -189,7 +172,7 @@ export default function HowItWorksPage() {
 
             {/* ITEM 3 */}
             <div
-              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4]"
+              className="how-pill-anim max-w-[980px] mx-auto rounded-[30px] px-8 py-6 flex items-center gap-5 text-[18px] leading-relaxed bg-[#d9f0f4] opacity-0 transform [transform-style:preserve-3d]"
               ref={(el) => (bluePillsRef.current[2] = el)}
               data-index={2}
             >
@@ -218,145 +201,164 @@ export default function HowItWorksPage() {
           </div>
         </section>
 
-       {/* SECTION 4 – How to start? + 3 peach pills */}
-<section className="mb-20">
-  <h2 className="text-[32px] font-normal text-center max-lg:text-left mb-8">
-    How to start?
-  </h2>
+        {/* SECTION 4 – How to start? + 3 peach pills */}
+        <section className="mb-20">
+          <h2 className="text-[32px] font-normal text-center max-lg:text-left mb-8">
+            How to start?
+          </h2>
 
-  <div
-    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
-    ref={(el) => (peachPillsRef.current[0] = el)}
-    data-index={0}
-  >
-    <div className="flex items-center gap-5">
-      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
-        {/* Icon 1 – clipboard */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#103b7a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="5" y="3" width="14" height="18" rx="2" />
-          <path d="M9 3h6v4H9z" />
-          <path d="M9 11h6" />
-          <path d="M9 15h3" />
-        </svg>
-      </div>
-      <p className="font-normal">
-        Medical consultation: answer the medical questions to see if our
-        treatment is safe for you.
-      </p>
-    </div>
-  </div>
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[0] = el)}
+            data-index={0}
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Icon 1 – clipboard */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="5" y="3" width="14" height="18" rx="2" />
+                  <path d="M9 3h6v4H9z" />
+                  <path d="M9 11h6" />
+                  <path d="M9 15h3" />
+                </svg>
+              </div>
+              <p className="font-normal">
+                Medical consultation: answer the medical questions to see if our
+                treatment is safe for you.
+              </p>
+            </div>
+          </div>
 
-  <div
-    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
-    ref={(el) => (peachPillsRef.current[1] = el)}
-    data-index={1}
-  >
-    <div className="flex items-center gap-5">
-      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
-        {/* Icon 2 – phone / plan */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#103b7a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="7" y="2" width="10" height="20" rx="2" />
-          <circle cx="12" cy="18" r="0.8" />
-          <path d="M10 6h4" />
-          <path d="M10 9h4" />
-        </svg>
-      </div>
-      <p className="font-normal">
-        Based on your results, we create a personalised Fityou programme
-        for you.
-      </p>
-    </div>
-  </div>
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[1] = el)}
+            data-index={1}
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Icon 2 – phone / plan */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="7" y="2" width="10" height="20" rx="2" />
+                  <circle cx="12" cy="18" r="0.8" />
+                  <path d="M10 6h4" />
+                  <path d="M10 9h4" />
+                </svg>
+              </div>
+              <p className="font-normal">
+                Based on your results, we create a personalised Fityou programme
+                for you.
+              </p>
+            </div>
+          </div>
 
-  <div
-    className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
-    ref={(el) => (peachPillsRef.current[2] = el)}
-    data-index={2}
-  >
-    <div className="flex items-center gap-5">
-      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
-        {/* Icon 3 – home / delivery */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#103b7a"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 11 12 3l9 8" />
-          <path d="M5 10v9h5v-5h4v5h5v-9" />
-        </svg>
-      </div>
-      <p className="font-normal">
-        If our doctors approve you for treatment, you will receive your
-        injections’ first month&apos;s supply in a few days.
-      </p>
-    </div>
-  </div>
+          <div
+            className="how-pill-anim max-w-[980px] mx-auto mb-4 rounded-[30px] px-8 py-7 text-[18px] leading-relaxed bg-[#ffd4aa]"
+            ref={(el) => (peachPillsRef.current[2] = el)}
+            data-index={2}
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-md">
+                {/* Icon 3 – home / delivery */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#103b7a"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 11 12 3l9 8" />
+                  <path d="M5 10v9h5v-5h4v5h5v-9" />
+                </svg>
+              </div>
+              <p className="font-normal">
+                If our doctors approve you for treatment, you will receive your
+                injections’ first month&apos;s supply in a few days.
+              </p>
+            </div>
+          </div>
 
-  <div className="text-center mt-10">
-    <button className="how-btn-primary inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition">
-      Start consultation
-    </button>
-    <p className="mt-4 text-[16px] font-normal">
-      See if you qualify. It&apos;s free.
-    </p>
-  </div>
-</section>
-
+          <div className="text-center mt-10">
+            <button className="how-btn-primary inline-block bg-[#85b7c4] text-[#103b7a] rounded-[8px] px-24 py-2 text-[20px] font-semibold tracking-[0.02em] shadow-sm hover:brightness-110 transition">
+              Start consultation
+            </button>
+            <p className="mt-4 text-[16px] font-normal">
+              See if you qualify. It&apos;s free.
+            </p>
+          </div>
+        </section>
       </main>
 
       {/* Page-specific global styles for animation only */}
       <style jsx global>{`
         .how-pill-anim {
           opacity: 0;
-          transform: translateY(40px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+          transform: perspective(800px) rotateX(-90deg) translateY(20px);
+          transform-origin: bottom center;
+          transition: opacity 0.3s ease-out;
         }
 
         .how-pill-anim.how-is-visible {
           opacity: 1;
-          transform: translateY(0);
+        }
+
+        @keyframes cardFlipInXBottom {
+          0% {
+            transform: perspective(800px) rotateX(-90deg) translateY(20px);
+            opacity: 0;
+          }
+          60% {
+            transform: perspective(800px) rotateX(15deg) translateY(0);
+            opacity: 1;
+          }
+          100% {
+            transform: perspective(800px) rotateX(0deg) translateY(0);
+            opacity: 1;
+          }
+        }
+
+        @keyframes cardFlipOutXBottom {
+          0% {
+            transform: perspective(800px) rotateX(0deg) translateY(0);
+            opacity: 1;
+          }
+          100% {
+            transform: perspective(800px) rotateX(-90deg) translateY(20px);
+            opacity: 0;
+          }
+        }
+
+        .flip-in-x-bottom {
+          animation: cardFlipInXBottom 0.6s ease-out forwards;
+        }
+
+        .flip-out-x-bottom {
+          animation: cardFlipOutXBottom 0.4s ease-in forwards;
         }
       `}</style>
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
