@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: false, // Disable Turbopack
-    optimizeCss: false, // Disable LightningCSS
-  }
+  reactStrictMode: true,
+  images: {
+    domains: ["localhost", "yourdomain.com"],
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
