@@ -10,7 +10,17 @@ import FloatingButton from "@/components/chatbot/FloatingButton";
 export const metadata = {
   title: "Fityou",
   description: "Safer weight management with medical awareness.",
+  icons: {
+    icon: [
+      { url: "/logo/FY.png", sizes: "32x32", type: "image/x-icon" },
+      { url: "/logo/FY.png", sizes: "192x192", type: "image/png" },
+      { url: "/logo/FY.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/logo/FY.png",
+  },
 };
+
+
 
 // Load Laila font
 const laila = Laila({
