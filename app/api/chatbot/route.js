@@ -1,10 +1,16 @@
 // app/api/chatbot/route.js
 import { NextResponse } from "next/server";
-import { openai } from "@/lib/openai";
+import OpenAI from "openai";                    // ✅ ADDED
 import { saveChatToMongo } from "@/lib/chatStore";
+import { v4 as uuidv4 } from "uuid";            // ✅ ADDED (npm i uuid)
 
 export async function POST(req) {
   try {
+    // ✅ LAZY INIT - fixes build error
+    const openai = new OpenAI({ 
+      apiKey: process.env.OPENAI_API_KEY 
+    });
+
     const body = await req.json();
     const { message, sessionId, history = [] } = body;
 
@@ -12,6 +18,13 @@ export async function POST(req) {
       return NextResponse.json(
         { error: "message and sessionId are required" },
         { status: 400 }
+      );
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      return NextResponse.json(
+        { error: "OpenAI API key not configured" },
+        { status: 500 }
       );
     }
 
@@ -30,17 +43,17 @@ export async function POST(req) {
     ];
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4o-mini",        // ✅ Fixed model name
       messages,
       temperature: 0.5,
     });
 
     const replyText =
       completion.choices?.[0]?.message?.content ||
-      "Sorry, I couldn’t generate a response right now.";
+      "Sorry, I couldn't generate a response right now.";
 
     const aiMessage = {
-      id: crypto.randomUUID(),
+      id: uuidv4(),                // ✅ Fixed UUID
       role: "assistant",
       content: replyText,
       createdAt: new Date().toISOString(),
