@@ -7,146 +7,88 @@ export default function Glp1SciencePage() {
     <>
       {/* ---------- PAGE-SPECIFIC CSS (ONLY FOR THIS PAGE) ---------- */}
       <style jsx global>{`
-        html {
-          scroll-behavior: smooth;
-        }
+  html {
+    scroll-behavior: smooth;
+  }
 
-        /* Fade-up base animation */
-        .fade-up {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 0.8s ease-out forwards;
-        }
+  /* Fade-up base animation */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease-out forwards;
+  }
 
-        @keyframes fadeUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-        /* Stagger delay classes */
-        .fade-up-delayed-1 {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 0.9s ease-out forwards;
-        }
+  /* Stagger delay classes */
+  .fade-up-delayed-1 { animation: fadeUp 0.9s ease-out forwards; opacity: 0; transform: translateY(20px); }
+  .fade-up-delayed-2 { animation: fadeUp 1s ease-out forwards; opacity: 0; transform: translateY(20px); }
+  .fade-up-delayed-3 { animation: fadeUp 1.1s ease-out forwards; opacity: 0; transform: translateY(20px); }
+  .fade-up-delayed-4 { animation: fadeUp 1.2s ease-out forwards; opacity: 0; transform: translateY(20px); }
+  .fade-up-delayed-5 { animation: fadeUp 1.3s ease-out forwards; opacity: 0; transform: translateY(20px); }
 
-        .fade-up-delayed-2 {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1s ease-out forwards;
-        }
+  /* FLOATING BLOBS */
+  @keyframes floatSlow {
+    0%,100% { transform: translate(0px,0px) scale(1); }
+    50% { transform: translate(20px,-20px) scale(1.05); }
+  }
+  .animate-float-slow { animation: floatSlow 14s ease-in-out infinite; }
 
-        .fade-up-delayed-3 {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1.1s ease-out forwards;
-        }
+  @keyframes floatMedium {
+    0%,100% { transform: translate(0px,0px) scale(1); }
+    50% { transform: translate(-25px,25px) scale(1.04); }
+  }
+  .animate-float-medium { animation: floatMedium 18s ease-in-out infinite; }
 
-        .fade-up-delayed-4 {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1.2s ease-out forwards;
-        }
+  /* PARTICLES */
+  @keyframes particleMove {
+    0% { transform: translateY(0px) scale(1); opacity: 0.5; }
+    50% { transform: translateY(-30px) scale(1.2); opacity: 0.9; }
+    100% { transform: translateY(0px) scale(1); opacity: 0.5; }
+  }
+  .animate-particle { animation: particleMove 6s ease-in-out infinite; }
 
-        .fade-up-delayed-5 {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1.3s ease-out forwards;
-        }
+  /* PARALLAX */
+  .parallax {
+    transform: translateY(var(--scroll-offset));
+    transition: transform 0.1s linear;
+  }
 
-        /* FLOATING BLOBS */
-        @keyframes floatSlow {
-          0%,
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          50% {
-            transform: translate(20px, -20px) scale(1.05);
-          }
-        }
-        .animate-float-slow {
-          animation: floatSlow 14s ease-in-out infinite;
-        }
+  /* Magnetic button */
+  #magneticButton {
+    position: relative;
+    transition: transform 0.2s ease-out;
+  }
 
-        @keyframes floatMedium {
-          0%,
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          50% {
-            transform: translate(-25px, 25px) scale(1.04);
-          }
-        }
-        .animate-float-medium {
-          animation: floatMedium 18s ease-in-out infinite;
-        }
+  /* Molecule animation */
+  @keyframes moleculeFloat {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+    50% { transform: translateY(-20px) rotate(8deg); opacity: 1; }
+    100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  }
+  .molecule { animation: moleculeFloat 6s ease-in-out infinite; }
 
-        /* PARTICLE MOVEMENT */
-        @keyframes particleMove {
-          0% {
-            transform: translateY(0px) scale(1);
-            opacity: 0.5;
-          }
-          50% {
-            opacity: 0.9;
-            transform: translateY(-30px) scale(1.2);
-          }
-          100% {
-            transform: translateY(0px) scale(1);
-            opacity: 0.5;
-          }
-        }
-        .animate-particle {
-          animation: particleMove 6s ease-in-out infinite;
-        }
+  /* TOC Links */
+  .toc-link {
+    color: #0d4f8b;
+    transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
+  }
+  .toc-link:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
 
-        /* PARALLAX SCROLL EFFECT */
-        .parallax {
-          transform: translateY(var(--scroll-offset));
-          transition: transform 0.1s linear;
-        }
+  /* Sticky anchor offset fix */
+  [id] {
+    scroll-margin-top: 120px;
+  }
+`}</style>
 
-        /* MAGNETIC BUTTON */
-        #magneticButton {
-          position: relative;
-          transition: transform 0.2s ease-out;
-        }
-
-        /* Floating GLP-1 molecules */
-        @keyframes moleculeFloat {
-          0% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.4;
-          }
-          50% {
-            transform: translateY(-20px) rotate(8deg);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(0) rotate(0deg);
-            opacity: 0.4;
-          }
-        }
-        .molecule {
-          animation: moleculeFloat 6s ease-in-out infinite;
-        }
-
-        /* TOC links */
-        .toc-link {
-          color: #0d4f8b;
-          transition: opacity 0.2s ease, text-decoration-color 0.2s ease;
-        }
-        .toc-link:hover {
-          text-decoration: underline;
-          opacity: 0.8;
-        }
-          [id] {
-  scroll-margin-top: 120px;
-}
-
-      `}</style>
 
       <div className="min-h-screen bg-[#F7FAFF] font-laila text-[#375C7A]">
         {/* ---------------- HERO SECTION ---------------- */}
