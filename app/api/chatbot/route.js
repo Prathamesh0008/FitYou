@@ -27,20 +27,26 @@ export async function POST(req) {
         { status: 500 }
       );
     }
+    // ✅ Clean history — remove null, undefined, empty content
+const cleanedHistory = history
+  .filter((m) => m && m.content && typeof m.content === "string")
+  .map((m) => ({
+    role: m.role,
+    content: m.content.trim(),
+  }));
+
 
     // Build OpenAI chat messages
-    const messages = [
-      {
-        role: "system",
-        content:
-          "You are FitYou Assistant, a friendly, concise GLP-1 / weight-management guide. Answer clearly, do not give medical diagnoses, always suggest talking to a doctor for personal medical decisions.",
-      },
-      ...history.map((m) => ({
-        role: m.role,
-        content: m.content,
-      })),
-      { role: "user", content: message },
-    ];
+   const messages = [
+  {
+    role: "system",
+    content:
+      "You are FitYou Assistant, a friendly, concise GLP-1 / weight-management guide. Answer clearly, do not give medical diagnoses, always suggest talking to a doctor for personal medical decisions.",
+  },
+  ...cleanedHistory,               // ✅ SAFE HISTORY
+  { role: "user", content: message },
+];
+
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",        // ✅ Fixed model name

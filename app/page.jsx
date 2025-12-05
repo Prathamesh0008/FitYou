@@ -1,6 +1,7 @@
 "use client";
 
 import BrainTrickSection from "@/components/BrainTrickSection";
+import DisclaimerAndSources from "@/components/DisclaimerAndSources";
 import HealthGuide from "@/components/HealthGuide";
 import HeroSnapshotSection from "@/components/hero/HeroSnapshotSection";
 import NewsSection from "@/components/NewsSection";
@@ -164,7 +165,7 @@ export default function HomePage() {
       <NewsSection/>
 
       {/* PROGRAM HIGHLIGHTS + MINI “PROGRESS GRAPH” */}
-      <section className="mx-auto max-w-6xl px-4 pb-14">
+      {/* <section className="mx-auto max-w-6xl px-4 pb-14">
         <div className="mt-5 bg-[#F7FAFF] p-6 md:p-8 shadow-sm text-[#375C7A]">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
             <div>
@@ -198,7 +199,7 @@ export default function HomePage() {
               ))}
             </div>
 
-            {/* MINI PROGRESS GRAPH CARD */}
+           
             <div className="rounded-2xl border border-[#D3E1F4] bg-white p-4 text-xs text-[#375C7A] shadow-sm">
               <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#60738C]">
                 PROGRESS PREVIEW
@@ -232,7 +233,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <WhyItWorks/>
 
       {/* TESTIMONIALS */}
@@ -467,7 +468,7 @@ export default function HomePage() {
       
 
       {/* WEEKLY STRUCTURE */}
-      <section className="mx-auto mt-5 max-w-6xl px-4 pb-20">
+      {/* <section className="mx-auto mt-5 max-w-6xl px-4 pb-20">
         <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
           Your weekly structure inside Fityou
         </h2>
@@ -527,11 +528,11 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       
 
       {/* MINI UI PREVIEWS */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
+      {/* <section className="mx-auto max-w-6xl px-4 pb-20">
         <div className="grid gap-6 md:grid-cols-3">
           {[
             {
@@ -560,10 +561,10 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* EVIDENCE */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
+      {/* <section className="mx-auto max-w-6xl px-4 pb-20">
         <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-8 text-[#375C7A] shadow-sm">
           <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
             The approach is guided by behavioural science
@@ -581,10 +582,10 @@ export default function HomePage() {
             <li>• Reflective check-ins, not guilt cycles</li>
           </ul>
         </div>
-      </section>
+      </section> */}
 
-      {/* SAFETY BOUNDARIES */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
+      
+      {/* <section className="mx-auto max-w-6xl px-4 pb-20">
         <div className="rounded-3xl border border-[#F5A8A8] bg-[#FFECEC] p-8 text-[#375C7A] shadow-sm">
           <h2 className="text-xl font-semibold md:text-2xl text-[#B52121]">
             Safety boundaries: when Fityou is not recommended
@@ -603,10 +604,10 @@ export default function HomePage() {
             The quiz screens for these and recommends medical guidance.
           </p>
         </div>
-      </section>
+      </section> */}
 
-      {/* FINAL CTA */}
-      <section className="mx-auto max-w-4xl px-4 pb-20 text-center">
+      
+      {/* <section className="mx-auto max-w-4xl px-4 pb-20 text-center">
         <h2 className="text-2xl font-bold md:text-3xl text-[#0D4F8B]">
           Ready to see if Fityou is a safe fit for you?
         </h2>
@@ -621,7 +622,8 @@ export default function HomePage() {
         >
           Begin the free check →
         </Link>
-      </section>
+      </section> */}
+      <DisclaimerAndSources/>
     </main>
   );
 }

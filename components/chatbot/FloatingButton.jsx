@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";               // ✅ added
 import ChatPopup from "./ChatPopup";
 
 export default function FloatingButton() {
@@ -9,14 +10,12 @@ export default function FloatingButton() {
 
   return (
     <>
-      {/* Floating bubble – can place globally in your main layout as well */}
       <button
         onClick={() => setOpen(true)}
         className="
-          fixed bottom-26 right-6 z-40
+          fixed bottom-5 right-6 z-40
           w-14 h-14 rounded-full
           bg-[#73AEB5]
-          text-white text-2xl
           shadow-xl shadow-[#73AEB5]/40
           flex items-center justify-center
           hover:scale-105 active:scale-95
@@ -24,7 +23,14 @@ export default function FloatingButton() {
         "
         aria-label="Open FitYou chat"
       >
-        💬
+        {/* ⭐ Replace emoji with your logo */}
+       <Image
+  src="/chat-icon/chaticon.jpg"
+  alt="Chat Icon"
+  fill
+  className="rounded-full object-cover"
+/>
+
       </button>
 
       {open && <ChatPopup onClose={() => setOpen(false)} />}
