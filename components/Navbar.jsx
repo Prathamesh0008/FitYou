@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
 import { useState, useEffect } from "react";
@@ -19,6 +18,15 @@ import {
   User2,
   Menu,
   X,
+  Package,
+  CheckCircle,
+  Image,
+  MessageCircle,
+  Stethoscope,
+  Gift,
+  MapPin,
+  Bell,
+  LogOut,
 } from "lucide-react";
 
 const navLinks = [
@@ -31,6 +39,20 @@ const navLinks = [
   { href: "/contact", label: "Contact", icon: BookOpen },
 ];
 
+// PROFILE MENU ITEMS
+const profileMenu = [
+  { key: "upcoming", label: "Upcoming shipment", icon: Package },
+  { key: "completed", label: "Completed shipments", icon: CheckCircle },
+  { key: "diary", label: "Weight loss diary + images", icon: Image },
+  { key: "messages", label: "Message centre", icon: MessageCircle },
+  { key: "consultation", label: "Medical consultation", icon: Stethoscope },
+  { key: "subscription", label: "My subscription", icon: Gift },
+  { key: "benefits", label: "My membership benefits", icon: Gift },
+  { key: "personal", label: "Personal details", icon: User2 },
+  { key: "address", label: "Delivery address", icon: MapPin },
+  { key: "notifications", label: "Notifications", icon: Bell },
+];
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -41,14 +63,16 @@ export default function Navbar() {
   const [otpOpen, setOtpOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
+  const isProfilePage = pathname === "/profile";
+
+  // OPEN OTP ON EVENT
   useEffect(() => {
-    const handler = () => {
-      setTimeout(() => setOtpOpen(true), 50);
-    };
+    const handler = () => setTimeout(() => setOtpOpen(true), 50);
     window.addEventListener("open-otp", handler);
     return () => window.removeEventListener("open-otp", handler);
   }, []);
 
+  // OTP SUCCESS → SHOW TICK
   useEffect(() => {
     const handler = () => {
       setSuccessOpen(true);
@@ -57,9 +81,15 @@ export default function Navbar() {
         router.push("/");
       }, 1200);
     };
-
     window.addEventListener("otp-success", handler);
     return () => window.removeEventListener("otp-success", handler);
+  }, [router]);
+
+  // ✅ Allow other components (like QuizPage) to open login modal
+  useEffect(() => {
+    const handler = () => setLoginOpen(true);
+    window.addEventListener("open-login", handler);
+    return () => window.removeEventListener("open-login", handler);
   }, []);
 
   const handleLogout = () => {
@@ -69,13 +99,12 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#F2F7FA]  border-[#E5E7EB] font-laila">
+    <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB] font-laila">
       <nav className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-
-        {/* LOGO (updated to real PNG instead of FY text) */}
+        {/* LOGO */}
         <Link href="/" className="flex items-center">
-  <Image
-    src="/logo/FY.svg"
+  <img
+    src="/logo/FY-Blue.svg"
     alt="FitYou Logo"
     width={135}         // bigger
     height={50}
@@ -84,18 +113,17 @@ export default function Navbar() {
   />
 </Link>
 
-
-        {/* RIGHT SIDE */}
+        {/* RIGHT BUTTONS */}
         <div className="flex items-center gap-4">
-
-          {/* CTA BUTTON */}
-          <Link
-            href="/quiz"
-            className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
-            px-4 py-1.5 text-sm font-semibold text-[#1A1A1A] transition"
-          >
-            Do I qualify?
-          </Link>
+          {!isProfilePage && (
+            <Link
+              href="/quiz"
+              className="hidden sm:block rounded-lg bg-[#FFD49C] hover:bg-[#FFC982] 
+                px-4 py-1.5 text-sm font-semibold text-[#1A1A1A] transition"
+            >
+              Do I qualify?
+            </Link>
+          )}
 
           {/* USER ICON */}
           {user ? (
@@ -108,7 +136,7 @@ export default function Navbar() {
             </button>
           )}
 
-          {/* HAMBURGER MENU */}
+          {/* HAMBURGER */}
           <button
             onClick={() => setOpen(true)}
             className="p-2 rounded-md border border-[#D6E4FF]"
@@ -118,12 +146,10 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* SLIDE MENU */}
+      {/* SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-82 bg-white z-[999] border-l border-[#E5E7EB]
-          transition-transform duration-300 ${
-            open ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-80 bg-white z-[999] border-l border-[#E5E7EB]
+        transition-transform duration-300 ${open ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex justify-end px-6 py-6">
           <button onClick={() => setOpen(false)}>
@@ -131,73 +157,89 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="flex flex-col px-6 space-y-6 mt-2">
-          {navLinks.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href;
+        {/* PROFILE MENU ON /profile */}
+        {isProfilePage ? (
+          <div className="flex flex-col px-6 space-y-6 mt-2">
+            {profileMenu.map(({ key, label, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => {
+                  window.dispatchEvent(
+                    new CustomEvent("profile-tab-change", { detail: key })
+                  );
+                  setOpen(false);
+                }}
+                className="flex items-center gap-4 text-[16px] text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
+              >
+                <Icon size={20} className="text-[#0D4F8B]" />
+                {label}
+              </button>
+            ))}
 
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-4 text-[16px] font-medium transition
-                  ${
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="text-left text-red-500 mt-4"
+              >
+                Logout
+              </button>
+            )}
+          </div>
+        ) : (
+          // NORMAL WEBSITE MENU
+          <div className="flex flex-col px-6 space-y-6 mt-2">
+            {navLinks.map(({ href, label, icon: Icon }) => {
+              const active = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-4 text-[16px] font-medium transition ${
                     active
                       ? "text-[#0D4F8B]"
                       : "text-[#1A1A1A]/80 hover:text-[#0D4F8B]"
-                  }
-                `}
+                  }`}
+                >
+                  <Icon size={22} className="text-[#0D4F8B]" />
+                  {label}
+                </Link>
+              );
+            })}
+
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="text-left text-red-500 mt-4 font-bold cursor-pointer flex items-center gap-2"
               >
-                <Icon size={22} strokeWidth={1.6} className="text-[#0D4F8B]" />
-                {label}
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="mt-10 mx-6 border-t border-[#E5E7EB]" />
-
-        {/* BOTTOM OF MENU */}
-        <div className="flex flex-col px-6 mt-6 space-y-5 text-[16px] font-medium">
-          <button
-            onClick={() => {
-              if (!user) setLoginOpen(true);
-              else router.push("/profile");
-              setOpen(false);
-            }}
-            className="text-left text-[#0D4F8B]"
-          >
-            Your Profile
-          </button>
-
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="text-left text-red-500"
-            >
-              Logout
-            </button>
-          )}
-
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className="text-[#0D4F8B]"
-          >
-            Contact us
-          </Link>
-        </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6A2.25 2.25 0 0 0 5.25 5.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3-3h-9m9 0-3-3m3 3-3 3"
+                  />
+                </svg>
+                <span>Logout</span>
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* BACKDROP */}
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/20 z-[998]"
+          className="fixed inset-0 bg-black/20 z>[998]"
         />
       )}
 
-      {/* MODALS */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
       <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
       <SuccessModal open={successOpen} />

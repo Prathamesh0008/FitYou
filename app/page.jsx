@@ -5,6 +5,7 @@ import DisclaimerAndSources from "@/components/DisclaimerAndSources";
 import HealthGuide from "@/components/HealthGuide";
 import HeroSnapshotSection from "@/components/hero/HeroSnapshotSection";
 import NewsSection from "@/components/NewsSection";
+import WhyQualify from "@/components/recommendations/WhyQualify";
 import ScienceSection from "@/components/ScienceSection";
 // import Splash from "@/components/Splash";
 import StepsSection from "@/components/StepsSection";
@@ -93,9 +94,9 @@ export default function HomePage() {
      
 
       {/* HOW IT WORKS */}
-      <section className="mx-auto max-w-6xl px-4 py-7 pb-14">
+      {/* <section className="mx-auto max-w-6xl px-4 py-7 pb-14">
   <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
-    {/* LEFT SIDE */}
+  
     <div>
       <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
         How Fityou works
@@ -119,7 +120,7 @@ export default function HomePage() {
       </div>
     </div>
 
-    {/* RIGHT SIDE */}
+    
     <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-5 text-sm text-[#375C7A] shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#0D4F8B]">
         WHO IT’S FOR
@@ -134,7 +135,7 @@ export default function HomePage() {
         <li>✓ You’re willing to answer basic health questions</li>
       </ul>
 
-      {/* SAFE ZONE FIXED RESPONSIVE */}
+      
       <div className="mt-4 flex items-center gap-4 flex-wrap sm:flex-nowrap">
         <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0">
           <div className="absolute inset-0 rounded-full border-4 border-[#4CAF6A]" />
@@ -156,7 +157,8 @@ export default function HomePage() {
       </p>
     </div>
   </div>
-</section>
+</section> */}
+<WhyQualify/>
 
 
       {/* CALCULATOR SECTION */}

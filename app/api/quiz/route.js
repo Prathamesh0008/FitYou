@@ -1,42 +1,64 @@
-import jwt from "jsonwebtoken";
-import { localDB } from "@/lib/localDB";
+// import dbConnect from "@/lib/db";
+// import User from "@/models/User";
+// import { cookies } from "next/headers";
+// import { NextResponse } from "next/server";
 
-export async function POST(req) {
-  try {
-    const token = req.cookies.get("token")?.value;
-    if (!token) return Response.json({ error: "Not logged in" }, { status: 401 });
+// export async function POST(req) {
+//   try {
+//     console.log("📌 QUIZ API HIT");
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev-secret");
-    const userId = decoded.id;
+//     await dbConnect();
+//     console.log("📌 DB Connected");
 
-    const { age, heightCm, weightKg, conditions = [], medications = [] } =
-      await req.json();
+//     // NEW correct cookie parsing
+//     const cookieStore = await cookies();
+//     const email = cookieStore.get("fityou_auth")?.value;
 
-    const bmi = Number((weightKg / ((heightCm / 100) ** 2)).toFixed(1));
-    const eligible = age >= 18;
-    const notes = eligible
-      ? "Eligible for Fityou programme."
-      : "Programme requires age 18+.";
+//     console.log("📌 Cookie Email:", email);
 
-    const submission = {
-      id: Date.now().toString(),
-      userId,
-      age,
-      heightCm,
-      weightKg,
-      conditions,
-      medications,
-      bmi,
-      eligible,
-      notes,
-      createdAt: new Date(),
-    };
+//     if (!email) {
+//       console.log("❌ User not logged in");
+//       return NextResponse.json(
+//         { success: false, error: "Not logged in" },
+//         { status: 401 }
+//       );
+//     }
 
-    localDB.quizSubmissions.push(submission);
+//     const body = await req.json();
+//     console.log("📌 Received body:", body);
 
-    return Response.json({ bmi, eligible, notes }, { status: 200 });
-  } catch (err) {
-    console.error("Quiz error:", err);
-    return Response.json({ error: "Server error" }, { status: 500 });
-  }
-}
+//     const { quiz } = body;
+
+//     if (!quiz) {
+//       console.log("❌ Quiz data missing");
+//       return NextResponse.json(
+//         { success: false, error: "Quiz missing" },
+//         { status: 400 }
+//       );
+//     }
+
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       console.log("❌ No user found for email:", email);
+//       return NextResponse.json(
+//         { success: false, error: "User not found" },
+//         { status: 404 }
+//       );
+//     }
+
+//     user.quiz = quiz;
+//     await user.save();
+
+//     console.log("✅ QUIZ SAVED SUCCESSFULLY");
+
+//     return NextResponse.json({ success: true });
+
+//   } catch (err) {
+//     console.error("❌ QUIZ API ERROR:", err);
+//     return NextResponse.json(
+//       { success: false, error: "Internal error" },
+//       { status: 500 }
+//     );
+//   }
+// }

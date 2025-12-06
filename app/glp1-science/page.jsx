@@ -1,8 +1,15 @@
+
+
+
+
 "use client";
 
 import Image from "next/image";
+import {useRouter} from "next/navigation";
+
 
 export default function Glp1SciencePage() {
+  const router = useRouter();
   return (
     <>
       {/* ---------- PAGE-SPECIFIC CSS (ONLY FOR THIS PAGE) ---------- */}
@@ -202,6 +209,7 @@ export default function Glp1SciencePage() {
         <li><a href="#proven" className="toc-link">Is GLP-1 scientifically proven?</a></li>
         <li><a href="#how-long" className="toc-link">How long does it take to start working?</a></li>
         <li><a href="#benefits" className="toc-link">What are the benefits?</a></li>
+
         <li><a href="#slow-progress" className="toc-link">What if it doesn’t work?</a></li>
       </ul>
 
@@ -249,98 +257,91 @@ export default function Glp1SciencePage() {
         </section>
 
         {/* ---------- DISCOVERY OF GLP-1 (FITYOU VERSION WITH FULL CONNECTED LINE) ---------- */}
-        <section
-          id="discovery"
-          className="max-w-5xl mx-auto px-4 pt-10 pb-24"
-        >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-10">
-            The discovery of GLP-1
-          </h2>
+         <section className="max-w-5xl mx-auto px-6 py-16">
+      {/* Title */}
+      <h2 id="discovery" className="text-[40px] font-laila text-[#0D4F8B] mb-12">
+        The discovery of GLP-1
+      </h2>
 
-          <div className="relative">
-            {/* SINGLE VERTICAL DOTTED LINE (FULL HEIGHT) */}
-            <div className="absolute left-[32px] top-0 w-px h-full border-l-2 border-dotted border-[#0D4F8B]/40"></div>
+      <div className="space-y-16 relative">
+        {/* Vertical dotted line */}
+        <div className="absolute left-6 top-2 bottom-0 border-l-2 border-dotted border-[#A8C4D6]"></div>
 
-            <div className="space-y-16">
-              {/* ITEM 1 */}
-              <div className="grid grid-cols-[80px_1fr] gap-6 items-start">
-                {/* Dot + Year */}
-                <div className="flex flex-col items-center">
-                  <div className="w-6 h-6 bg-[#0D4F8B] rounded-full"></div>
-                  <p className="mt-2 text-lg font-semibold text-[#0D4F8B]">
-                    1987
-                  </p>
-                </div>
-
-                {/* Content */}
-                <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[#0D4F8B]">
-                    A new hormone is identified
-                  </h3>
-                  <p className="mt-3 text-[18px] leading-[1.7] text-[#375C7A]">
-                    Researchers first identified GLP-1 as a naturally occurring
-                    hormone involved in appetite, digestion, and how the body
-                    responds to food. This discovery helped scientists understand
-                    why some people feel full longer than others and how
-                    biological signals shape eating behavior.
-                  </p>
-                </div>
-              </div>
-
-              {/* ITEM 2 */}
-              <div className="grid grid-cols-[80px_1fr] gap-6 items-start">
-                <div className="flex flex-col items-center">
-                  <div className="w-6 h-6 bg-[#0D4F8B] rounded-full"></div>
-                  <p className="mt-2 text-lg font-semibold text-[#0D4F8B]">
-                    2000
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[#0D4F8B]">
-                    Understanding digestion and fullness
-                  </h3>
-                  <p className="mt-3 text-[18px] leading-[1.7] text-[#375C7A]">
-                    As research continued, scientists learned that GLP-1 plays a
-                    role in slowing digestion and influencing fullness cues. These
-                    findings highlighted how much our hunger rhythm is shaped by
-                    internal biology, not just willpower or motivation.
-                  </p>
-                </div>
-              </div>
-
-              {/* ITEM 3 */}
-              <div className="grid grid-cols-[80px_1fr] gap-6 items-start">
-                <div className="flex flex-col items-center">
-                  <div className="w-6 h-6 bg-[#0D4F8B] rounded-full"></div>
-                  <p className="mt-2 text-lg font-semibold text-[#0D4F8B]">
-                    2014
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-lg md:text-xl font-semibold text-[#0D4F8B]">
-                    A deeper look into hunger biology
-                  </h3>
-                  <p className="mt-3 text-[18px] leading-[1.7] text-[#375C7A]">
-                    By the mid-2010s, GLP-1 became a major focus in understanding
-                    how appetite, cravings, and meal timing are influenced by
-                    internal chemical signals. This shifted the conversation away
-                    from “willpower” and toward a more realistic understanding of
-                    human biology.
-                  </p>
-                </div>
-              </div>
-            </div>
+        {/* ITEM 1 */}
+        <div className="flex gap-10 relative">
+          {/* Dot + Year */}
+          <div className="flex flex-col items-center">
+            <div className="w-8 ml-2 h-8 rounded-full bg-[#0D4F8B] "></div>
+            <p className="text-[#0D4F8B] text-lg font-semibold mt-2">1987</p>
           </div>
-        </section>
+
+          {/* Content */}
+          <div>
+            <h3 className="text-[#0D4F8B] font-semibold text-lg mb-2">
+              Positive side effect diabetes
+            </h3>
+            <p className="text-[#375C7A] leading-[1.7] text-[17px] max-w-3xl">
+              Originally, GLP-1 agonists were created to treat diabetes. People with
+              diabetes have too much sugar in their blood, and GLP-1 drugs help by
+              increasing incretin hormone levels that stimulate insulin production.
+              Insulin is required to bring blood sugar levels down, by letting sugar
+              become absorbed from the blood into nearby cells.
+            </p>
+          </div>
+        </div>
+
+        {/* ITEM 2 */}
+        <div className="flex gap-10 relative">
+          {/* Dot + Year */}
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 ml-1 rounded-full bg-[#0D4F8B] z-10"></div>
+            <p className="text-[#0D4F8B] text-lg font-semibold mt-2">2000</p>
+          </div>
+
+          {/* Content */}
+          <div>
+            <h3 className="text-[#0D4F8B] font-semibold text-lg mb-2">
+              Testing effect on digestion
+            </h3>
+            <p className="text-[#375C7A] leading-[1.7] text-[17px] max-w-3xl">
+              When testing the effect of GLP-1 agonists, it was also discovered that
+              they reduced the rate of digestion and slowed down stomach emptying. This
+              caused a decrease in appetite and led many trialled patients to lose
+              weight.
+            </p>
+          </div>
+        </div>
+
+        {/* ITEM 3 */}
+        <div className="flex gap-10 relative">
+          {/* Dot + Year */}
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 ml-2 rounded-full bg-[#0D4F8B] z-10"></div>
+            <p className="text-[#0D4F8B] text-lg font-semibold mt-2">2014</p>
+          </div>
+
+          {/* Content */}
+          <div>
+            <h3 className="text-[#0D4F8B] font-semibold text-lg mb-2">
+              Approved for weight loss
+            </h3>
+            <p className="text-[#375C7A] leading-[1.7] text-[17px] max-w-3xl">
+              It wasn’t until many years of further testing that the first GLP-1 drug
+              was approved for the treatment of weight loss in obese individuals. It
+              has since worked to help thousands of people across the globe achieve
+              their weight loss goals.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
         {/* ---------- THE SCIENCE OF GLP-1 (FITYOU SAFE VERSION) ---------- */}
         <section
           id="science"
           className="max-w-5xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6">
+          <h2  className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6">
             The science of GLP-1: What does it influence?
           </h2>
 
@@ -370,7 +371,7 @@ export default function Glp1SciencePage() {
                   Your body naturally produces GLP-1 after you eat. It sends
                   signals to the brain that help you feel satisfied and reduce
                   unnecessary hunger. Understanding these biological cues allows
-                  FitYou to design routines that work *with* your natural appetite
+                  FitYou to design routines that work with your natural appetite
                   rhythm, not against it.
                 </p>
               </div>
@@ -422,12 +423,24 @@ export default function Glp1SciencePage() {
           </div>
         </section>
 
+        <div className="max-w-xl mx-auto text-center mt-2 space-y-4">
+  <button 
+      onClick={()=>router.push("/program")}
+      className="w-full bg-[#A7CBD7] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
+        View programme
+      </button>
+
+  <button className="w-full bg-[#FFF7EB] border border-[#F4C892] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[17px] mb-6">
+    Do I qualify?
+  </button>
+</div>
+
         {/* ---------- IS GLP-1 SCIENTIFICALLY PROVEN? (FITYOU SAFE VERSION) ---------- */}
         <section
           id="proven"
           className="max-w-5xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6">
+          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6">
             Is GLP-1 scientifically proven?
           </h2>
 
@@ -533,7 +546,7 @@ export default function Glp1SciencePage() {
           className="max-w-6xl mx-auto px-4 pt-10 pb-24"
         >
           {/* ------------------ SECTION TITLE ------------------ */}
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6">
+          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6">
             How long does it take to see changes?
           </h2>
 
@@ -632,7 +645,7 @@ export default function Glp1SciencePage() {
           id="importance"
           className="max-w-6xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6">
+          <h2 className="text-3xl md:text-4xl text-[#0D4F8B] mb-6">
             Importance of gradual progress
           </h2>
 
@@ -766,7 +779,7 @@ export default function Glp1SciencePage() {
   className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20"
 >
   {/* Title */}
-  <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6 max-w-[650px]">
+  <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6 max-w-[650px]">
     What are the benefits?
   </h2>
 
@@ -798,12 +811,16 @@ export default function Glp1SciencePage() {
       make sustainable progress feel much more achievable.
     </p>
 
-    {/* CTA Button */}
-    <button className="px-8 py-3 bg-[#A7C5D8] text-[#0D4F8B] font-semibold rounded-lg shadow-md hover:bg-[#94b5cb] transition w-full sm:w-auto">
-      View programme
-    </button>
-
   </div>
+
+{/* CTA Button */}
+  <div className="max-w-xl mx-auto text-center mt-2 space-y-4">
+  <button 
+  onClick={()=>router.push("program")}
+  className="w-80 bg-[#A7CBD7] hover:bg-[#a5d7e7] text-[#002074] font-semibold py-3 rounded-lg text-[18px]">
+    View programme
+  </button>
+</div>
 </section>
 
 
@@ -812,7 +829,7 @@ export default function Glp1SciencePage() {
           id="routine"
           className="max-w-5xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6 max-w-[650px]">
+          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6 max-w-[650px]">
             How you can make the most out of your routine
           </h2>
 
@@ -909,7 +926,7 @@ export default function Glp1SciencePage() {
           id="slow-progress"
           className="max-w-5xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0D4F8B] mb-6">
+          <h2 className="text-3xl md:text-4xl text-[#0D4F8B] mb-6">
             What if progress feels slow?
           </h2>
 
@@ -964,7 +981,9 @@ export default function Glp1SciencePage() {
     {/* BUTTONS */}
     <div className="flex flex-col items-center gap-4">
 
-      <button className="w-[260px] md:w-[300px] bg-[#A7CBD7] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
+      <button 
+      onClick={()=>router.push("/program")}
+      className="w-[260px] md:w-[300px] bg-[#A7CBD7] hover:bg-[#a5d7e7] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
         View programme
       </button>
 

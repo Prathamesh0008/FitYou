@@ -1,9 +1,12 @@
+
+
 "use client";
 
 import Image from "next/image";
 import { useRef } from "react";
 import FAQ from "@/components/FAQ";
 import BackButton from "@/components/BackButton";
+import {useRouter} from "next/navigation";
 
 
 export default function MounjaroDosageSchedule() {
@@ -22,6 +25,8 @@ const fastRef = useRef(null);
 const indiaRef = useRef(null);
 const advantageRef = useRef(null);
 const finalRef = useRef(null);
+
+const router = useRouter();
 
 
  
@@ -53,7 +58,7 @@ const finalRef = useRef(null);
          <div className="flex justify-center">
            <div className="rounded-2xl overflow-hidden bg-white shadow-sm ">
              <Image
-               src="/guide/MASTERING-THE-MOUNJARO-INJECTION.jpg" // ← replace with your image path
+               src="/guide/Wegovy-Dosage-Guide.png" // ← replace with your image path
                alt="Mounjaro Dosage Chart"
                width={650}
                height={580}
@@ -897,11 +902,15 @@ Just pure weight loss, right from the comfort of your home.
   </p>
 
   {/* Button */}
+
   <button
-    className="bg-[#A7CBD7] text-[#002074] font-semibold px-6 py-3 rounded-lg text-[18px] hover:bg-[#9CC5CD] transition"
-  >
-    Check if you are eligible for mounjaro
-  </button>
+      onClick={() => router.push("program/page")}
+      className="bg-[#A7CBD7] text-[#002074] font-semibold px-6 py-3 rounded-lg text-[18px] hover:bg-[#9CC5CD] transition"
+    >
+
+      Check if you are eligible for mounjaro
+    </button>
+
 
 </div>
 
@@ -975,7 +984,9 @@ Just pure weight loss, right from the comfort of your home.
  {/* ------------------------------------------------------------- */}
  
  <div className="max-w-xl mx-auto text-center mt-20 space-y-4">
-   <button className="w-full bg-[#A7CBD7] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[17px]">
+   <button 
+   onClick={()=>router.push("/program")}
+   className="w-full bg-[#A7CBD7] hover:bg-[#a5d7e7] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[18px]">
      View programme
    </button>
  
@@ -1067,4 +1078,3 @@ Just pure weight loss, right from the comfort of your home.
      </div>
    );
  }
- 

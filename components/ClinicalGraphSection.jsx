@@ -22,7 +22,7 @@ export default function ClinicalGraphSection() {
     <section className="relative overflow-hidden py-24">
 
       {/* WAVE BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-b from-sky-50 to-white dark:from-slate-900 dark:to-slate-950">
+      <div className="absolute inset-0  ">
         <svg className="absolute top-0 w-full opacity-70 dark:opacity-20" viewBox="0 0 1440 320">
           <path
             fill="#e9f3ff"

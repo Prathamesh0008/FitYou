@@ -5,6 +5,9 @@ const nextConfig = {
     turbopack: false,  // ✅ FIX: Disable Turbopack for Netlify/Vercel
   },
   images: {
+     dangerouslyAllowSVG: true,
+    contentSecurityPolicy:
+      "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [  // ✅ FIX: Replace deprecated domains
       {
         protocol: "http",

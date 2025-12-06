@@ -52,7 +52,7 @@ export default function ScienceSection() {
   <div className="hidden md:flex justify-center">
   <div className="w-full h-[350px] bg-white rounded-3xl ">
     <Image
-      src="/sciencesection/graph-section.png"
+      src="/sciencesection/graphscience.png"
       alt="Weight loss graph"
       width={500}
       height={250}
