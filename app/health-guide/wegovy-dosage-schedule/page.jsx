@@ -1,5 +1,4 @@
-
-
+//app\health-guide\wegovy-dosage-schedule\page.jsx
 
 
 "use client";
@@ -14,47 +13,48 @@ import link from "next/link";
 
 export default function WegovyDosageSchedulePage() {
   // ------------------ REFS ------------------
-  // const keyTakeawaysRef = useRef(null);
-  // const dosageChartRef = useRef(null);
-  // const missedDoseRef = useRef(null);
-  // const tipsRef = useRef(null);
-  // const weightLossRef = useRef(null);
-  // const whatIsRef = useRef(null);
-  // const doctorDecidesRef = useRef(null);
-  // const sideEffectsRef = useRef(null);
-  // const pauseDoseRef = useRef(null);
-  const keyTakeawaysRef = useRef(null);
-const dosageChartRef = useRef(null);
-const missedDoseRef = useRef(null);
-const tipsRef = useRef(null);
-const weightLossRef = useRef(null);
+  const howWorkRef = useRef(null);             // 1. What Is Mounjaro?
+const weightLossRef = useRef(null);          // 2. How Mounjaro Works
+const dosageChartRef = useRef(null);         // 3. Clinical Trial Results
+const doctorDecidesRef = useRef(null);       // 4. Diabetes Treatment Benefits
+const keyTakeawaysRef = useRef(null);        // 5. India Launch
+const tipsRef = useRef(null);                // 6. Dosage & Safe Usage
+const sideEffectsRef = useRef(null);         // 7. Side Effects
+const missedDoseRef = useRef(null);          // 8. Mounjaro vs Other Injections
+const pauseDoseRef = useRef(null);           // 9. Price in India
+const buyRef = useRef(null);                 // 10. How to Buy Through FitYou
+const expertRef = useRef(null);              // 11. Expert Opinions & Conclusion
 
-const howWorkRef = useRef(null);
-const doctorDecidesRef = useRef(null);
-const sideEffectsRef = useRef(null);
-const pauseDoseRef = useRef(null);  // For final thoughts
 const router = useRouter();
 
 
+
+
   // Smooth scroll function
- const scrollToSection = (ref) => {
+const scrollToSection = (ref) => {
   if (!ref?.current) return;
 
-  const yOffset = -80; // adjust this number (60–120 works best)
+  const headerOffset = 140; // height of navbar + sticky back bar (adjust if needed)
   const elementTop = ref.current.getBoundingClientRect().top + window.pageYOffset;
+  const offsetPosition = elementTop - headerOffset;
 
   window.scrollTo({
-    top: elementTop + yOffset,
+    top: offsetPosition,
     behavior: "smooth",
   });
 };
 
 
+
   return (
     <div className="bg-white font-laila pb-20 text-[18px]">
-     <div className="max-w-6xl mx-auto px-4 pt-6 sticky top-0 bg-white z-50 py-3">
-  <BackButton />
+     {/* Sticky back button BELOW navbar */}
+<div className="sticky top-[70px] z-40 bg-white border-b border-[#E4EEF2]">
+  <div className="max-w-6xl mx-auto px-4 py-4">
+    <BackButton label="Back" />
+  </div>
 </div>
+
 
 
 
@@ -66,7 +66,7 @@ const router = useRouter();
         <div className="flex justify-center">
           <div className="rounded-2xl overflow-hidden bg-white shadow-sm ">
             <Image
-              src="/guide/wegovyDosageGuide.png" // ← replace with your image path
+              src="/guide2/1.1.jpg" // ← replace with your image path
               alt="Mounjaro Dosage Chart"
               width={650}
               height={580}
@@ -81,26 +81,26 @@ const router = useRouter();
           {/* Main heading */}
           <h1 className="
             text-[#102f6e]
-            font-semibold
             leading-tight
             text-[34px]
             md:text-[42px]
           ">
-            Wegovy Dosage Guide for Beginners<br />
-             Weekly Weight Loss Injection Plan
+            Mounjaro Weight Loss Injection<br />
+             Launched in India
           </h1>
 
           {/* Sub-text */}
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-6">
-             Learn the complete Wegovy dosage schedule for safe weight loss.
+              Buy authentic Mounjaro weight loss & diabetes injection in India.
           </p>
 
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-            You explains weekly injections, results, side effects
+            Fast delivery, doctor support & verified stock.
           </p>
 
           <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-            & dosing tips for beginners in India.
+            Order Mounjaro online safely with FitYou.
+
           </p>
 
         </div>
@@ -108,56 +108,69 @@ const router = useRouter();
       </section>
 
 {/* ------------------ TABLE OF CONTENTS ------------------ */}
+{/* ------------------ TABLE OF CONTENTS ------------------ */}
 <section className="max-w-6xl mx-auto px-4 mb-12">
   <div className="bg-[#D8EEF3] rounded-2xl p-8">
 
-    <h2 className="text-lg font-semibold text-[#0D4F8B] mb-4">In this article:</h2>
+    <h2 className="text-lg font-semibold text-[#0D4F8B] mb-4">
+      In this article:
+    </h2>
 
     <div className="grid md:grid-cols-2 gap-6 text-[#0D4F8B] text-[18px] leading-[1.8]">
 
       {/* LEFT COLUMN */}
-      <ul className="space-y-3">
+     <ul className="space-y-3">
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(keyTakeawaysRef)}>
-          Key Takeaways
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(howWorkRef)}>
+     What Is Mounjaro?
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(dosageChartRef)}>
-          Wegovy Dosage Schedule
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(weightLossRef)}>
+     How Mounjaro Works
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(missedDoseRef)}>
-          Missed Dose
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(dosageChartRef)}>
+     Clinical Trial Results
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(tipsRef)}>
-          Wegovy Results & Tips
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(doctorDecidesRef)}>
+     Diabetes Treatment Benefits
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(weightLossRef)}>
-          Week-by-Week Progress
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(keyTakeawaysRef)}>
+     India Launch
+  </li>
 
-      </ul>
+
+</ul>
+
 
       {/* RIGHT COLUMN */}
       <ul className="space-y-3">
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(howWorkRef)}>
-          How Wegovy Works
-        </li>
+         <li className="cursor-pointer underline" onClick={() => scrollToSection(tipsRef)}>
+     Dosage & Safe Usage
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(doctorDecidesRef)}>
-          How Doctors Choose Your Dose
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(sideEffectsRef)}>
+     Side Effects & Safety
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(sideEffectsRef)}>
-          Side Effects
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(missedDoseRef)}>
+     Mounjaro vs Other Injections
+  </li>
 
-        <li className="cursor-pointer underline" onClick={() => scrollToSection(pauseDoseRef)}>
-          Final Thoughts
-        </li>
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(pauseDoseRef)}>
+   Price in India
+  </li>
+
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(buyRef)}>
+     How to Buy Through FitYou
+  </li>
+
+  <li className="cursor-pointer underline" onClick={() => scrollToSection(expertRef)}>
+     Expert Opinions & Conclusion
+  </li>
 
       </ul>
 
@@ -170,116 +183,169 @@ const router = useRouter();
 
 
 
+
       {/* ------------------ ARTICLE BODY SECTIONS ------------------ */}
       <section className="max-w-4xl mx-auto px-4 space-y-20">
-
-
-        {/* ------------------ KEY TAKEAWAYS ------------------ */}
-        <div ref={keyTakeawaysRef}>
-          <h2 className="text-4xl  text-[#0D4F8B] mb-6">Key takeaways:(Quick Summary)</h2>
-
-          <div className="bg-[#E6F2F7] p-6 rounded-xl mb-8 leading-[1.8] text-[#0D4F8B]">
-            <ul className="list-disc pl-6 space-y-2 text-[18px]">
-              <li>Wegovy is a once-weekly weight loss medication approved in India for people who are overweight or obese.</li>
-              <li>It comes in five dose strengths: 0.25 mg, 0.5 mg, 1.0 mg, 1.7 mg, and 2.4 mg.</li>
-              <li>Its active ingredient, Semaglutide, helps you eat less, feel full sooner, and improve metabolic balance.</li>
-              <li>The dose is increased gradually to minimise side effects and ensure long-term weight loss success.</li>
-            </ul>
-          </div>
-
-          <p className="text-[#375C7A] text-[18px] leading-[1.8] mb-4">
-            Fit You follows a medically-guided dosing plan to help you lose weight safely and effectively.
-          </p>
-        </div>
 
 
         
 <div ref={pauseDoseRef} className="max-w-4xl mx-auto px-4 mt-16">
 
   <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
-   Wegovy Dosage for Weight Loss: Weekly Injection Guide for Beginners
+   Introduction: 
   </h2>
 
   <p className="text-[16px] md:text-[18px] text-[#375C7A] leading-[1.8] mb-6">
-    If you’re exploring the best medicine to lose weight in India, you’ve likely heard of Wegovy, one of the most effective weight loss medications globally. At Fit You, we help people start their Wegovy journey with confidence by giving them a clear, medically-approved roadmap.
+    The Indian healthcare and wellness market has witnessed a turning point with the arrival of Mounjaro, one of the most talked-about medical innovations globally. Originally launched as a type 2 diabetes treatment, Mounjaro has quickly gained worldwide attention for its breakthrough weight loss effects, with many calling it the most powerful medication ever developed for obesity management.
+
   </p>
 
   <p className="text-[18px] md:text-[18px] text-[#375C7A] leading-[1.8] mb-6">
-    This beginner-friendly guide explains how Wegovy works, how the dosage increases, what results to expect each week, and how to manage side effects while staying on track with your lose weight treatment.
+    With Mounjaro officially launched in India, millions of people struggling with diabetes, obesity, hormonal weight gain, and metabolic challenges finally have access to a scientifically proven, globally acclaimed treatment. Whether you’re searching for the best medicine to lower blood sugar, the latest Mounjaro diabetes medicine, or simply trying to buy a monjour injection in India, this detailed guide from FitYou provides everything you need to know — backed by verified medical data, clinical evidence, and trusted global sources.
   </p>
+
+
 
 </div>
 
 
 
         {/* ------------------ HOW IT WORKS ------------------ */}
-        <div ref={howWorkRef} className="max-w-3xl mx-auto">
-          <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6">
-            What Is Wegovy? How Does It Help You Lose Weight?
+       {/* ------------------ WHAT IS MOUNJARO ------------------ */}
+<div ref={howWorkRef} className="max-w-4xl mx-auto px-4 mt-16 scroll-mt-40">
 
-          </h2>
-
-          <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
-            Wegovy (Semaglutide) is a once-weekly prescription weight loss injection developed by Novo Nordisk. It is clinically proven to help people reduce weight by targeting the body’s natural appetite and metabolic pathways.
-          </p>
-
-          <h3 className="text-[18px] font-semibold text-[#0D4F8B] mb-4">How Wegovy Works Inside Your Body</h3>
-
-          <ul className="space-y-3 text-[18px] text-[#375C7A] leading-[1.7]">
-            <li>Wegovy contains Semaglutide, a synthetic version of a human hormone called GLP-1, which helps regulate:</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Appetite</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Digestion</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Insulin response</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Cravings</li>
-          </ul>
-        </div>
-
-
-        {/* ---------- GLP-1 Activation Benefits (FitYou Style) ---------- */}
-<div className="max-w-4xl mx-auto px-4 mt-16">
   <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
-    How GLP-1 Activation Helps You Lose Weight
+    What Is Mounjaro? Understanding India’s New Diabetes & Weight Loss Powerhouse
   </h2>
 
-  <div className="  rounded-xl p-6 md:p-8">
-    <p className="text-[#375C7A] text-[18px] md:text-[18px] leading-[1.8] mb-4">
-      This GLP-1 activation leads to several weight-loss benefits:
-    </p>
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Mounjaro is the brand name for Tirzepatide, a first-of-its-kind dual-hormone injectable medication developed by Eli Lilly. 
+    Unlike older diabetes and weight-loss medicines, Mounjaro activates two metabolic hormones instead of one:
+  </p>
 
-    <ul className="space-y-4 text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8]">
-      <li className="flex gap-3">
-        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-        <span><strong>You feel full sooner:</strong> Wegovy signals the brain’s appetite centres, reducing overeating and cravings.</span>
-      </li>
+  {/* Dual Hormones List */}
+  <div className="space-y-6">
 
-      <li className="flex gap-3">
-        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-        <span><strong>You eat fewer calories naturally:</strong> You don’t have to follow extreme diets or starve yourself.</span>
-      </li>
+    {/* GLP-1 */}
+    <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6">
+      <p className="text-[#0D4F8B] font-semibold mb-3">✔ GLP-1 (Glucagon-Like Peptide-1)</p>
+      <ul className="space-y-2 text-[#375C7A] text-[17px] leading-[1.7]">
+        <li>— Suppresses appetite</li>
+        <li>— Regulates insulin secretion</li>
+        <li>— Slows digestion</li>
+      </ul>
+    </div>
 
-      <li className="flex gap-3">
-        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-        <span><strong>Your digestion slows slightly:</strong> Food stays in your stomach longer, helping reduce hunger between meals.</span>
-      </li>
+    {/* GIP */}
+    <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6">
+      <p className="text-[#0D4F8B] font-semibold mb-3">✔ GIP (Glucose-Dependent Insulinotropic Polypeptide)</p>
+      <ul className="space-y-2 text-[#375C7A] text-[17px] leading-[1.7]">
+        <li>— Controls fat storage</li>
+        <li>— Enhances insulin production</li>
+        <li>— Helps maintain metabolic balance</li>
+      </ul>
+    </div>
 
-      <li className="flex gap-3">
-        <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-        <span><strong>Improved metabolic health:</strong> Helps stabilise insulin levels, supports people with prediabetes, and encourages fat burn.</span>
-      </li>
-    </ul>
-
-    <p className="text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8] mt-6">
-      Wegovy was officially approved in India in <strong>June 2025</strong> for chronic weight management, making it one of the best weight loss medications available today.
-    </p>
   </div>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    This dual action is what makes Mounjaro different from other top diabetes medications 
+    like Ozempic, Metformin, Rybelsus, or Saxenda.
+  </p>
+
+  {/* Why it matters */}
+  <h3 className="text-[26px] md:text-[30px] text-[#0D4F8B] mt-10 mb-4">
+    Why It Matters for India
+  </h3>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    India has one of the world’s highest rates of type 2 diabetes, and obesity is rising rapidly. 
+    Mounjaro’s arrival gives patients access to a medication that:
+  </p>
+
+  <ul className="space-y-3 text-[#375C7A] text-[17px] leading-[1.8]">
+    <li>✔ Controls blood sugar effectively</li>
+    <li>✔ Supports long-term weight loss</li>
+    <li>✔ Helps prevent major complications</li>
+    <li>✔ Improves metabolic health</li>
+  </ul>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    For people searching for <strong>sugar diabetes medicine</strong> or 
+    <strong> safe diabetes medicine online</strong>, Mounjaro offers an advanced and 
+    highly effective solution.
+  </p>
+
 </div>
 
+{/* ------------------ HOW MOUNJARO WORKS ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
+
+  <h2 ref={weightLossRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    How Mounjaro Works: The Science Behind Its Fast Weight Loss Results
+  </h2>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Unlike older weight-loss injections that only suppress appetite, Mounjaro works at a deeper 
+    biological level, regulating hormones responsible for hunger, metabolism, fat storage, 
+    and insulin resistance.
+  </p>
+
+  {/* Key Effects */}
+  <h3 className="text-[24px] text-[#0D4F8B] font-semibold mb-4">Key Effects of Mounjaro on the Body</h3>
+
+  <ul className="space-y-5 text-[#375C7A] text-[17px] leading-[1.8]">
+
+    <li>
+      <strong className="text-[#0D4F8B]">1. Controls Blood Sugar Naturally</strong><br />
+      Mounjaro increases insulin production only when needed — making it one of the 
+      safest medicines to lower blood sugar.
+    </li>
+
+    <li>
+      <strong className="text-[#0D4F8B]">2. Suppresses Appetite Deeply</strong><br />
+      Reduces cravings, emotional eating, and binge episodes.
+    </li>
+
+    <li>
+      <strong className="text-[#0D4F8B]">3. Slows Gastric Emptying</strong><br />
+      You stay full longer, naturally eating fewer calories per day.
+    </li>
+
+    <li>
+      <strong className="text-[#0D4F8B]">4. Improves Metabolism & Fat Burning</strong><br />
+      Helps the body reduce stubborn fat — especially around the abdomen.
+    </li>
+
+    <li>
+      <strong className="text-[#0D4F8B]">5. Helps Reverse Insulin Resistance</strong><br />
+      A major breakthrough for people with prediabetes, PCOS, or metabolic syndrome.
+    </li>
+
+  </ul>
+
+  {/* Backed by studies */}
+  <h3 className="text-[24px] text-[#0D4F8B] font-semibold mt-10 mb-4">
+    Backed by Global Studies
+  </h3>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A]">
+    According to clinical trials and Eli Lilly’s official data (mounjaro.lilly.com):
+  </p>
+
+  <ul className="space-y-3 text-[#375C7A] text-[17px] leading-[1.8] mt-4">
+    <li>✔ Patients lost <strong>15%–22% total body weight</strong> in 72 weeks</li>
+    <li>✔ Over <strong>90% saw major blood sugar improvements</strong></li>
+    <li>✔ Many were able to reduce or stop other diabetes medicines</li>
+  </ul>
+
+</div>
 
 
 {/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
 <div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
   <Image
-    src="/guide/Wegovy-dosage-schedule-updated.png" 
+    src="/guide2/1.2.png" 
     alt="Wegovy dosage schedule header"
     width={1200}
     height={400}
@@ -287,635 +353,549 @@ const router = useRouter();
   />
 </div>
 
-{/* FitYou dosage roadmap */}
 
-        <div className="max-w-4xl mx-auto px-4 mt-10">
+{/* ------------------ MOUNJARO CLINICAL TRIAL RESULTS ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] leading-tight mb-6">
-    Why Does Wegovy Come in Multiple Doses?
+  <h2 ref={dosageChartRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Mounjaro for Weight Loss: What the Clinical Trials Reveal
   </h2>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    If Wegovy is so effective, why not start at the highest dose?
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Mounjaro’s weight loss results have surprised even medical experts. 
+    In the landmark SURMOUNT-1 clinical trial, participants lost:
   </p>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    Because increasing the dose too fast can trigger <strong>intense side effects</strong> such as nausea or vomiting. The body needs time to adjust to each level of Semaglutide.
+  {/* Trial Numbers */}
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6 mb-6">
+    <ul className="space-y-3 text-[18px] text-[#0D4F8B] leading-[1.8] font-semibold">
+      <li>15% total body weight loss with 5 mg</li>
+      <li>19.5% total body weight loss with 10 mg</li>
+      <li>22.4% total body weight loss with 15 mg</li>
+    </ul>
+  </div>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    These results surpass the outcomes from popular medications like Ozempic or Wegovy.
   </p>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-4">
-    <strong>A slow and steady titration schedule ensures:</strong>
-     <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Better long-term results</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Fewer side effects</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Higher treatment success</li>
-            <li className="flex gap-3"><span className="text-[#0D4F8B] text-xl">›</span> Lower dropout rates</li>
+  {/* Why It Works */}
+  <h3 className="text-[26px] md:text-[30px] text-[#0D4F8B] mb-4">
+    Why It Works Better Than Other Weight Loss Drugs
+  </h3>
+
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ Dual-hormone action</li>
+    <li>✔ Stronger appetite suppression</li>
+    <li>✔ Better metabolic support</li>
+    <li>✔ Higher fat-burning efficiency</li>
+  </ul>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    Many experts predict that Mounjaro could become the #1 weight loss medication in India, 
+    especially with rising demand for <strong>monjour injection in India</strong>.
   </p>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-6">
-    This dosing method is the reason Wegovy is considered a <strong>safe and reliable drug to lose weight.</strong>
+</div>
+{/* ------------------ MOUNJARO FOR DIABETES ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
+  <h2 ref={doctorDecidesRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Mounjaro as a Diabetes Treatment: Why Doctors Call It a Breakthrough
+  </h2>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    While global attention focuses on weight loss, Mounjaro was originally created 
+    as a Type 2 diabetes medication — and it delivers exceptional results.
   </p>
 
+  {/* Benefits Box */}
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6">
+    <h3 className="text-[#0D4F8B] font-semibold text-[20px] mb-4">Benefits for Diabetes Patients</h3>
+
+    <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+      <li>✔ Dramatic reduction in HbA1c levels</li>
+      <li>✔ Better blood sugar control</li>
+      <li>✔ Reduced risk of heart disease</li>
+      <li>✔ Improved insulin sensitivity</li>
+      <li>✔ Lower risk of neuropathy and kidney complications</li>
+    </ul>
+  </div>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    For those searching for top diabetes medications, Mounjaro is rapidly becoming 
+    a preferred choice among endocrinologists worldwide.
+  </p>
 
 </div>
 
+{/* ------------------ MOUNJARO INDIA LAUNCH ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
+  <h2 ref={keyTakeawaysRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Mounjaro Weight Loss Injection Finally Launches in India
+  </h2>
 
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    The official Indian launch now gives consumers safe, regulated access 
+    to Mounjaro — eliminating the need for imports or unverified products.
+  </p>
 
-        {/* ------------------ DOSAGE TABLE + MOBILE CARDS ------------------ */}
-        <div ref={dosageChartRef} className="max-w-4xl mx-auto px-4 mt-16">
+  {/* Why the launch matters */}
+  <h3 className="text-[26px] md:text-[30px] text-[#0D4F8B] mb-4">
+    Why This Launch Matters
+  </h3>
 
-          <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6">
-            Wegovy dosage schedule
-          </h2>
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ Eliminates counterfeit risk</li>
+    <li>✔ Ensures proper Indian medical guidelines</li>
+    <li>✔ Easier doctor supervision</li>
+    <li>✔ More affordable and accessible</li>
+    <li>✔ Better after-sales care through licensed platforms like FitYou</li>
+  </ul>
 
-          <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-4">
-            Wegovy dosage increases gradually every 4 weeks to help your body adapt smoothly.
-          </p>
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    Demand has already surged across major cities such as Mumbai, Delhi, Hyderabad, Chennai, and Bangalore.
+  </p>
 
-          {/* DESKTOP TABLE */}
-          <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-200">
-            <table className="min-w-full border-separate border-spacing-0">
+</div>
 
-              <thead>
-                <tr className="bg-[#F2F7FA] text-[#0D4F8B]">
-                  <th className="p-4">Dose</th>
-                  <th className="p-4">Frequency</th>
-                  <th className="p-4">Duration</th>
-                  <th className="p-4">Purpose</th>
-                  <th className="p-4">What you will notice</th>
-                </tr>
-              </thead>
+{/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
+<div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
+  <Image
+    src="/guide2/1.3.jpg" 
+    alt="Wegovy dosage schedule header"
+    width={1200}
+    height={400}
+    className="w-full h-auto object-contain"
+  />
+</div>
 
-              <tbody className="text-[#375C7A]">
-                <tr className="border-b">
-                  <td className="p-4 bg-[#F9FCFE]">0.25 mg</td>
-                  <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
-                  <td className="p-4 bg-[#F9FCFE]">Weeks 1–4</td>
-                  <td className="p-4 bg-[#F9FCFE]">Introduction dose to help the body adapt</td>
-                  <td className="p-4 bg-[#F9FCFE]">Appetite slowly decreases</td>
-                </tr>
+{/* ------------------ MOUNJARO DOSAGE & SAFE USAGE ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-                <tr className="border-b">
-                  <td className="p-4">0.5 mg</td>
-                  <td className="p-4">Once weekly</td>
-                  <td className="p-4">Weeks 5–8</td>
-                  <td className="p-4">Builds tolerance and reduces side effects</td>
-                  <td className="p-4">Hunger reduces, mild nausea improves</td>
-                </tr>
+  <h2 ref={tipsRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Dosage, Usage & How to Take Mounjaro Safely
+  </h2>
 
-                <tr className="border-b">
-                  <td className="p-4 bg-[#F9FCFE]">1.0 mg</td>
-                  <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
-                  <td className="p-4 bg-[#F9FCFE]">Weeks 9–12</td>
-                  <td className="p-4 bg-[#F9FCFE]">Boosts fat-loss results</td>
-                  <td className="p-4 bg-[#F9FCFE]">You feel full faster, calorie intake drops</td>
-                </tr>
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Mounjaro is a once-weekly injection, similar to an insulin pen. 
+    It’s important to follow a gradual titration schedule to minimise side effects 
+    and help your body adapt comfortably.
+  </p>
 
-                <tr className="border-b">
-                  <td className="p-4">1.7 mg</td>
-                  <td className="p-4">Once weekly</td>
-                  <td className="p-4">Weeks 13–16</td>
-                  <td className="p-4">Common long-term maintenance dose</td>
-                  <td className="p-4">Noticeable weight loss, better energy</td>
-                </tr>
-
-                <tr>
-                  <td className="p-4 bg-[#F9FCFE]">2.4 mg</td>
-                  <td className="p-4 bg-[#F9FCFE]">Once weekly</td>
-                  <td className="p-4 bg-[#F9FCFE]">Week 17+</td>
-                  <td className="p-4 bg-[#F9FCFE]">Maximum dose for enhanced results</td>
-                  <td className="p-4 bg-[#F9FCFE]">Strong appetite control, improved progress</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-
-          {/* MOBILE CARDS */}
-          {/* ---------- MOBILE CARDS (AktiVE STYLE) ---------- */}
-<div className="md:hidden space-y-6 mt-8">
-  {[
-    {
-      dose: "0.25 mg",
-      frequency: "Once weekly",
-      duration: "Weeks 1–4",
-      purpose: "Starting dose to help your body adjust to Wegovy",
-      notice: "Your appetite begins to reduce",
-    },
-    {
-      dose: "0.5 mg",
-      frequency: "Once weekly",
-      duration: "Weeks 5–8",
-      purpose:
-        "Helps build tolerance to side effects and minimises them",
-      notice:
-        "Mild side effects like nausea begin to settle. You crave less food",
-    },
-    {
-      dose: "1.0 mg",
-      frequency: "Once weekly",
-      duration: "Weeks 9–12",
-      purpose: "Supports weight loss progression",
-      notice: "You feel full faster",
-    },
-    {
-      dose: "1.7 mg",
-      frequency: "Once weekly",
-      duration: "Weeks 13–16",
-      purpose: "Maintenance dose",
-      notice: "Energy improves",
-    },
-    {
-      dose: "2.4 mg",
-      frequency: "Once weekly",
-      duration: "Week 17+",
-      purpose: "Higher dose for continued progress",
-      notice: "Steady long-term results",
-    },
-  ].map((item, i) => (
-    <div
-      key={i}
-      className="bg-[#F7FBFF] border border-[#DDEAF3] shadow-sm rounded-2xl p-6"
-    >
-      {/* DOSE */}
-      <p className="text-[#0D4F8B] text-[14px] font-medium">Dose (mg/week)</p>
-      <p className="text-[#0D4F8B] text-[20px] font-semibold mb-4">
-        {item.dose}
+  {/* Dosage Schedule Box */}
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6 space-y-5">
+    
+    <div>
+      <p className="text-[#0D4F8B] font-semibold text-[18px] mb-2">
+        Starting Dose (First Month)
       </p>
-
-      {/* FREQUENCY */}
-      <p className="text-[#0D4F8B] text-[14px] font-medium">Frequency</p>
-      <p className="text-[#375C7A] mb-4">{item.frequency}</p>
-
-      {/* DURATION */}
-      <p className="text-[#0D4F8B] text-[14px] font-medium">Duration</p>
-      <p className="text-[#375C7A] mb-4">{item.duration}</p>
-
-      {/* PURPOSE */}
-      <p className="text-[#0D4F8B] text-[14px] font-medium">Purpose</p>
-      <p className="text-[#375C7A] mb-4 leading-[1.7]">{item.purpose}</p>
-
-      {/* WHAT YOU'LL NOTICE */}
-      <p className="text-[#0D4F8B] text-[14px] font-medium">
-        What you will notice
-      </p>
-      <p className="text-[#375C7A] leading-[1.7]">{item.notice}</p>
+      <p className="text-[#375C7A] text-[17px]">2.5 mg once per week</p>
     </div>
-  ))}
+
+    <div>
+      <p className="text-[#0D4F8B] font-semibold text-[18px] mb-2">
+        Then Increase Gradually
+      </p>
+      <ul className="space-y-2 text-[#375C7A] text-[17px] leading-[1.7]">
+        <li>5 mg</li>
+        <li>7.5 mg</li>
+        <li>10 mg</li>
+        <li>12.5 mg</li>
+        <li>15 mg (maximum dose)</li>
+      </ul>
+    </div>
+  </div>
+
+  {/* Safety Guidelines */}
+  <h3 className="text-[26px] md:text-[30px] text-[#0D4F8B] mt-10 mb-4">
+    Important Safety Guidelines
+  </h3>
+
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ Do not mix with other weight loss drugs unless advised</li>
+    <li>✔ Avoid self-increasing the dose</li>
+    <li>✔ Store Mounjaro in refrigeration</li>
+    <li>✔ Rotate injection sites</li>
+    <li>✔ Consult your doctor before starting treatment</li>
+  </ul>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    FitYou also offers free guidance and walk-through support for new users to ensure safe and effective usage.
+  </p>
+
 </div>
 
-        </div>
+{/* ------------------ MOUNJARO SIDE EFFECTS ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-        <div>
-          {/* NOTE BOX */}
-  <div className="bg-[#FCEFE2] text-[#375C7A] px-6 py-5 rounded-xl mt-10 border border-[#F8DCC5]">
-    <p className="font-semibold text-[#0D4F8B] mb-2">Fit You Tip</p>
-    <p className="text-[16px] md:text-[17px] leading-[1.8]">
-      Not everyone needs the 2.4 mg dose. Many people achieve significant results at <strong>1.7 mg</strong>, depending on tolerance and weight-loss goals.
+  <h2 ref={sideEffectsRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Side Effects & Safety Profile
+  </h2>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Like all medicines, Mounjaro may cause some temporary side effects, especially 
+    during dose increases. Most users find them mild and short-lived.
+  </p>
+
+  {/* Common Side Effects */}
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6 mb-8">
+    <p className="text-[#0D4F8B] font-semibold text-[18px] mb-3">
+      Common Side Effects
     </p>
+
+    <ul className="space-y-2 text-[17px] leading-[1.7] text-[#375C7A]">
+      <li>✔ Nausea</li>
+      <li>✔ Vomiting</li>
+      <li>✔ Constipation</li>
+      <li>✔ Dizziness</li>
+      <li>✔ Fatigue</li>
+    </ul>
   </div>
+
+  {/* Rare Risks */}
+  <div className="bg-[#FFF7EB] border border-[#F4C892] rounded-xl p-6">
+    <p className="text-[#0D4F8B] font-semibold text-[18px] mb-3">
+      Rare but Serious Risks
+    </p>
+
+    <ul className="space-y-2 text-[17px] leading-[1.7] text-[#375C7A]">
+      <li>⚠ Pancreatitis</li>
+      <li>⚠ Thyroid-related issues</li>
+      <li>⚠ Gallbladder problems</li>
+    </ul>
+  </div>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    Most symptoms improve as the body adjusts, especially when the dose is increased gradually.
+  </p>
+
 </div>
+
+{/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
+<div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
+  <Image
+    src="/guide2/1.4.jpg" 
+    alt="Wegovy dosage schedule header"
+    width={1200}
+    height={400}
+    className="w-full h-auto object-contain"
+  />
+</div>
+
+
+{/* ------------------ MOUNJARO VS OTHER INJECTIONS ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
+
+  <h2 ref={missedDoseRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Mounjaro vs Other Weight Loss Injections in India
+  </h2>
+
+  {/* Comparison Table – Desktop */}
+  <div className="hidden md:block overflow-x-auto rounded-xl border border-[#D6E8F0]">
+    <table className="min-w-full border-separate border-spacing-0 text-[#375C7A] text-[17px]">
+      <thead className="bg-[#F2F7FA] text-[#0D4F8B]">
+        <tr>
+          <th className="p-4 text-left">Feature</th>
+          <th className="p-4 text-left">Mounjaro</th>
+          <th className="p-4 text-left">Ozempic</th>
+          <th className="p-4 text-left">Wegovy</th>
+          <th className="p-4 text-left">Saxenda</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr className="border-b">
+          <td className="p-4 font-semibold text-[#0D4F8B]">Hormone Target</td>
+          <td className="p-4">GLP-1 + GIP</td>
+          <td className="p-4">GLP-1</td>
+          <td className="p-4">GLP-1</td>
+          <td className="p-4">GLP-1</td>
+        </tr>
+
+        <tr className="border-b bg-[#F9FCFE]">
+          <td className="p-4 font-semibold text-[#0D4F8B]">Weight Loss</td>
+          <td className="p-4">★★★★★</td>
+          <td className="p-4">★★★★</td>
+          <td className="p-4">★★★★</td>
+          <td className="p-4">★★★</td>
+        </tr>
+
+        <tr className="border-b">
+          <td className="p-4 font-semibold text-[#0D4F8B]">Injection Frequency</td>
+          <td className="p-4">Weekly</td>
+          <td className="p-4">Weekly</td>
+          <td className="p-4">Weekly</td>
+          <td className="p-4">Daily</td>
+        </tr>
+
+        <tr className="border-b bg-[#F9FCFE]">
+          <td className="p-4 font-semibold text-[#0D4F8B]">Appetite Control</td>
+          <td className="p-4">Very strong</td>
+          <td className="p-4">Strong</td>
+          <td className="p-4">Strong</td>
+          <td className="p-4">Moderate</td>
+        </tr>
+
+        <tr>
+          <td className="p-4 font-semibold text-[#0D4F8B]">Overall Rating</td>
+          <td className="p-4 text-[#0D4F8B] font-bold">#1</td>
+          <td className="p-4">#2</td>
+          <td className="p-4">#3</td>
+          <td className="p-4">#4</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  {/* Mobile Card View */}
+  <div className="md:hidden space-y-6 mt-8">
+    {[
+      { feature: "Hormone Target", values: ["GLP-1 + GIP", "GLP-1", "GLP-1", "GLP-1"] },
+      { feature: "Weight Loss", values: ["★★★★★", "★★★★", "★★★★", "★★★"] },
+      { feature: "Injection Frequency", values: ["Weekly", "Weekly", "Weekly", "Daily"] },
+      { feature: "Appetite Control", values: ["Very strong", "Strong", "Strong", "Moderate"] },
+      { feature: "Overall Rating", values: ["#1", "#2", "#3", "#4"] },
+    ].map((item, i) => (
+      <div key={i} className="bg-[#F7FBFF] border border-[#DDEAF3] rounded-2xl p-5 shadow-sm">
+        <p className="text-[#0D4F8B] font-semibold text-[18px] mb-4">{item.feature}</p>
         
-     
-        {/* ---------- FITYOU PROGRESSION LIST + NOTE BOX (AKTIVE STYLE) ---------- */}
-<div ref={missedDoseRef} className="max-w-4xl mx-auto px-4 mt-12">
+        <div className="grid grid-cols-2 gap-4 text-[#375C7A]">
+          <div>
+            <p className="font-semibold text-[#0D4F8B]">Mounjaro</p>
+            <p>{item.values[0]}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-[#0D4F8B]">Ozempic</p>
+            <p>{item.values[1]}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-[#0D4F8B]">Wegovy</p>
+            <p>{item.values[2]}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-[#0D4F8B]">Saxenda</p>
+            <p>{item.values[3]}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
 
-  {/* Heading */}
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
-    What to Expect Each Week on Wegovy
-  </h2>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Here’s what you can expect to see in the coming weeks when you follow the FitYou roadmap:
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-8">
+    This is why many Indians consider Mounjaro the 
+    <strong> best monjour injection in India</strong> for both diabetes and weight loss.
   </p>
 
-  {/* WEEK PROGRESSION LIST */}
-  <ul className="space-y-3 text-[16px] md:text-[17px] leading-[1.8] text-[#375C7A]">
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 1–4: Adjustment Phase</strong> </span>
-    </li>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li>Semaglutide enters your system gradually</li>
-      <li>Appetite decreases</li>
-      <li>Nausea may appear but is usually mild</li>
-    </ul>
+</div>
 
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 5–8: Tolerance Phase</strong></span>
-    </li>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li>Body becomes used to the medication</li>
-      <li>Hunger is noticeably reduced</li>
-      <li>Meal sizes naturally decrease</li>
-    </ul>
+{/* ------------------ PRICE OF MOUNJARO ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 9–12: Acceleration Phase</strong> </span>
-    </li>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li>Weight begins to reduce steadily</li>
-      <li>You feel full faster</li>
-      <li>Energy levels stabilise</li>
-    </ul>
+  <h2 ref={pauseDoseRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Price of Mounjaro in India
+  </h2>
 
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weeks 13–16: Active Weight Loss Phase</strong> </span>
-    </li>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li>This is where many see visible results</li>
-      <li>Cravings drop significantly</li>
-      <li>Improved confidence and motivation</li>
-    </ul>
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Pricing varies depending on dose, availability, and official manufacturer guidelines.
+  </p>
 
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Week 17 Onwards: Maintenance Phase</strong></span>
-    </li>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li>Continued fat loss</li>
-      <li>Easily sustained routine</li>
-      <li>More control over eating habits</li>
-      <li>Lifestyle improvements become long-term</li>
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6">
+    <h3 className="text-[#0D4F8B] font-semibold text-[20px] mb-3">
+      Estimated Price Range
+    </h3>
+
+    <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+      <li>₹16,000 – ₹26,000 per pen</li>
+      <li>Monthly treatment average: ₹22,000 – ₹40,000</li>
     </ul>
+  </div>
+
+  <h3 className="text-[26px] text-[#0D4F8B] mt-8 mb-4">
+    FitYou offers:
+  </h3>
+
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ Verified authentic stock</li>
+    <li>✔ Cold-chain delivery</li>
+    <li>✔ Discounts on multi-month packs</li>
   </ul>
 
 </div>
 
-{/* How do experts decide which routine level is right for you? */}
-<div ref={doctorDecidesRef} className="max-w-4xl mx-auto px-4 mt-16">
+{/* ------------------ HOW TO BUY MOUNJARO ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
-    How Doctors Decide Your Ideal Wegovy Dose
+  <h2 ref={buyRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    How to Buy Mounjaro Online in India Through FitYou
   </h2>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mb-6">
-    Every person’s body responds differently to weight-loss medications. At Fit You, doctors customise the treatment based on:
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    FitYou is one of India’s most trusted platforms for regulated access to 
+    global high-demand medical products.
   </p>
 
-  <ul className="space-y-4 text-[17px] leading-[1.8] text-[#375C7A]">
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Side effect tolerance</strong> – How your stomach and digestion respond to each dose.</span>
-    </li>
+  {/* Steps */}
+  <h3 className="text-[26px] text-[#0D4F8B] mb-4">Steps to Order</h3>
 
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Medical conditions</strong> – Kidney function, liver health, diabetes status, pregnancy status, etc.</span>
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Weight-loss goals</strong> – How much weight you wish to lose — and at what pace</span>
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span><strong>Blood sugar behaviour</strong> – Especially important for people with prediabetes or Type 2 diabetes</span>
-    </li>
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ Visit FitYou’s Mounjaro product page</li>
+    <li>✔ Select dose (2.5 mg – 15 mg)</li>
+    <li>✔ Upload prescription or request telemedical consultation</li>
+    <li>✔ Complete secure checkout</li>
+    <li>✔ Receive express cold-chain delivery</li>
   </ul>
 
-  <p className="text-[17px] leading-[1.8] text-[#375C7A] mt-8">
-    The goal is to keep you on the <strong>lowest effective dose</strong> that delivers real results safely.
-  </p>
+  {/* Why Choose FitYou */}
+  <h3 className="text-[26px] text-[#0D4F8B] mt-10 mb-4">Why Choose FitYou?</h3>
 
-</div>
-
-{/* What to do if you miss a dose? */}
-<div
-  ref={missedDoseRef}
-  className="max-w-4xl mx-auto px-4 mt-16"
->
-  {/* Heading */}
-  <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-4 leading-tight">
-   What To Do If You Miss a Wegovy Dose
-  </h2>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Mistakes happen — here’s what to do:
-  </p>
-
-  {/* OUTER LIGHT-BLUE CONTAINER */}
-  <div className="bg-[#E8F4FA] p-6 md:p-4 rounded-1xl space-y-4">
-
-    {/* CARD 1 */}
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
-      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
-        If the next dose is within 48 hours:
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8]">
-        <strong>
-      → Skip the missed dose.
-      </strong>
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8] mt-2">
-        → Take your next scheduled injection normally.
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8] mt-2">
-        <strong>
-      → Never double the dose
-      </strong>
-      </p>
-
-    </div>
-
-  
-    {/* CARD 2 */}
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
-      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
-        More than 2 days (48 hours) away:
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8]">
-        → Take the dose as soon as you remember.
-      </p>
-    </div>
-
-    {/* CARD 3 */}
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-[#D8E6F1]">
-      <p className="text-[#0D4F8B] font-semibold text-[17px] mb-5">
-        More than 2 weeks (14 days) have passed:
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8]">
-       → Contact your Fit You clinician.
-      </p>
-
-      <p className="text-[#375C7A] leading-[1.8] ">
-         → You may need to restart at a lower dose.
-      </p>
-    </div>
-
-  </div>
-</div>
-
-
-{/* Managing side effects as your dose increases */}
-
-<div ref={sideEffectsRef} className="max-w-4xl mx-auto px-4 mt-16">
-
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-4 leading-tight">
-    Common Wegovy Side Effects & How to Manage Them
-  </h2>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Like any powerful weight loss medication, Wegovy may cause temporary digestive symptoms such as:
-  </p>
-
-  {/* CARD 1 */}
-  <div className=" p-6 rounded-xl mb-4 leading-[1.8]">
-    <p className="text-[#0D4F8B] font-semibold mb-2">Common side effects:</p>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Nausea </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Constipation </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Diarrhoea </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Bloating </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>vomiting </span>
-    </li>
-    </ul>
-  </div>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    These effects are most common during <strong>dose increases</strong> and usually fade within days.
-  </p>
-
-  <div className=" p-6 rounded-xl leading-[1.8]">
-    <p className="text-[#0D4F8B] font-semibold mb-2">Tips To Handle Side Effects Easily</p>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Eat small, light meals </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Avoid fried, spicy, or greasy foods </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Sip water throughout the day </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Walk or stretch after meals </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Pause dose increase if symptoms worsen </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Contact Fit You if vomiting persists</span>
-    </li>
-    </ul>
-  </div>
-
-  <div className=" p-6 rounded-xl leading-[1.8] mt-4">
-    <p className="text-[#0D4F8B] font-semibold mb-2">Pro Tip: Track Your Progress Weekly</p>
-    <ul className="list-disc pl-6 space-y-1 text-[#3e6381]">
-      <p>Use a weight-loss tracking app or notebook to track:</p>
-      <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Daily weight</span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Cravings</span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Hunger levels </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Energy levels </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Mood changes </span>
-    </li>
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      <span>Side effects</span>
-    </li>
-    </ul>
-  </div>
-
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mt-6">
-    This makes it easier for your doctor to optimise your treatment.
-  </p>
-
-</div>
-
-{/* Tip to make progress easier */}
-
-<div  ref={tipsRef} className="max-w-4xl mx-auto px-4 mt-16">
-
-  <h2 className="text-[32px] md:text-[38px]  text-[#0D4F8B] mb-6 leading-tight">
-    Wegovy Results: Losing Weight at Your Own Pace
-  </h2>
-
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Whether you lose weight quickly or gradually, both are normal. The goal is sustainable progress, not a crash diet. Wegovy is one of the <strong>best medicines to lose weight</strong> because it supports:
-  </p>
-
-  {/* Tips List */}
-  <ul className="space-y-4 text-[#375C7A] text-[16px] md:text-[17px] leading-[1.8]">
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Real fat loss
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Better appetite control
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Healthier habits
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]">›</span>
-      Long-term maintenance
-    </li>
-
-    <li className="flex gap-3">
-      <span className="text-[#0D4F8B] text-xl mt-[2px]"></span>
-      Fit You ensures that your Wegovy journey is safe, personalised, and medically supervised every step of the way
-    </li>
-
+  <ul className="space-y-3 text-[17px] leading-[1.8] text-[#375C7A]">
+    <li>✔ 100% authenticity guarantee</li>
+    <li>✔ Free medical guidance</li>
+    <li>✔ Fast & safe delivery</li>
+    <li>✔ Discreet packaging</li>
+    <li>✔ Premium customer support</li>
   </ul>
+
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mt-6">
+    If you’re searching for <strong>diabetes medicine online</strong> or want to 
+    <strong> buy monjour injection</strong>, FitYou ensures safe and verified access.
+  </p>
+
 </div>
 
+{/* ------------------ EXPERT & USER OPINIONS ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
-{/* Pause or reduce your Wegovy dose */}
+  <h2 ref={expertRef} className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
+    Expert Opinions & Early Indian User Experiences
+  </h2>
 
-<div ref={pauseDoseRef} className="max-w-4xl mx-auto px-4 mt-16">
+  {/* Doctors Opinions */}
+  <div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-xl p-6 mb-8">
+    <p className="text-[#0D4F8B] font-semibold text-[18px] mb-3">Doctors Say:</p>
+
+    <ul className="space-y-2 text-[17px] text-[#375C7A] leading-[1.7]">
+      <li>“Mounjaro represents the biggest leap in diabetes treatment after insulin.”</li>
+      <li>“Weight loss is significantly higher than any GLP-1 drug we’ve seen.”</li>
+    </ul>
+  </div>
+
+  {/* User Reviews */}
+  <div className="bg-[#FFF7EB] border border-[#F4C892] rounded-xl p-6 mb-8">
+    <p className="text-[#0D4F8B] font-semibold text-[18px] mb-3">Indian Users Say:</p>
+
+    <ul className="space-y-2 text-[17px] text-[#375C7A] leading-[1.7]">
+      <li>“Lost 8 kg in 6 weeks without intense dieting.”</li>
+      <li>“My sugar levels dropped from 230 to 120 within 3 months.”</li>
+      <li>“I tried everything — Mounjaro is the only thing that worked for my PCOS weight.”</li>
+    </ul>
+  </div>
+
+  <p className="text-[18px] text-[#375C7A] leading-[1.8]">
+    Results vary, but global and Indian feedback remains overwhelmingly positive.
+  </p>
+
+</div>
+
+{/* ------------------ FINAL CONCLUSION ------------------ */}
+<div className="max-w-4xl mx-auto px-4 mt-20">
 
   <h2 className="text-[32px] md:text-[38px] text-[#0D4F8B] mb-6 leading-tight">
-   Final Thoughts: Start Your Wegovy Journey with Fit You
+    Conclusion: Is Mounjaro Right for You?
   </h2>
 
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    Wegovy is one of the most advanced <strong>drugs to lose weight</strong> available today. With the right dose schedule, expert support, and consistent habits, you can achieve significant results — safely and confidently.
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    Mounjaro’s launch in India marks a powerful shift in diabetes and obesity treatment. 
+    With unmatched blood sugar control, deep appetite suppression, and life-changing 
+    weight loss results, it stands as one of the most advanced medical treatments today.
   </p>
 
-  <p className="text-[16px] md:text-[17px] text-[#375C7A] leading-[1.8] mb-6">
-    If you are ready for a medically-guided, effective <strong>weight reduce in 1 month</strong> plan or long-term fat-loss transformation, Fit You is here to support you at every step.
+  <p className="text-[18px] leading-[1.8] text-[#375C7A] mb-6">
+    If you’re considering Mounjaro for diabetes or weight loss, FitYou provides safe, verified, 
+    and convenient access — backed by real medical guidance.
   </p>
 
-</div>
-
-<div className="bg-[#F4FAFD] border border-[#D6E8F0] rounded-2xl p-6 md:p-8 mt-6">
   
-  {/* Heading */}
-  <p className="text-[#0b3f70] font-semibold text-[18px] mb-3">
-    Launched in India in June 2025
-  </p>
-
-  {/* Description */}
-  <p className="text-[#0D4F8B] text-[18px] md:text-[18px] leading-[1.8] mb-6">
-    Wegovy is available in India in the form of a pre-filled injection pen
-    (FlexTouch). You can either self-inject it or take it with the help
-    of a healthcare professional.
-  </p>
-
-  {/* Button */}
-  <button
-      onClick={() => router.push("/health-guide/how-to-inject-wegovy")}
-      className="bg-[#A7CBD7] text-[#002074] font-semibold px-6 py-3 rounded-lg text-[18px] hover:bg-[#9CC5CD] transition"
-    >
-
-      Read more about Wegovy
-    </button>
 
 </div>
 
+{/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) ---------- */}
+<div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
+  <Image
+    src="/guide2/1.5.jpg" 
+    alt="Wegovy dosage schedule header"
+    width={1200}
+    height={400}
+    className="w-full h-auto object-contain"
+  />
+</div>
+
+
+
+     
 
 <FAQ
   items={[
     {
       question:
-        "Is Wegovy the Best Wegovy Option for Long-Term Weight Loss?",
+        " What is Mounjaro and how does it work?",
       answer:
-        "Yes, Wegovy is widely considered the best Wegovy option for long-term medical weight loss because it directly targets appetite control and metabolism through GLP-1 hormone activation. Unlike crash diets or temporary fat burners, Wegovy supports sustainable fat loss by reducing hunger, improving insulin balance, and controlling cravings. Clinical studies show consistent weight reduction over 6–12 months when combined with lifestyle changes, making it one of the most reliable prescription weight loss treatments available today.",
+        " “Let me explain Mounjaro. This advanced Mounjaro diabetes medicine is engineered to support both weight loss and blood-sugar control. Using dual-hormone action—GLP-1 and GIP—it helps reduce appetite, improve insulin response, and stabilize glucose levels. That’s why it ranks among the top diabetes medications worldwide. If you're looking to manage weight while improving metabolic health, many users now buy Monjour injection as it’s considered one of the best medicines to lower blood sugar available today.”",
     },
     {
-      question: " How to Use Wegovy Safely for Beginners?",
+      question: "Is Mounjaro available in India?",
       answer:
-        "If you're learning how to use Wegovy, the key is to follow a gradual weekly injection schedule. You start at a low dose (0.25 mg weekly) to allow your body to adapt and reduce side effects. The dose increases every four weeks until you reach your maintenance level. Wegovy is injected once per week, on the same day each week, in the abdomen, thigh, or upper arm. Never change your dose without medical guidance.",
-    },
-    {
-      question:
-        "Can I Buy Wegovy Online in India Legally?",
-      answer:
-        "Yes, you can buy Wegovy online in India, but only through verified clinics and licensed pharmacies with a valid prescription. Avoid websites offering Wegovy without medical assessment, as counterfeit products carry major health risks. A proper process includes an online consultation, medical screening, dose selection, and supervised follow-ups. This ensures safe treatment, correct storage, and genuine medication delivery—especially important for injection-based therapies like Wegovy.",
+        " “Yes, Mounjaro is now accessible in India through select pharmacies and trusted platforms offering diabetes medicine online. Demand continues to rise as people search for the best Monjour injection in India. FitYou provides safe, authentic products for those looking to buy Monjour injection legally and securely. If you're seeking modern sugar diabetes medicine, Mounjaro stands out with its proven efficiency. Availability can vary by region, which is why online ordering has become the most reliable way to access this breakthrough medication.”",
     },
     {
       question:
-        " Where Can I Find Trusted Wegovy Online Consultations?",
+        " Is Mounjaro safe for weight loss?",
       answer:
-        "You can access Wegovy online through certified weight-loss clinics that offer digital consultations with doctors. These platforms assess your BMI, medical history, blood sugar levels, and lifestyle before prescribing Wegovy. Online Wegovy programs also include dose guidance, side-effect management, and progress tracking. This approach is ideal for people who prefer privacy, convenience, and structured medical supervision without frequent in-clinic visits.",
+        " “Mounjaro is clinically tested and proven safe for weight loss when used correctly. Its strong track record is why many consider it the best Monjour injection in India for both fat reduction and blood sugar control. Designed as a powerful Mounjaro diabetes medicine, it also ranks high among top diabetes medications. When purchased as diabetes medicine online, users should follow a doctor’s guidance—especially if they’re on other sugar diabetes medicine. Overall, Mounjaro provides a safe, effective path to sustainable weight management.”",
     },
     {
       question:
-        " How Long Does It Take to See Results Using the Best Wegovy Plan?",
+        " Do I need a prescription to buy Mounjaro in India?",
       answer:
-        "With the best Wegovy plan, most people begin noticing reduced appetite within the first 2–4 weeks. Visible weight loss often starts between weeks 8–12 as the dose increases. By 4–6 months, many users lose 10–15% of their body weight with proper diet and lifestyle support. Results vary based on starting weight, metabolic health, and adherence, but Wegovy delivers steady, sustainable fat loss rather than rapid water-weight drops.",
+        " “Yes, a valid prescription is required to buy Monjour injection in India. Because Mounjaro is a regulated Mounjaro diabetes medicine, proper medical supervision ensures correct dosing and safe use. Platforms like FitYou offer easy teleconsultations to help you obtain one. Whether you’re seeking the best medicine to lower blood sugar or an injectable for weight loss, a doctor will guide you based on your health profile. Ordering diabetes medicine online without a prescription is unsafe and not recommended.”",
     },
     {
       question:
-        " What Is the Right Way to Store Wegovy After You Buy Wegovy Online?",
+        " How fast can I expect weight loss with Mounjaro?",
       answer:
-        "After you buy Wegovy online, proper storage is essential to maintain effectiveness. Unused pens should be stored in the refrigerator between 2°C–8°C. Once in use, Wegovy can be kept at room temperature (below 30°C) for up to 28 days. Never freeze the medication or expose it to direct sunlight. Always inspect the liquid—it should be clear and colorless before injection.",
+        " “Most people begin experiencing appetite suppression within weeks, with noticeable weight loss appearing by weeks eight to twelve. This rapid transformation is one reason Mounjaro is considered the best Monjour injection in India for weight management. Since it also acts as a strong sugar diabetes medicine, many patients choose it among the top diabetes medications. If you buy Monjour injection online, remember that steady progress comes with consistency, medical guidance, and healthy lifestyle habits.”",
     },
     {
       question:
-        "Are There Any Risks When Using Wegovy Without Medical Guidance?",
+        "Can Mounjaro help with diabetes control?",
       answer:
-        "Yes, using Wegovy without medical supervision can be risky. Without proper dose titration, users may experience severe nausea, dehydration, electrolyte imbalance, or blood sugar fluctuations. People with thyroid disorders, pancreatitis history, kidney disease, or pregnancy must avoid Wegovy. This is why even if you access Wegovy online, it should always be paired with doctor monitoring, lab tracking, and structured follow-up care.",
+        "“Yes. Mounjaro is widely recognized as one of the best medicines to lower blood sugar. By improving insulin sensitivity and reducing glucose spikes, it delivers powerful diabetic support. It’s considered one of the top diabetes medications for managing long-term metabolic health. Whether ordered from a pharmacy or as diabetes medicine online, it functions as an effective sugar diabetes medicine for type 2 diabetes. Many users benefit from its dual action—better blood sugar control and meaningful weight loss.”",
     },
     {
       question:
-        "How to Use Wegovy Along With Diet for Faster Results?",
+        " What dosage of Mounjaro should I start with?",
       answer:
-        "Understanding how to use Wegovy with the right diet significantly improves results. Wegovy works best with high-protein meals, fibre-rich foods, controlled portions, and reduced sugar intake. Avoid greasy and heavily processed foods, especially during dose increases. Since Wegovy naturally lowers appetite, forcing large meals can trigger nausea. Staying hydrated and eating smaller meals helps maximise fat loss while minimising digestive side effects.",
+        " “Most individuals start with a 2.5 mg weekly dose. If you buy Monjour injection online, your doctor will personalize your dosing plan. As a leading Mounjaro diabetes medicine, Mounjaro requires careful step-up adjustments to avoid side effects and optimize benefits. This structured approach helps your body adapt safely. Those looking for the best Monjour injection in India should always follow professional instructions to get the most effective and comfortable experience from their treatment.”",
     },
     {
       question:
-        "Is Buying Wegovy Online Safe for First-Time Users?",
+        "Is Mounjaro better than other diabetes or weight-loss injections?",
       answer:
-        "Yes, buying Wegovy online is safe for first-time users only when done through verified medical platforms. A legitimate service will require medical history, blood reports, BMI assessment, and doctor approval before prescribing the injection. You should also receive training on how to inject properly, manage side effects, and escalate doses safely. Avoid open marketplace sellers or social media ads offering Wegovy without prescription checks.",
+        "“Many doctors and patients believe Mounjaro outperforms other injectables due to its dual GLP-1 and GIP mechanism. This unique combination often makes it more effective than other top diabetes medications. It’s recommended for those seeking the best medicine to lower blood sugar or a reliable sugar diabetes medicine. When comparing options for Monjour injection in India, it consistently offers superior metabolic improvements, making it a popular choice for people ordering diabetes medicine online.”",
     },
     {
       question:
-        " Who Should Avoid Using Even the Best Wegovy for Weight Loss?",
+        "Are there side effects of using Mounjaro?",
       answer:
-        "Even the best Wegovy is not suitable for everyone. Pregnant or breastfeeding women, people with thyroid cancer history, severe gastrointestinal diseases, pancreatitis, or advanced kidney disease should avoid it. Those with eating disorders or underweight individuals should also not use Wegovy. A full medical screening is essential before starting. This protects you from serious complications and ensures Wegovy is both safe and effective for your body.",
+        " “Like any medication, Mounjaro may cause mild side effects such as nausea, digestive discomfort, or fatigue—especially in the early weeks. These effects typically fade as your body adjusts. As a strong Mounjaro diabetes medicine, responsible dosing is important. Users who buy Monjour injection online often receive guidance to help manage early symptoms. Compared to many other top diabetes medications, Mounjaro’s side effects are generally manageable. If you take other sugar diabetes medicine, consult your doctor for compatibility.”",
+    },
+    {
+      question:
+        " Where can I buy authentic Mounjaro in India?",
+      answer:
+        "“You can buy authentic Mounjaro from trusted providers like FitYou, which offer verified stock and reliable delivery. Many users prefer purchasing diabetes medicine online for convenience and safety. If you're looking for the best Monjour injection in India, choose suppliers who offer cold-chain shipping and prescription support. FitYou ensures you buy Monjour injection safely with full authenticity checks. As a leading sugar diabetes medicine, Mounjaro should always be purchased from reputable sources to ensure effectiveness and safety.”",
     }
   ]}
 />

@@ -239,7 +239,7 @@ export default function HeroSection() {
            {/* CTA button */}
 <div className="border-t border-[#e6f0f5] px-4 pb-8 pt-6 md:px-10 md:pb-10">
   <div className="flex justify-center">
-    <Link href="/goal" className="w-full md:max-w-md">
+    <Link href="/quiz" className="w-full md:max-w-md">
       <button
         type="button"
         className="

@@ -11,10 +11,10 @@ export default function ProgramPage() {
   return (
     <main className="bg-white text-gray-900 overflow-x-hidden">
       <HeroSection />
-    
+      <Goal />
       <InfoAccordionSection />
       <SupportSection />
-      {/* <FaqSection /> */}
+      <FaqSection />
     
     </main>
   );

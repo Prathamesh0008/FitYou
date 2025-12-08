@@ -7,6 +7,7 @@ export default function SupportAndServicesSection() {
   return (
     <section className="bg-[#f3fbff] py-16">
       <div className="mx-auto max-w-6xl px-4">
+        
         {/* Top heading */}
         <div className="max-w-5xl">
           <h2 className="text-[2.6rem] leading-snug text-[#123c78]">
@@ -21,8 +22,6 @@ export default function SupportAndServicesSection() {
         </p>
 
         {/* Experts row */}
-        {/* Mobile: horizontal scroll, ONE full card at a time (centered)
-            Desktop: normal 4-column grid */}
         <div className="mt-8 -mx-4 md:mx-0">
           <div
             className="
@@ -32,7 +31,7 @@ export default function SupportAndServicesSection() {
           >
             {/* Card 1 */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-56 md:h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/expert-doctor.jpg"
                   alt="Weight loss specialist"
@@ -51,7 +50,7 @@ export default function SupportAndServicesSection() {
 
             {/* Card 2 */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-56 md:h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/expert-nutrition.jpg"
                   alt="Nutrition expert"
@@ -70,7 +69,7 @@ export default function SupportAndServicesSection() {
 
             {/* Card 3 */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-56 md:h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/expert-coach.jpg"
                   alt="Health coach"
@@ -89,7 +88,7 @@ export default function SupportAndServicesSection() {
 
             {/* Card 4 */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-56 md:h-40 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/expert-support.jpg"
                   alt="Support team"
@@ -114,8 +113,6 @@ export default function SupportAndServicesSection() {
         </p>
 
         {/* Services cards row */}
-        {/* Mobile: horizontal scroll, ONE full card at a time
-            Desktop: normal 3-column grid */}
         <div className="mt-8 -mx-4 md:mx-0">
           <div
             className="
@@ -125,7 +122,7 @@ export default function SupportAndServicesSection() {
           >
             {/* Meal plans */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-64 md:h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/service-meal.jpg"
                   alt="Meal plan"
@@ -144,7 +141,7 @@ export default function SupportAndServicesSection() {
 
             {/* Fitness plan */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-64 md:h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/service-fitness.jpg"
                   alt="Fitness plan"
@@ -163,7 +160,7 @@ export default function SupportAndServicesSection() {
 
             {/* Home delivery */}
             <div className="snap-center flex-none w-full md:w-auto">
-              <div className="relative mb-6 h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
+              <div className="relative mb-6 h-64 md:h-48 w-full overflow-hidden rounded-xl bg-[#b9d7e5]">
                 <Image
                   src="/images/service-delivery.jpg"
                   alt="Home delivery"
@@ -181,6 +178,7 @@ export default function SupportAndServicesSection() {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );

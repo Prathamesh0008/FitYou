@@ -1,6 +1,22 @@
+
 "use client";
 
 import { useState, useRef , useEffect } from "react";
+
+
+const IconFilter = (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="4" y1="6" x2="20" y2="6" />
+    <circle cx="10" cy="6" r="2" />
+
+    <line x1="4" y1="12" x2="20" y2="12" />
+    <circle cx="16" cy="12" r="2" />
+
+    <line x1="4" y1="18" x2="20" y2="18" />
+    <circle cx="8" cy="18" r="2" />
+  </svg>
+);
 
 
 // ---------------- MONO BLACK/BLUE ICONS (MINIMAL) ----------------
@@ -124,7 +140,7 @@ const faqSections = [
       },
       {
         q: "5. Does FitYou offer medically supervised weight loss?",
-        a: `Yes — FitYou provides access to qualified doctors who evaluate whether you are suitable for weight loss medication or weight loss injections based on your consultation and medical history.`,
+        a: "Yes — FitYou provides access to qualified doctors who evaluate whether you are suitable for weight loss medication or weight loss injections based on your consultation and medical history.",
       },
       {
         q: "6. Can FitYou help me lose weight in one month?",
@@ -1060,10 +1076,9 @@ Medication supports your progress — but habits create lasting transformation.
 
 
 export default function FaqPage() {
-  // 0 = All FAQs, 1..N = each section
   const [activeTab, setActiveTab] = useState(0);
-  const [openAll, setOpenAll] = useState(null); // { section, item } or null
-  const [openSingle, setOpenSingle] = useState(null); // { section, item } or null
+  const [openAll, setOpenAll] = useState(null);
+  const [openSingle, setOpenSingle] = useState(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   const contentRef = useRef(null);
@@ -1074,28 +1089,16 @@ export default function FaqPage() {
     }
   }, []);
 
-  const toggleAll = (sectionIndex, itemIndex) => {
-    setOpenAll((prev) =>
-      prev && prev.section === sectionIndex && prev.item === itemIndex
-        ? null
-        : { section: sectionIndex, item: itemIndex }
-    );
-  };
-
-  const toggleSingle = (sectionIndex, itemIndex) => {
-    setOpenSingle((prev) =>
-      prev && prev.section === sectionIndex && prev.item === itemIndex
-        ? null
-        : { section: sectionIndex, item: itemIndex }
-    );
-  };
-
+  // ----------------------
+  // UPDATED mobile handling
+  // ----------------------
   const handleMobileTabClick = (index) => {
     setActiveTab(index);
     setMobileFilterOpen(false);
 
     if (typeof window === "undefined" || window.innerWidth >= 768) return;
 
+    // Wait for filter to close + DOM render
     setTimeout(() => {
       if (index === 0) {
         if (contentRef.current) {
@@ -1109,34 +1112,60 @@ export default function FaqPage() {
         return;
       }
 
-      const firstQuestion = document.querySelector(
-        `[data-section="${index}"][data-question="0"]`
-      );
+      // Specific category → scroll to first question
+      setTimeout(() => {
+        const firstQuestion = document.querySelector(
+          [`data-section="${index}"`][`data-question="0"`]
+        );
 
-      if (firstQuestion) {
-        const top =
-          firstQuestion.getBoundingClientRect().top +
-          window.scrollY -
-          80;
+        if (firstQuestion) {
+          const top =
+            firstQuestion.getBoundingClientRect().top +
+            window.scrollY -
+            80;
 
-        window.scrollTo({ top, behavior: "smooth" });
-      }
-    }, 300);
+          window.scrollTo({ top, behavior: "smooth" });
+        }
+      }, 200);
+    }, 200);
   };
+
+  const toggleAll = (sectionIndex, itemIndex) => {
+    setOpenAll((prev) =>
+      prev &&
+      prev.section === sectionIndex &&
+      prev.item === itemIndex
+        ? null
+        : { section: sectionIndex, item: itemIndex }
+    );
+  };
+
+  const toggleSingle = (sectionIndex, itemIndex) => {
+    setOpenSingle((prev) =>
+      prev &&
+      prev.section === sectionIndex &&
+      prev.item === itemIndex
+        ? null
+        : { section: sectionIndex, item: itemIndex }
+    );
+  };
+
+  const currentHeading =
+    activeTab === 0 ? "All FAQs" : faqSections[activeTab - 1].title;
 
   return (
     <>
       <main className="min-h-screen bg-[#f7fcff] text-[#123873]">
         <section className="max-w-5xl mx-auto px-4 pt-16 pb-24">
+
           <h1 className="text-4xl md:text-5xl font-semibold mb-4 text-center">
             How can we help?
           </h1>
           <p className="text-lg text-center text-[#304064] mb-10">
-            Answers to common questions about Fityou&apos;s medical weight loss
-            service.
+            Answers to common questions about Fityou&apos;s medical weight loss service.
           </p>
 
-          {/* DESKTOP TABS (unchanged) */}
+          {/* DESKTOP FILTER */}
           <div className="relative z-20 mb-6">
             <div className="hidden md:flex flex-wrap gap-3 justify-center">
               <button
@@ -1169,33 +1198,30 @@ export default function FaqPage() {
               ))}
             </div>
 
-            {/* MOBILE HEADER + FILTER */}
+            {/* MOBILE FILTER */}
             <div className="md:hidden">
-              {/* First line: centered "All FAQs" */}
               <div className="flex justify-center mb-3">
                 <h2 className="text-[18px] font-semibold text-[#123873]">
-                  All FAQs
+                  {currentHeading}
                 </h2>
               </div>
 
-              {/* Second line: Filter button on left */}
               <div className="flex justify-start mb-4">
                 <button
-                  type="button"
-                  onClick={() => setMobileFilterOpen((p) => !p)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#cbd5f5] bg-white text-[14px] font-medium text-[#123873]"
-                >
-                  <span>Filter</span>
-                  <span className="text-[16px] leading-none">
-                    {mobileFilterOpen ? "×" : "▼"}
-                  </span>
-                </button>
+  type="button"
+  onClick={() => setMobileFilterOpen((p) => !p)}
+  className="flex items-center gap-2 px-4 py-2 border border-[#cbd5f5] bg-white text-[14px] font-medium text-[#123873]"
+>
+  <span>Filter</span>
+  <span className="text-[16px] leading-none text-[#123873]">
+    {IconFilter}
+  </span>
+</button>
+
               </div>
 
-              {/* Inside Filter: one button per line, card style */}
               {mobileFilterOpen && (
                 <div className="bg-[#e2f4fb] rounded-[24px] px-3 py-5 space-y-3 max-w-md mx-auto">
-                  {/* All FAQs card */}
                   <button
                     type="button"
                     onClick={() => handleMobileTabClick(0)}
@@ -1211,7 +1237,6 @@ export default function FaqPage() {
                     </span>
                   </button>
 
-                  {/* Section cards – one per line */}
                   {faqSections.map((sec, i) => (
                     <button
                       key={sec.title}
@@ -1236,9 +1261,10 @@ export default function FaqPage() {
             </div>
           </div>
 
-          {/* CONTENT */}
+          {/* --------------------- */}
+          {/* CONTENT AREA */}
+          {/* --------------------- */}
           {activeTab === 0 ? (
-            // ALL FAQS
             <div ref={contentRef} className="relative z-10 space-y-10">
               {faqSections.map((sec, sIndex) => (
                 <div
@@ -1249,57 +1275,28 @@ export default function FaqPage() {
                     {sec.title}
                   </h2>
                   <div className="h-[2px] w-full bg-[#cbd5f5] mb-4" />
-                  <div>
-                    {sec.items.map((item, qIndex) => {
-                      const isOpen =
-                        openAll &&
-                        openAll.section === sIndex &&
-                        openAll.item === qIndex;
-                      return (
-                        <div key={item.q}>
-                          <button
-                            type="button"
-                            data-section={sIndex + 1}
-                            data-question={qIndex}
-                            onClick={() => toggleAll(sIndex, qIndex)}
-                            className="w-full flex items-center gap-4 py-4 text-left hover:bg-[#f8fbff]"
-                          >
-                            <span
-                              className={`inline-flex items-center justify-center w-10 h-10 text-4xl text-[#123873] transition-transform duration-200 faq-plus-icon ${
-                                isOpen ? "faq-plus-open" : ""
-                              }`}
-                            >
-                              +
-                            </span>
-                            <span
-                              className={`text-[18px] md:text-[19px] transition-all duration-150 ${
-                                isOpen ? "font-bold" : "font-normal"
-                              }`}
-                            >
-                              {item.q}
-                            </span>
-                          </button>
-                          <div
-                            className={`overflow-hidden transition-all duration-300 ${
-                              isOpen
-                                ? "max-h-[400px] pb-3 pl-10 md:pl-12"
-                                : "max-h-0 pl-10 md:pl-12"
-                            }`}
-                          >
-                            <div
-                              className="text-[18px] md:text-[19px] leading-relaxed text-[#304064] space-y-3"
-                              dangerouslySetInnerHTML={{ __html: item.a }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+
+                  {sec.items.map((item, qIndex) => {
+                    const isOpen =
+                      openAll &&
+                      openAll.section === sIndex &&
+                      openAll.item === qIndex;
+
+                    return (
+                      <FaqItemAll
+                        key={item.q}
+                        item={item}
+                        isOpen={isOpen}
+                        toggle={() => toggleAll(sIndex, qIndex)}
+                        qIndex={qIndex}
+                        sIndex={sIndex}
+                      />
+                    );
+                  })}
                 </div>
               ))}
             </div>
           ) : (
-            // SINGLE SECTION
             <div
               ref={contentRef}
               className="relative z-10 bg-white rounded-[28px] shadow-md border border-[#dde9ff]"
@@ -1309,44 +1306,16 @@ export default function FaqPage() {
                   openSingle &&
                   openSingle.section === activeTab - 1 &&
                   openSingle.item === idx;
-                return (
-                  <div key={item.q}>
-                    <button
-                      type="button"
-                      data-section={activeTab}
-                      data-question={idx}
-                      onClick={() => toggleSingle(activeTab - 1, idx)}
-                      className="w-full flex items-center gap-4 px-6 md:px-8 py-5 text-left hover:bg-[#f8fbff]"
-                    >
-                      <span
-                        className={`inline-flex items-center justify-center w-10 h-10 text-4xl text-[#123873] transition-transform faq-plus-icon ${
-                          isOpen ? "faq-plus-open" : ""
-                        }`}
-                      >
-                        +
-                      </span>
 
-                      <span
-                        className={`text-[20px] md:text-[19px] transition-font-weight duration-150 ${
-                          isOpen ? "font-bold" : "font-normal"
-                        }`}
-                      >
-                        {item.q}
-                      </span>
-                    </button>
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        isOpen
-                          ? "max-h-[500px] pb-5 px-14 md:px-16"
-                          : "max-h-0 px-14 md:px-16"
-                      }`}
-                    >
-                      <div
-                        className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-3"
-                        dangerouslySetInnerHTML={{ __html: item.a }}
-                      />
-                    </div>
-                  </div>
+                return (
+                  <FaqItemSingle
+                    key={item.q}
+                    item={item}
+                    isOpen={isOpen}
+                    toggle={() => toggleSingle(activeTab - 1, idx)}
+                    idx={idx}
+                    section={activeTab - 1}
+                  />
                 );
               })}
             </div>
@@ -1355,9 +1324,6 @@ export default function FaqPage() {
       </main>
 
       <style jsx global>{`
-        body {
-          background-color: #f7fcff;
-        }
         .faq-plus-icon {
           line-height: 1;
           transform-origin: center;
@@ -1371,3 +1337,120 @@ export default function FaqPage() {
   );
 }
 
+/* ---------------------------------------------------
+   REUSABLE ANIMATED ITEM — ALL FAQS
+---------------------------------------------------- */
+function FaqItemAll({ item, isOpen, toggle, qIndex, sIndex }) {
+  const contentRef = useRef(null);
+  const [maxHeight, setMaxHeight] = useState("0px");
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    requestAnimationFrame(() => {
+      if (isOpen) {
+        setMaxHeight(`${contentRef.current.scrollHeight}px`);
+      } else {
+        setMaxHeight("0px");
+      }
+    });
+  }, [isOpen]);
+
+  return (
+    <div>
+      <button
+        type="button"
+        data-section={sIndex + 1}
+        data-question={qIndex}
+        onClick={toggle}
+        className="w-full flex items-center gap-4 py-4 text-left hover:bg-[#f8fbff]"
+      >
+        <span
+          className={`inline-flex items-center justify-center w-10 h-10 text-4xl text-[#123873] transition-transform duration-300 ${
+            isOpen ? "rotate-45" : ""
+          }`}
+        >
+          +
+        </span>
+
+        <span
+          className={`text-[18px] md:text-[19px] transition-all duration-150 ${
+            isOpen ? "font-bold" : "font-normal"
+          }`}
+        >
+          {item.q}
+        </span>
+      </button>
+
+      <div
+        ref={contentRef}
+        style={{ maxHeight }}
+        className="overflow-hidden transition-[max-height] duration-500 ease-in-out pl-10 md:pl-12"
+      >
+        <div
+          className="text-[18px] md:text-[19px] leading-relaxed text-[#304064] space-y-3 py-3"
+          dangerouslySetInnerHTML={{ __html: item.a }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------
+   REUSABLE ANIMATED ITEM — SINGLE SECTION
+---------------------------------------------------- */
+function FaqItemSingle({ item, isOpen, toggle, idx, section }) {
+  const contentRef = useRef(null);
+  const [maxHeight, setMaxHeight] = useState("0px");
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    requestAnimationFrame(() => {
+      if (isOpen) {
+        setMaxHeight(`${contentRef.current.scrollHeight}px`);
+      } else {
+        setMaxHeight("0px");
+      }
+    });
+  }, [isOpen]);
+
+  return (
+    <div>
+      <button
+        type="button"
+        data-section={section + 1}
+        data-question={idx}
+        onClick={toggle}
+        className="w-full flex items-center gap-4 px-6 md:px-8 py-5 text-left hover:bg-[#f8fbff]"
+      >
+        <span
+          className={`inline-flex items-center justify-center w-10 h-10 text-4xl text-[#123873] transition-transform duration-300 ${
+            isOpen ? "rotate-45" : ""
+          }`}
+        >
+          +
+        </span>
+
+        <span
+          className={`text-[20px] md:text-[19px] transition-all duration-150 ${
+            isOpen ? "font-bold" : "font-normal"
+          }`}
+        >
+          {item.q}
+        </span>
+      </button>
+
+      <div
+        ref={contentRef}
+        style={{ maxHeight }}
+        className="overflow-hidden transition-[max-height] duration-500 ease-in-out px-14 md:px-16"
+      >
+        <div
+          className="text-[15px] md:text-[16px] leading-relaxed text-[#304064] space-y-3 py-3"
+          dangerouslySetInnerHTML={{ __html: item.a }}
+        />
+      </div>
+    </div>
+  );
+}

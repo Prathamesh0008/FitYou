@@ -1,3 +1,6 @@
+//app\health-guide\page.jsx
+
+
 "use client";
 
 import { useState } from "react";
@@ -5,42 +8,43 @@ import Image from "next/image";
 import Link from "next/link";
 
 const articles = [
-  { title: "Wegovy Dosage Guide for Beginners | Weekly Weight Loss Injection Plan ", image: "/guide/Wegovy-Dosage-Guide.png", href: "/health-guide/wegovy-dosage-schedule",
-    description: ["Learn the complete Wegovy dosage schedule for safe weight loss.",
-      "Fit You explains weekly injections, results, side effects",
-      "& dosing tips for beginners in India."] },
-  { title: "Wegovy Injection Guide: Proper Technique, Dosage & Safe Use", image: "/guide/Wegovy-injection-guide-updated.png", href: "/health-guide/how-to-inject-wegovy",
-    description: [" Learn how to inject Wegovy safely with this step-by-step guide",
-      "Fit You explains proper technique, dosage tips, storage,",
-      "and safety steps for effective weight loss."]},
-  { title: "Mounjaro Injection Guide | Expert Weight Loss Tips & Safe Technique ", image: "/guide/MASTERING-THE-MOUNJARO-INJECTION.jpg", href: "/health-guide/mounjaro-dosage-schedule",
+  { title: "Mounjaro Injection India | Buy Mounjaro Online – FitYou ", image: "/guide2/1.1.jpg", href: "/health-guide/wegovy-dosage-schedule",
+    description: ["Discover how Mounjaro helps manage Type 2 Diabetes.",
+      "Learn its benefits, dosage, side effects, weight-loss effects, ",
+      "and safe ways to buy Mounjaro online with FitYou."] },
+  { title: "Mounjaro for Type 2 Diabetes: Benefits, Dosage & Cost | FitYou", image: "/guide2/2.1.jpg", href: "/health-guide/how-to-inject-wegovy",
+    description: ["  Discover how Mounjaro helps manage Type 2 Diabetes. ",
+      " Learn its benefits, dosage, side effects, weight-loss effects, ",
+      "and safe ways to buy Mounjaro online with FitYou."]},
+  { title: "Mounjaro Injection Guide | Expert Weight Loss Tips & Safe Technique ", image: "/guide2/3.1.jpeg", href: "/health-guide/mounjaro-dosage-schedule",
     description: [" Learn how to use Mounjaro Injection safely and effectively for weight loss.",
       " FitYou explains dosage, technique, benefits, ",
       "and expert tips for the best weight-loss results."]
    },
-  { title: "Wegovy Side Effects & Safe Weight Loss Guide", image: "/guide/wegovy-sideeffects.png", href: "/health-guide/manage-wegovy-side-effects",
-    description: ["Struggling with Wegovy side effects? ",
-      "Discover safe, simple solutions, expert guidance",
-      "& proven weight loss strategies with FitYou"]
+  { title: "Why Mounjaro Is Making Headlines for Diabetes & Weight Loss | FitYou", image: "/guide2/4.1.jpg", href: "/health-guide/manage-wegovy-side-effects",
+    description: ["Discover why Mounjaro is trending—from diabetes treatment to ",
+      " dramatic weight-loss results. Learn its benefits, dosage, side effects,",
+      " cost & how to buy safely online."]
   },
-  { title: "Mounjaro Side Effects & Easy Management Tips", image: "/guide/Mounjaro-side-effect.jpg", href: "/health-guide/manage-mounjaro-side-effects",
+  { title: "Mounjaro Side Effects & Easy Management Tips", image: "/guide2/5.1.jpeg", href: "/health-guide/manage-mounjaro-side-effects",
     description: ["Complete guide to Mounjaro for weight loss.",
       "Learn side effects, dosage safety, management tips,",
       "hydration, diet and cost insights"]
    },
-  { title: "Wegovy weight loss injection launched in India", image: "/guide/wegovy-weight-loss-injection-banner-img.jpg", href: "/health-guide/wegovy-weight-loss-injection-launched-in-india" },
-  { title: "How to take Mounjaro injection", image: "/guide/mounjaro-updt-banner-new-v1.jpg", href: "/health-guide/how-to-take-mounjaro" },
-  { title: "11 surprising benefits of drinking hot water", image: "/guide/glass-of-hot-water-new-v1.jpg", href: "/health-guide/hot-water-benefits" },
+  // { title: "Wegovy weight loss injection launched in India", image: "/guide/wegovy-weight-loss-injection-banner-img.jpg", href: "/health-guide/wegovy-weight-loss-injection-launched-in-india" },
+  // { title: "How to take Mounjaro injection", image: "/guide/mounjaro-updt-banner-new-v1.jpg", href: "/health-guide/how-to-take-mounjaro" },
+  // { title: "11 surprising benefits of drinking hot water", image: "/guide/glass-of-hot-water-new-v1.jpg", href: "/health-guide/hot-water-benefits" },
+  
 
   // More Article public\guide\wegovy-dosage-hero-img.jpg
-  { title: "GLP-1 vs non-GLP approaches", image: "/guide/blackcoffee-calaroies-v1.jpg", href: "/health-guide/glp1-vs-non-glp" },
-  { title: "Is fasting safe?", image: "/guide/apple-banner-image-v1.jpg", href: "/health-guide/is-fasting-safe" },
-  { title: "Daily steps impact explained", image: "/guide/mango-caloriess-v1.jpg", href: "/health-guide/daily-steps-impact" },
-  { title: "Foods that reduce cravings", image: "/guide/food-cravings-v1.jpg", href: "/health-guide/foods-that-reduce-cravings" },
-  { title: "How stress affects weight", image: "/guide/dosas-banner-v1.jpg", href: "/health-guide/stress-affects-weight" },
-  { title: "Your metabolism roadmap", image: "/guide/final-millets-bannr-v1.jpg", href: "/health-guide/metabolism-roadmap" },
-  { title: "Why protein matters", image: "/guide/mounjaro-kwikpen-injection-banner-v1.jpg", href: "/health-guide/why-protein-matters" },
-  { title: "Fix your sleep cycle", image: "/guide/five-yoga-pose-v1.jpg", href: "/health-guide/fix-your-sleep-cycle" },
+  // { title: "GLP-1 vs non-GLP approaches", image: "/guide/blackcoffee-calaroies-v1.jpg", href: "/health-guide/glp1-vs-non-glp" },
+  // { title: "Is fasting safe?", image: "/guide/apple-banner-image-v1.jpg", href: "/health-guide/is-fasting-safe" },
+  // { title: "Daily steps impact explained", image: "/guide/mango-caloriess-v1.jpg", href: "/health-guide/daily-steps-impact" },
+  // { title: "Foods that reduce cravings", image: "/guide/food-cravings-v1.jpg", href: "/health-guide/foods-that-reduce-cravings" },
+  // { title: "How stress affects weight", image: "/guide/dosas-banner-v1.jpg", href: "/health-guide/stress-affects-weight" },
+  // { title: "Your metabolism roadmap", image: "/guide/final-millets-bannr-v1.jpg", href: "/health-guide/metabolism-roadmap" },
+  // { title: "Why protein matters", image: "/guide/mounjaro-kwikpen-injection-banner-v1.jpg", href: "/health-guide/why-protein-matters" },
+  // { title: "Fix your sleep cycle", image: "/guide/five-yoga-pose-v1.jpg", href: "/health-guide/fix-your-sleep-cycle" },
 ];
 
 
@@ -59,7 +63,7 @@ return (
     <div className="mx-auto max-w-6xl px-4">
 
       {/* PAGE TITLE */}
-      <h1 className="text-4xl md:text-5xl font-bold text-[#002074] mb-14">
+      <h1 className="text-4xl md:text-5xl font-semibold text-[#002074] mb-14">
         Health guide
       </h1>
 

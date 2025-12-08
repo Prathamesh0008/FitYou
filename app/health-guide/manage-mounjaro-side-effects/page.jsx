@@ -2,6 +2,7 @@
 
 
 
+
 "use client";
 
 import Image from "next/image";
@@ -37,24 +38,28 @@ const router = useRouter();
 
  
    // Smooth scroll function
-  const scrollToSection = (ref) => {
-   if (!ref?.current) return;
- 
-   const yOffset = -80; // adjust this number (60–120 works best)
-   const elementTop = ref.current.getBoundingClientRect().top + window.pageYOffset;
- 
-   window.scrollTo({
-     top: elementTop + yOffset,
-     behavior: "smooth",
-   });
- };
+const scrollToSection = (ref) => {
+  if (!ref?.current) return;
+
+  const headerOffset = 140; // height of navbar + sticky back bar (adjust if needed)
+  const elementTop = ref.current.getBoundingClientRect().top + window.pageYOffset;
+  const offsetPosition = elementTop - headerOffset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: "smooth",
+  });
+};
  
  
    return (
      <div className="bg-white font-laila pb-20 text-[18px]">
-     <div className="max-w-6xl mx-auto px-4 pt-6 sticky top-0 bg-white z-50 py-3">
-       <BackButton />
-     </div>
+     {/* Sticky back button BELOW navbar */}
+         <div className="sticky top-[70px] z-40 bg-white border-b border-[#E4EEF2]">
+           <div className="max-w-6xl mx-auto px-4 py-4">
+             <BackButton label="Back" />
+           </div>
+         </div>
 
  
        {/* ------------------ HERO SECTION  public\guide\Mounjaro-side-effect.png------------------ */}
@@ -64,7 +69,7 @@ const router = useRouter();
          <div className="flex justify-center">
            <div className="rounded-2xl overflow-hidden bg-white shadow-sm ">
              <Image
-               src="/guide/Mounjaro-side-effect.png" // ← replace with your image path
+               src="/guide2/5.1.jpeg" // ← replace with your image path
                alt="Mounjaro Dosage Chart"
                width={650}
                height={580}
@@ -74,12 +79,14 @@ const router = useRouter();
          </div>
  
          {/* RIGHT SIDE — TEXT CONTENT */}
+
+        
          <div className="flex flex-col justify-center">
  
            {/* Main heading */}
            <h1 className="
              text-[#102f6e]
-             font-semibold
+             
              leading-tight
              text-[34px]
              md:text-[42px]
@@ -90,15 +97,15 @@ const router = useRouter();
  
            {/* Sub-text */}
            <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-6">
-               Struggling with Wegovy side effects? 
+               Complete guide to Mounjaro for weight loss.
            </p>
  
            <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-             Discover safe, simple solutions, expert guidance
+             Learn side effects, dosage safety, management tips,
            </p>
  
            <p className="text-[#375C7A] text-[17px] leading-[1.8] mt-4">
-             & proven weight loss strategies with FitYou.
+             hydration, diet and cost insights
 
            </p>
  
@@ -304,7 +311,7 @@ const router = useRouter();
  {/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) public\guide\HowtoManageMounjarosideeffectUpdated.png---------- */}
  <div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
    <Image
-     src="/guide/HowtoManageMounjarosideeffectUpdated.png" 
+     src="/guide2/5.2.jpeg" 
      alt="Wegovy dosage schedule header"
      width={1200}
      height={400}
@@ -416,7 +423,7 @@ const router = useRouter();
 {/* ---------- WEGOVY TOP HEADER IMAGE (AKTIVE STYLE) public\guide\what-are-effectOf-Mounjaro.png---------- */}
  <div className="max-w-4xl mx-auto px-4 mb-6 mt-2">
    <Image
-     src="/guide/what-are-effectOf-Mounjaro.png" 
+     src="/guide2/5.3.jpeg" 
      alt="Wegovy dosage schedule header"
      width={1200}
      height={400}
