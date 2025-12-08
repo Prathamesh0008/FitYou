@@ -6,6 +6,7 @@ import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
 import { Laila } from "next/font/google";
 import FloatingButton from "@/components/chatbot/FloatingButton";
+import PreventZoom from "@/components/PreventZoom";
 
 export const metadata = {
   title: "Fityou",
@@ -20,8 +21,6 @@ export const metadata = {
   },
 };
 
-
-
 // Load Laila font
 const laila = Laila({
   subsets: ["latin"],
@@ -34,8 +33,15 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={laila.variable} // Apply font variable
+      className={laila.variable}
     >
+      <head>
+        {/* Add only this meta tag */}
+        <meta 
+          name="viewport" 
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
+        />
+      </head>
       <body
         className="
           font-laila 
@@ -46,6 +52,7 @@ export default function RootLayout({ children }) {
         "
       >
         <AuthProvider>
+          <PreventZoom />
           <RouteLoader />
           <Navbar />
 
@@ -61,6 +68,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-
-

@@ -9,7 +9,72 @@
 @import "tailwindcss";
 
 /* ------------------------------------------ */
-/* 3) GLOBAL STYLES USING OUTFIT              */
+/* 3) ZOOM PREVENTION ONLY - NO OTHER CHANGES */
+/* ------------------------------------------ */
+
+/* Prevent zoom on iOS */
+html {
+  touch-action: manipulation; /* Disables double-tap zoom */
+  -webkit-text-size-adjust: 100%; /* Prevents text zoom */
+  text-size-adjust: 100%;
+}
+
+/* Ensure inputs don't cause zoom on iOS */
+input,
+textarea,
+select {
+  font-size: 16px !important; /* Prevents iOS zoom on focus */
+  max-height: 999999px; /* Fix for iOS */
+}
+
+/* For iOS Safari specifically */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  
+  /* Prevent zoom on focus */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    font-size: 16px !important;
+  }
+}
+
+/* Disable text selection globally */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection only in inputs and textareas */
+input,
+textarea,
+[contenteditable="true"] {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+/* Prevent highlighting on tap */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent overscroll effects */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* END OF ZOOM PREVENTION - YOUR ORIGINAL CSS BELOW */
+
+/* ------------------------------------------ */
+/* 4) GLOBAL STYLES USING OUTFIT              */
 /* ------------------------------------------ */
 html {
   /* font-family: "Outfit", sans-serif; */
@@ -17,6 +82,17 @@ html {
 }
 :root {
   --font-laila: 'Laila', sans-serif;
+  
+}
+p{
+  
+  /* font-family: "raleway"; */
+ color: #002074 !important;
+ font-weight: 400;
+
+}
+h2{
+  color: #002074 !important;
 }
 
 .font-laila {
@@ -39,7 +115,7 @@ html.dark .text-light-primary {
 }
 
 /* ------------------------------------------ */
-/* 4) LOADING BARS / ANIMATIONS               */
+/* 5) LOADING BARS / ANIMATIONS               */
 /* ------------------------------------------ */
 
 .bar {
@@ -72,10 +148,8 @@ html.dark .text-light-primary {
   }
 }
 
-
 /* Fade-in used for bubbles (optional) */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-

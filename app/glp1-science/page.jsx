@@ -151,7 +151,7 @@ export default function Glp1SciencePage() {
 `}</style>
 
 
-      <div className="min-h-screen bg-[#F7FAFF] font-laila text-[#375C7A] ">
+      <div className="min-h-screen bg-[#F7FBFC] font-laila text-[#375C7A] ">
         {/* ---------------- HERO SECTION ---------------- */}
     
         <section className="max-w-6xl mx-auto px-4 pt-24 pb-20 grid md:grid-cols-2 gap-10 items-center">
@@ -829,16 +829,13 @@ export default function Glp1SciencePage() {
           id="routine"
           className="max-w-5xl mx-auto px-4 pt-10 pb-24"
         >
-          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6 max-w-[650px]">
+          <h2 className="text-3xl md:text-[40px]  text-[#0D4F8B] mb-6 max-w-[650px]">
             How you can make the most out of your routine
           </h2>
 
           <div className="max-w-[650px]">
             <p className="text-[18px] text-[#375C7A] leading-[1.7] mb-10">
-              Understanding how your hunger rhythm works is only the first step. To
-              see meaningful changes, pairing this knowledge with supportive habits
-              can amplify your progress and make your day-to-day routine feel
-              easier.
+              While taking GLP-1 is the first step towards achieving your weight loss goals, you do need to implement certain diet and lifestyle changes in order to get the most out of your treatment..
             </p>
           </div>
 

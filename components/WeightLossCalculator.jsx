@@ -48,7 +48,7 @@ export default function WeightLossCalculator() {
 
         {/* LEFT SIDE */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0D4F8B] leading-snug">
+          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] leading-snug">
             A proven result of{" "}
             <span className="font-extrabold">21% weight loss</span>{" "}
             in 16 months. Curious as to how much you could lose?

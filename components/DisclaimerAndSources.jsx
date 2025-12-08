@@ -6,6 +6,7 @@ export default function DisclaimerAndSources() {
   return (
     <section className="bg-[#F5FAFF] text-[#12355B] px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
       <div className="max-w-5xl mx-auto">
+        
         {/* Heading */}
         <h2 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6">
           Disclaimer and sources
@@ -36,9 +37,9 @@ export default function DisclaimerAndSources() {
               href="#"
               className="text-[#0D4F8B] underline underline-offset-2 hover:text-[#083862]"
             >
-              [2] Jastreboff, A. M., Aronne, L. J., Ahmad, N. N., Wharton, S., Connery, L., Alves, B., Kiyosue, A., Zhang,
-              S., Liu, B., Bunck, M. C., & Stefanski, A. (2022). Tirzepatide once weekly for the treatment of obesity.
-              New England Journal of Medicine, 387(3), 205–216. https://doi.org/10.1056/nejmoa2206038
+              [2] Jastreboff, A. M., Aronne, L. J., Ahmad, N. N., Wharton, S.,
+              Connery, L., Alves, B., Kiyosue, A., Zhang, S., Liu, B., Bunck, M. C., & Stefanski, A. (2022).
+              Tirzepatide once weekly for the treatment of obesity. New England Journal of Medicine.
             </a>
           </p>
         </div>
@@ -50,19 +51,24 @@ export default function DisclaimerAndSources() {
 
         {/* Buttons */}
         <div className="mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+
+          {/* ✔ Linked to Quiz Page */}
           <Link
-            href="#"
+            href="/quiz"
             className="w-full sm:w-auto min-w-[240px] text-center rounded-md bg-[#5AAAC4] hover:bg-[#4B93AC] text-white font-semibold py-3 px-6 shadow-md transition-colors"
           >
             Start consultation
           </Link>
+
+          {/* ✔ Linked to Program Page */}
           <Link
-            href="#"
+            href="/program"
             className="w-full sm:w-auto min-w-[240px] text-center rounded-md border border-[#F3B88A] bg-[#FFE7CF] hover:bg-[#FFD8B0] text-[#12355B] font-semibold py-3 px-6 shadow-md transition-colors"
           >
             View our programme
           </Link>
         </div>
+
       </div>
     </section>
   );

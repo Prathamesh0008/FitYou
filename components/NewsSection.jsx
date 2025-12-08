@@ -83,7 +83,7 @@ export default function NewsSection() {
     <section className="bg-[#FBF6EE] py-20 font-laila">
       <div className="max-w-6xl mx-auto px-4">
         {/* TITLE */}
-        <h2 className="text-[40px] text-[#0D336A] font-bold mb-12 leading-tight">
+        <h2 className="text-[40px] text-[#0D336A]  mb-12 leading-tight">
           The breakthrough in weight loss medication <br />
           has hit the news big time.
         </h2>

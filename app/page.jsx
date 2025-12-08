@@ -1,6 +1,7 @@
 "use client";
 
 import BrainTrickSection from "@/components/BrainTrickSection";
+import ClinicalGraphSection from "@/components/ClinicalGraphSection";
 import DisclaimerAndSources from "@/components/DisclaimerAndSources";
 import HealthGuide from "@/components/HealthGuide";
 import HeroSnapshotSection from "@/components/hero/HeroSnapshotSection";
@@ -71,7 +72,7 @@ export default function HomePage() {
       {/* <Splash /> */}
       <ScienceSection/>
       <BrainTrickSection/>
-
+    <ClinicalGraphSection/>
       {/* HERO */}
          <HeroSnapshotSection
         benefits={[
@@ -317,130 +318,7 @@ export default function HomePage() {
       </section>
 
       {/* CLINICAL TRIALS SECTION */}
-      <section className="relative overflow-hidden py-24">
-        {/* WAVE BACKGROUND */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#E9F3FF] to-white">
-          <svg
-            className="absolute top-0 w-full opacity-80"
-            viewBox="0 0 1440 320"
-          >
-            <path
-              fill="#E9F3FF"
-              d="M0,64L80,74.7C160,85,320,107,480,138.7C640,171,800,213,960,234.7C1120,256,1280,256,1360,256L1440,256V0H0Z"
-            />
-          </svg>
-        </div>
-
-        {/* MAIN CONTENT */}
-        <div className="relative max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
-          {/* LEFT – GRAPH (STATIC SVG) */}
-          <div className="flex justify-center">
-            <div className="relative">
-              {/* SVG GRAPH */}
-              <svg width="260" height="400" viewBox="0 0 260 380">
-                {/* Soft background */}
-                <rect
-                  x="0"
-                  y="0"
-                  width="260"
-                  height="380"
-                  fill="white"
-                  fillOpacity="0.9"
-                />
-
-                {/* Faded vertical lines */}
-                <line
-                  x1="90"
-                  y1="40"
-                  x2="90"
-                  y2="340"
-                  stroke="#E9F3FF"
-                  strokeWidth="2"
-                />
-                <line
-                  x1="170"
-                  y1="40"
-                  x2="170"
-                  y2="340"
-                  stroke="#E9F3FF"
-                  strokeWidth="2"
-                />
-
-                {/* ORANGE CURVE */}
-                <path
-                  d="M20 80 C 80 140, 140 180, 220 240"
-                  stroke="#F5C8A4"
-                  strokeWidth="3"
-                  fill="none"
-                />
-
-                {/* BLUE CURVE */}
-                <path
-                  d="M20 80 C 60 200, 120 260, 220 310"
-                  stroke="#0D4F8B"
-                  strokeWidth="4"
-                  fill="none"
-                />
-
-                {/* Data points */}
-                <circle cx="20" cy="80" r="5" fill="#0D4F8B" />
-                <circle cx="120" cy="220" r="5" fill="#0D4F8B" />
-                <circle cx="220" cy="310" r="5" fill="#0D4F8B" />
-
-                {/* Bottom labels */}
-                <text x="10" y="360" fontSize="12" fill="#60738C">
-                  Day 1
-                </text>
-                <text x="95" y="360" fontSize="12" fill="#60738C">
-                  Month 6
-                </text>
-                <text x="185" y="360" fontSize="12" fill="#60738C">
-                  Month 16
-                </text>
-              </svg>
-
-              {/* TOP LABEL */}
-              <div className="absolute left-[75px] top-[115px] w-44 px-3 py-2 bg-[#0D4F8B] text-white text-xs font-bold rounded-md shadow-lg">
-                10% body weight
-                <br />
-                in 6 months²
-                <div className="absolute left-6 top-full w-0 h-0 border-l-8 border-r-8 border-t-8 border-t-[#0D4F8B] border-l-transparent border-r-transparent" />
-              </div>
-
-              {/* BOTTOM LABEL */}
-              <div className="absolute left-[90px] top-[260px] w-44 px-3 py-2 bg-[#0D4F8B] text-white text-xs font-bold rounded-md shadow-lg">
-                21% body weight
-                <br />
-                in 16 months²
-                <div className="absolute left-6 -top-3 w-0 h-0 border-l-8 border-r-8 border-b-8 border-b-[#0D4F8B] border-l-transparent border-r-transparent" />
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT – TEXT CONTENT */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0D4F8B] leading-snug">
-              Clinical trials show that with
-              <br />
-              our approach, you lose
-              <br />
-              <span className="relative inline-block">
-                <span className="relative z-10 font-extrabold">
-                  5 times more weight
-                </span>
-                <span className="absolute bottom-1 left-0 w-full h-2 bg-[#FBD1A2] -z-0 rounded-full" />
-              </span>
-              <br />
-              than with diet &amp; exercise alone.
-            </h2>
-
-            <p className="mt-4 text-sm text-[#375C7A] max-w-md">
-              Published clinical trial (2022): 2,539 adults over 72 weeks,
-              comparing our programme vs placebo.
-            </p>
-          </div>
-        </div>
-      </section>
+     
       <StepsSection/>
 
       {/* WHAT FITYOU IS NOT */}
