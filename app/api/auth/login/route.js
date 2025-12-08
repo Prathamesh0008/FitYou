@@ -1,43 +1,41 @@
-import { localDB } from "@/lib/localDB";
+import  dbConnect  from "@/lib/db";
+import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
+    await dbConnect();
+
     const { email, password } = await req.json();
 
-    const user = localDB.users.find((u) => u.email === email);
+    const user = await User.findOne({ email });
     if (!user) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
     }
 
-    const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT_SECRET || "dev-secret",
-      { expiresIn: "7d" }
-    );
-
     const response = NextResponse.json({
-      message: "Logged in",
-      user: { id: user.id, name: user.name, email: user.email },
+      message: "Logged in successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
 
-    response.cookies.set("token", token, {
+    // 🔥 SET THE CORRECT AUTH COOKIE
+    response.cookies.set("fityou_auth", user.email, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       path: "/",
-      maxAge: 7 * 24 * 60 * 60,
+      maxAge: 30 * 24 * 60 * 60, // 30 days
     });
 
     return response;

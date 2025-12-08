@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import { IoClose } from "react-icons/io5";
@@ -7,9 +9,12 @@ export default function LoginModal({ open, onClose }) {
   if (!open) return null;
 
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const sendOtp = async () => {
     if (!email) return alert("Enter your email");
+
+    setLoading(true);
 
     try {
       const res = await fetch("/api/send-otp", {
@@ -20,26 +25,26 @@ export default function LoginModal({ open, onClose }) {
 
       const data = await res.json();
 
-      // IMPORTANT: Backend returns { success: true }, not data.ok
       if (!data.success) {
-        alert("Failed to send OTP");
+        alert(data.error || "Failed to send OTP");
         return;
       }
 
-      // Store email globally for OtpModal
-      window.currentEmail = email;
+      // Store email in session storage (more secure than global)
+      sessionStorage.setItem("fityou_pending_email", email);
 
       // Close this modal
       onClose();
 
       // Open OTP modal
-    setTimeout(() => {
-  window.dispatchEvent(new Event("open-otp"));
-}, 20);
-
+      setTimeout(() => {
+        window.dispatchEvent(new Event("open-otp"));
+      }, 20);
     } catch (error) {
       console.error("OTP Error:", error);
       alert("Failed to send OTP.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,15 +119,17 @@ export default function LoginModal({ open, onClose }) {
 
           {/* SEND CODE BUTTON */}
           <button
+            disabled={loading || !email}
             className="
               w-full mt-6 py-3.5 
               rounded-[10px]
-              bg-[#8DBFC9] hover:bg-[#7EB4C0]
+              bg-[#8DBFC9] hover:bg-[#7EB4C0] disabled:opacity-50
               text-[#0B2340] text-[16px] font-medium
+              transition
             "
             onClick={sendOtp}
           >
-            Send code
+            {loading ? "Sending..." : "Send code"}
           </button>
         </div>
       </div>

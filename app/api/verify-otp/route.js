@@ -1,97 +1,50 @@
-// import { NextResponse } from "next/server";
-
-// export async function POST(req) {
-//   const { email, otp } = await req.json();
-
-//   if (!global.tempEmailOtp) {
-//     return NextResponse.json({ error: "No OTP found" }, { status: 400 });
-//   }
-
-//   if (
-//     global.tempEmailOtp.email === email &&
-//     global.tempEmailOtp.otp === otp
-//   ) {
-//     const response = NextResponse.json({ success: true });
-
-//     // Create login cookie
-//     response.cookies.set("token", email, {
-//       httpOnly: true,
-//       secure: true,
-//       path: "/",
-//       maxAge: 60 * 60 * 24 * 7, // 7 days
-//     });
-
-//     return response;
-//   }
-
-//   return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
-// }
-
-// ************************Email OTP*************************New **************
-
-// import { NextResponse } from "next/server";
-
-// export async function POST(req) {
-//   const { email, otp } = await req.json();
-
-//   // SAFETY CHECK
-//   if (!email || !otp) {
-//     return NextResponse.json({ success: false, error: "Missing fields" });
-//   }
-
-//   // CHECK IF TEMP OTP EXISTS
-//   if (
-//     !global.tempEmailOtp ||
-//     global.tempEmailOtp.email !== email ||
-//     global.tempEmailOtp.otp !== otp
-//   ) {
-//     return NextResponse.json({
-//       success: false,
-//       error: "Invalid or expired OTP",
-//     });
-//   }
-
-//   // OPTIONAL: clear stored otp after success
-//   global.tempEmailOtp = null;
-
-//   return NextResponse.json({ success: true });
-// }
-
-
+import dbConnect from "@/lib/db";
+import User from "@/models/User";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export async function POST(req) {
-  const { email, otp } = await req.json();
+  try {
+    await dbConnect();
 
-  if (!email || !otp) {
-    return NextResponse.json({ success: false });
+    const { email, otp } = await req.json();
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return NextResponse.json({ success: false, error: "User missing" });
+    }
+
+    if (user.otpCode !== otp || user.otpExpires < Date.now()) {
+      return NextResponse.json({ success: false, error: "Invalid OTP" });
+    }
+
+    // Clear OTP
+    user.otpCode = null;
+    await user.save();
+
+    // Create success response
+    const response = NextResponse.json({ success: true, user: {
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      dob: user.dob,
+      address: user.address
+    }});
+
+    // 🔥 SET COOKIE PROPERLY (this is the correct way)
+    const cookieStore = await cookies();
+    cookieStore.set("fityou_auth", email, {
+      httpOnly: true,
+      secure: false,       // true in production
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
+
+  } catch (err) {
+    console.log("OTP VERIFY ERROR:", err);
+    return NextResponse.json({ success: false }, { status: 500 });
   }
-
-  // Check OTP
-  if (
-    !global.tempEmailOtp ||
-    global.tempEmailOtp.email !== email ||
-    global.tempEmailOtp.otp !== otp
-  ) {
-    return NextResponse.json({ success: false });
-  }
-
-  // Clear OTP
-  global.tempEmailOtp = null;
-
-  // Create JWT token
-  const token = jwt.sign({ email }, "MY_SECRET_KEY", { expiresIn: "7d" });
-
-  // Store token in cookie
-  const response = NextResponse.json({ success: true });
-
-  response.cookies.set("fityou_token", token, {
-    httpOnly: true,
-    secure: false,
-    sameSite: "lax",
-    path: "/",
-  });
-
-  return response;
 }

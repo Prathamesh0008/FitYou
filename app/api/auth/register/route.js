@@ -1,8 +1,11 @@
-import { localDB } from "@/lib/localDB";
+import  dbConnect  from "@/lib/db";
+import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   try {
+    await dbConnect();
+
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
@@ -12,7 +15,8 @@ export async function POST(req) {
       );
     }
 
-    const existing = localDB.users.find((u) => u.email === email);
+    // Check if user already exists
+    const existing = await User.findOne({ email });
     if (existing) {
       return Response.json(
         { error: "Email already registered" },
@@ -20,23 +24,22 @@ export async function POST(req) {
       );
     }
 
+    // Hash password
     const hashed = await bcrypt.hash(password, 10);
 
-    const newUser = {
-      id: Date.now().toString(),
+    // Create user in MongoDB
+    const newUser = await User.create({
       name,
       email,
       password: hashed,
       role: "user",
-    };
-
-    localDB.users.push(newUser);
+    });
 
     return Response.json(
       {
         message: "Registered successfully",
         user: {
-          id: newUser.id,
+          id: newUser._id,
           name: newUser.name,
           email: newUser.email,
         },

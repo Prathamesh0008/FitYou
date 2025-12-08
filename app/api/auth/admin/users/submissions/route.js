@@ -1,27 +1,34 @@
-import jwt from "jsonwebtoken";
-import { localDB } from "@/lib/localDB";
+
+import  dbConnect  from "@/lib/db";
+import User from "@/models/User";
+// import { verifyToken } from "@/lib/auth";
 
 function requireAdmin(req) {
-  const token = req.cookies.get("token")?.value;
+  const token = req.cookies.get("fityou_token")?.value;
   if (!token) throw new Error("No token");
-  const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev-secret");
-  const user = localDB.users.find((u) => u.id === decoded.id);
-  if (!user || user.role !== "admin") throw new Error("Not admin");
-  return user;
+
+  const decoded = verifyToken(token);
+  if (!decoded) throw new Error("Invalid token");
+
+  return decoded;
 }
 
 export async function GET(req) {
   try {
-    requireAdmin(req);
+    await dbConnect();
 
-    const submissions = localDB.quizSubmissions.map((s) => {
-      const user = localDB.users.find((u) => u.id === s.userId);
-      return {
-        ...s,
-        userName: user?.name || "Unknown",
-        userEmail: user?.email || "",
-      };
-    });
+    const decoded = requireAdmin(req);
+
+    // Check if user is admin
+    const adminUser = await User.findById(decoded.id);
+    if (!adminUser || adminUser.role !== "admin") {
+      throw new Error("Not admin");
+    }
+
+    // Get all users with quiz completed
+    const submissions = await User.find({
+      quizCompleted: true,
+    }).select("-password");
 
     return Response.json({ submissions });
   } catch (e) {

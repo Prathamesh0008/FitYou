@@ -1,189 +1,22 @@
-// "use client";
-
-// import { IoClose } from "react-icons/io5";
-// import { useState, useEffect, useRef } from "react";
-
-// export default function OtpModal({ open, onClose }) {
-//   if (!open) return null;
-
-//   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-//   const [timer, setTimer] = useState(30);
-//   const inputRefs = useRef([]);
-
-//   // COUNTDOWN TIMER
-//   useEffect(() => {
-//     if (timer === 0) return;
-//     const interval = setInterval(() => setTimer(t => t - 1), 1000);
-//     return () => clearInterval(interval);
-//   }, [timer]);
-
-//   // CHANGE HANDLER
-//   const handleChange = (value, index) => {
-//     if (!/^\d*$/.test(value)) return;
-
-//     const newOtp = [...otp];
-//     newOtp[index] = value.slice(-1);
-//     setOtp(newOtp);
-
-//     if (value && index < 5) {
-//       inputRefs.current[index + 1].focus();
-//     }
-//   };
-
-//   // BACKSPACE LOGIC
-//   const handleBackspace = (value, index) => {
-//     if (value === "" && index > 0) {
-//       inputRefs.current[index - 1].focus();
-//     }
-//   };
-
-//   // RESEND OTP
-//   const handleResend = async () => {
-//     setTimer(30);
-//     const email = window.currentEmail;
-
-//     await fetch("/api/send-otp", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ email }),
-//     });
-//   };
-
-//   // VERIFY OTP
-//   const verifyOtp = async () => {
-//     const code = otp.join("");
-
-//     if (code.length !== 6) {
-//       alert("Please enter your 6-digit OTP");
-//       return;
-//     }
-
-//     const email = window.currentEmail;
-
-//     const res = await fetch("/api/verify-otp", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ email, otp: code }),
-//     });
-
-//     const data = await res.json();
-
-//     // ❌ FIXED HERE → check success not ok
-//     if (!data.success) {
-//       alert("Invalid or expired OTP");
-//       return;
-//     }
-
-//     // SUCCESS
-//     onClose();
-//     window.dispatchEvent(new Event("otp-success"));
-//   };
-
-//   return (
-//     <>
-//       {/* BACKDROP */}
-//       <div
-//         className="fixed inset-0 bg-black/30 backdrop-blur-[2px] z-40"
-//         onClick={onClose}
-//       />
-
-//       {/* MODAL */}
-//       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-//         <div className="bg-white rounded-[18px] shadow-[0_4px_30px_rgba(0,0,0,0.12)]
-//           w-full max-w-[460px] p-10 relative">
-
-//           {/* CLOSE BUTTON */}
-//           <button
-//             className="absolute top-5 right-5 text-[#0D4F8B] hover:text-[#062a50]"
-//             onClick={onClose}
-//           >
-//             <IoClose size={28} />
-//           </button>
-
-//           {/* TITLE */}
-//           <h2 className="text-center text-[28px] font-semibold text-[#0D4F8B]">
-//             Enter passcode
-//           </h2>
-
-//           <p className="text-center text-[15px] text-[#4d4d4d] mt-3 leading-relaxed">
-//             We've sent a 6-digit passcode to your email.
-//           </p>
-
-//           {/* OTP INPUTS */}
-//           <div className="flex justify-between mt-7 px-4">
-//             {otp.map((digit, index) => (
-//               <input
-//                 key={index}
-//                 ref={el => (inputRefs.current[index] = el)}
-//                 type="text"
-//                 maxLength="1"
-//                 value={digit}
-//                 onChange={e => handleChange(e.target.value, index)}
-//                 onKeyDown={e => {
-//                   if (e.key === "Backspace") {
-//                     handleBackspace(e.target.value, index);
-//                   }
-//                 }}
-//                 className="
-//                   w-12 h-12 text-center border border-[#D0D7E2]
-//                   rounded-[10px] text-[20px] font-semibold
-//                   focus:outline-none focus:ring-2 focus:ring-[#0D4F8B]/40
-//                 "
-//               />
-//             ))}
-//           </div>
-
-//           {/* TIMER */}
-//           <div className="text-center mt-4 text-[14px] text-[#4d4d4d]">
-//             {timer > 0 ? (
-//               <>Resend code in <span className="font-semibold">{timer}s</span></>
-//             ) : (
-//               <button
-//                 className="text-[#0D4F8B] font-semibold hover:underline"
-//                 onClick={handleResend}
-//               >
-//                 Resend code
-//               </button>
-//             )}
-//           </div>
-
-//           {/* VERIFY BUTTON */}
-//           <button
-//             className="
-//               w-full mt-6 py-3.5 
-//               rounded-[10px]
-//               bg-[#8DBFC9] hover:bg-[#7EB4C0]
-//               text-[#0B2340] text-[16px] font-medium tracking-wide
-//             "
-//             onClick={verifyOtp}
-//           >
-//             Verify
-//           </button>
-
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-
-// components/OtpModal.jsx
 "use client";
 
 import { IoClose } from "react-icons/io5";
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/components/AuthProvider";
+import { useRouter } from "next/navigation";
 
 export default function OtpModal({ open, onClose }) {
   if (!open) return null;
 
   const { login } = useAuth();
+  const router = useRouter();
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(30);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const inputRefs = useRef([]);
 
-  // COUNTDOWN
   useEffect(() => {
     if (timer === 0) return;
     const id = setInterval(() => setTimer((t) => t - 1), 1000);
@@ -210,50 +43,67 @@ export default function OtpModal({ open, onClose }) {
 
   const handleResend = async () => {
     setTimer(30);
+    const email = sessionStorage.getItem("fityou_pending_email");
 
-    const email = window.currentEmail;
-    if (!email) return;
+    if (!email) {
+      setError("Email not found. Please try again.");
+      return;
+    }
 
-    await fetch("/api/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+    try {
+      await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+    } catch (err) {
+      console.error("Resend error:", err);
+    }
   };
 
   const verifyOtp = async () => {
     const code = otp.join("");
+
     if (code.length !== 6) {
-      alert("Please enter your 6-digit OTP");
+      setError("Please enter your 6-digit OTP");
       return;
     }
 
-    const email = window.currentEmail;
+    const email = sessionStorage.getItem("fityou_pending_email");
     if (!email) {
-      alert("Missing email. Please try logging in again.");
+      setError("Email not found. Please try again.");
       return;
     }
 
-    const res = await fetch("/api/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp: code }),
-    });
+    setLoading(true);
+    setError("");
 
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp: code }),
+      });
 
-    if (!data.success) {
-      alert("Invalid or expired OTP");
-      return;
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.error || "Invalid or expired OTP");
+        return;
+      }
+
+      login({ email });
+      sessionStorage.removeItem("fityou_pending_email");
+
+      onClose();
+
+      window.dispatchEvent(new Event("otp-success"));
+    } catch (err) {
+      console.error("Verify error:", err);
+      setError("Failed to verify OTP");
+    } finally {
+      setLoading(false);
     }
-
-    // ✅ SUCCESS: save email + update context
-    login(email);
-
-    // close OTP modal
-    onClose();
-    // show success tick + redirect (Navbar effect is already listening)
-    window.dispatchEvent(new Event("otp-success"));
   };
 
   return (
@@ -265,63 +115,83 @@ export default function OtpModal({ open, onClose }) {
       />
 
       {/* MODAL */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="bg-white rounded-[18px] shadow-[0_4px_30px_rgba(0,0,0,0.12)]
-            w-full max-w-[460px] p-10 relative"
+          className="
+            bg-white rounded-[18px] shadow-[0_4px_30px_rgba(0,0,0,0.12)]
+            w-full max-w-[460px] 
+            p-6 sm:p-10 
+            relative
+          "
         >
           {/* CLOSE */}
           <button
-            className="absolute top-5 right-5 text-[#0D4F8B] hover:text-[#062a50]"
-            onClick={onClose}
-          >
-            <IoClose size={28} />
-          </button>
+  className="
+    absolute 
+    top-4 right-4    
+    sm:top-5 sm:right-5   /* tablets */
+    md:top-5 md:right-5   /* laptops + desktops */
+    text-[#0D4F8B] hover:text-[#062a50]
+  "
+  onClick={onClose}
+>
+  <IoClose className="w-6 h-6 sm:w-7 sm:h-7" /> 
+</button>
+
 
           {/* TITLE */}
-          <h2 className="text-center text-[28px] font-semibold text-[#0D4F8B]">
+          <h2 className="text-center text-[24px] sm:text-[28px] font-semibold text-[#0D4F8B]">
             Enter passcode
           </h2>
 
-          <p className="text-center text-[15px] text-[#4d4d4d] mt-3 leading-relaxed">
+          <p className="text-center text-[14px] sm:text-[15px] text-[#4d4d4d] mt-3 leading-relaxed">
             We&apos;ve sent a 6-digit passcode to your email.
           </p>
 
           {/* OTP BOXES */}
-          <div className="flex justify-between mt-7 px-4">
-            {otp.map((digit, index) => (
-              <input
-                key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
-                type="text"
-                maxLength="1"
-                value={digit}
-                onChange={(e) => handleChange(e.target.value, index)}
-                onKeyDown={(e) => {
-                  if (e.key === "Backspace") {
-                    handleBackspace(e.target.value, index);
-                  }
-                }}
-                className="
-                  w-12 h-12 text-center border border-[#D0D7E2]
-                  rounded-[10px] text-[20px] font-semibold
-                  focus:outline-none focus:ring-2 focus:ring-[#0D4F8B]/40
-                "
-              />
-            ))}
-          </div>
+         {/* OTP BOXES */}
+<div className="flex justify-center gap-2 xs:gap-3 sm:gap-4 mt-7 flex-nowrap">
+  {otp.map((digit, index) => (
+    <input
+      key={index}
+      ref={(el) => (inputRefs.current[index] = el)}
+      type="text"
+      maxLength="1"
+      value={digit}
+      onChange={(e) => handleChange(e.target.value, index)}
+      onKeyDown={(e) => {
+        if (e.key === "Backspace") {
+          handleBackspace(e.currentTarget.value, index);
+        }
+      }}
+      className="
+        w-10 h-10 
+        xs:w-11 xs:h-11 
+        sm:w-12 sm:h-12
+        text-center text-xl sm:text-2xl font-bold
+        border-2 border-[#D0D7E2] rounded-lg
+        focus:outline-none focus:border-[#0D4F8B]
+      "
+    />
+  ))}
+</div>
+
+
+          {/* ERROR */}
+          {error && (
+            <p className="text-red-500 text-[12px] mt-3 text-center">
+              {error}
+            </p>
+          )}
 
           {/* TIMER */}
-          <div className="text-center mt-4 text-[14px] text-[#4d4d4d]">
+          <div className="text-center mt-6 text-sm text-[#7A8BA4]">
             {timer > 0 ? (
-              <>
-                Resend code in{" "}
-                <span className="font-semibold">{timer}s</span>
-              </>
+              <p>Resend code in {timer}s</p>
             ) : (
               <button
-                className="text-[#0D4F8B] font-semibold hover:underline"
                 onClick={handleResend}
+                className="text-[#0D4F8B] font-semibold hover:underline"
               >
                 Resend code
               </button>
@@ -330,15 +200,16 @@ export default function OtpModal({ open, onClose }) {
 
           {/* VERIFY BUTTON */}
           <button
-            className="
-              w-full mt-6 py-3.5 
-              rounded-[10px]
-              bg-[#8DBFC9] hover:bg-[#7EB4C0]
-              text-[#0B2340] text-[16px] font-medium tracking-wide
-            "
+            disabled={loading || otp.join("").length !== 6}
             onClick={verifyOtp}
+            className="
+              w-full mt-8 py-3.5 rounded-[10px]
+              bg-[#8DBFC9] hover:bg-[#7EB4C0] disabled:opacity-50
+              text-[#0B2340] text-[15px] sm:text-[16px] font-medium
+              transition
+            "
           >
-            Verify
+            {loading ? "Verifying..." : "Verify"}
           </button>
         </div>
       </div>

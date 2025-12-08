@@ -18,63 +18,48 @@ import {
   LogOut,
 } from "lucide-react";
 
-const PROFILE_KEY_PREFIX = "fityou_profile_";
-
 export default function ProfilePage() {
   const router = useRouter();
   const { user, logout } = useAuth();
 
-  const [email, setEmail] = useState(null);
   const [activeTab, setActiveTab] = useState("personal");
   const [profile, setProfile] = useState(null);
 
-useEffect(() => {
-  const handler = (e) => {
-    setActiveTab(e.detail); // switch tab
-  };
-  window.addEventListener("profile-tab-change", handler);
-  return () => window.removeEventListener("profile-tab-change", handler);
-}, []);
-
-
-  // 1) Get logged-in email
+  // Allow navbar slide-in menu to switch profile tabs
   useEffect(() => {
-    if (!user?.email && typeof window === "undefined") return;
+    const handler = (e) => {
+      setActiveTab(e.detail);
+    };
+    window.addEventListener("profile-tab-change", handler);
+    return () => window.removeEventListener("profile-tab-change", handler);
+  }, []);
 
-    const stored =
-      user?.email || localStorage.getItem("fityou_email") || null;
-
-    if (!stored) {
+  // Seed profile from logged-in user (DB)
+  useEffect(() => {
+    if (!user) {
+      // if not logged in, go home
       router.push("/");
       return;
     }
 
-    setEmail(stored);
-  }, [user, router]);
+    setProfile((prev) => {
+      if (prev) return prev; // don't overwrite edits
 
-  // 2) Load profile from localStorage
-  useEffect(() => {
-    if (!email || typeof window === "undefined") return;
+      return {
+        email: user.email,
+        name: user.name || "",
+        phone: user.phone || "",
+        dob: user.dob || "",
+        address:
+          user.address || {
+            line1: "",
+            line2: "",
+            city: "",
+            state: "",
+            postalCode: "",
+          },
 
-    const key = PROFILE_KEY_PREFIX + email;
-    const raw = localStorage.getItem(key);
-
-    if (raw) {
-      setProfile(JSON.parse(raw));
-    } else {
-      // default profile
-      setProfile({
-        email,
-        name: "",
-        phone: "",
-        dob: "",
-        address: {
-          line1: "",
-          line2: "",
-          city: "",
-          state: "",
-          postalCode: "",
-        },
+        // Frontend-only dummy data (NOT in DB)
         shipmentsUpcoming: [
           { id: "FTY-1001", date: "05 Dec 2025", status: "Preparing" },
           { id: "FTY-1002", date: "20 Dec 2025", status: "Scheduled" },
@@ -86,20 +71,12 @@ useEffect(() => {
           emailUpdates: true,
           smsUpdates: false,
         },
-      });
-    }
-  }, [email]);
-
-  // 3) Helper: save profile
-  const updateProfile = (patch) => {
-    setProfile((prev) => {
-      const next = { ...prev, ...patch };
-      if (typeof window !== "undefined" && email) {
-        const key = PROFILE_KEY_PREFIX + email;
-        localStorage.setItem(key, JSON.stringify(next));
-      }
-      return next;
+      };
     });
+  }, [user, router]);
+
+  const updateProfile = (patch) => {
+    setProfile((prev) => ({ ...prev, ...patch }));
   };
 
   if (!profile) {
@@ -111,16 +88,14 @@ useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5FAFD] py-10">
+    <div className=" bg-[#F5FAFD] py-10">
       <h1 className="text-center text-2xl font-semibold text-[#0D4F8B] mb-10">
         Personal details
       </h1>
 
       <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8 px-6">
-
         {/* LEFT SIDEBAR */}
-     <div className="hidden md:block md:col-span-3">
-
+        <div className="hidden md:block md:col-span-3">
           <SidebarItem
             icon={<Package size={18} />}
             label="Upcoming shipment"
@@ -151,7 +126,6 @@ useEffect(() => {
             active={activeTab === "consultation"}
             onClick={() => setActiveTab("consultation")}
           />
-
           <SidebarItem
             icon={<Gift size={18} />}
             label="My subscription"
@@ -164,7 +138,6 @@ useEffect(() => {
             active={activeTab === "benefits"}
             onClick={() => setActiveTab("benefits")}
           />
-
           <SidebarItem
             icon={<User size={18} />}
             label="Personal details"
@@ -200,7 +173,10 @@ useEffect(() => {
         <div className="col-span-12 md:col-span-9">
           <div className="bg-white rounded-xl shadow p-8 min-h-[260px] mr-5">
             {activeTab === "personal" && (
-              <PersonalDetailsCard profile={profile} updateProfile={updateProfile} />
+              <PersonalDetailsCard
+                profile={profile}
+                updateProfile={updateProfile}
+              />
             )}
 
             {activeTab === "address" && (
@@ -222,14 +198,27 @@ useEffect(() => {
             )}
 
             {activeTab === "notifications" && (
-              <NotificationsCard profile={profile} updateProfile={updateProfile} />
+              <NotificationsCard
+                profile={profile}
+                updateProfile={updateProfile}
+              />
             )}
 
-            {activeTab === "subscription" && <PlaceholderCard title="My subscription" />}
-            {activeTab === "benefits" && <PlaceholderCard title="My membership benefits" />}
-            {activeTab === "diary" && <PlaceholderCard title="Weight loss diary + images" />}
-            {activeTab === "messages" && <PlaceholderCard title="Message centre" />}
-            {activeTab === "consultation" && <PlaceholderCard title="Medical consultation" />}
+            {activeTab === "subscription" && (
+              <PlaceholderCard title="My subscription" />
+            )}
+            {activeTab === "benefits" && (
+              <PlaceholderCard title="My membership benefits" />
+            )}
+            {activeTab === "diary" && (
+              <PlaceholderCard title="Weight loss diary + images" />
+            )}
+            {activeTab === "messages" && (
+              <PlaceholderCard title="Message centre" />
+            )}
+            {activeTab === "consultation" && (
+              <PlaceholderCard title="Medical consultation" />
+            )}
           </div>
         </div>
       </div>
@@ -258,35 +247,51 @@ function SidebarItem({ icon, label, active, logout, onClick }) {
   );
 }
 
-function InfoRow({ label, value }) {
-  return (
-    <div className="flex justify-between border-b border-[#E5EDF5] pb-2 mb-2">
-      <span className="text-[#375C7A] text-[14px]">{label}</span>
-      <span className="font-medium text-[#0D4F8B] text-[14px]">{value || "--"}</span>
-    </div>
-  );
-}
-
 function PersonalDetailsCard({ profile, updateProfile }) {
   const [saving, setSaving] = useState(false);
-const [dobPickerOpen, setDobPickerOpen] = useState(false);
-const months = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December"
-];
+  const [dobPickerOpen, setDobPickerOpen] = useState(false);
+  const { login } = useAuth();
 
-const years = Array.from({ length: 120 }, (_, i) => new Date().getFullYear() - i);
+  const handleSave = async () => {
+  setSaving(true);
+  try {
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: profile.name,
+        phone: profile.phone,
+        dob: profile.dob,
+        address: profile.address,
+      }),
+    });
 
-const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    console.log("PROFILE SAVE STATUS", res.status);
 
-const [monthOpen, setMonthOpen] = useState(false);
-const [yearOpen, setYearOpen] = useState(false);
+    const data = await res.json();
+    console.log("PROFILE SAVE DATA", data);
 
-  const handleSave = () => {
-    setSaving(true);
-    setTimeout(() => setSaving(false), 600);
-  };
+    if (data.success) {
+
+      // sync global auth user + local profile
+      login(data.user);
+      updateProfile({
+        name: data.user.name,
+        phone: data.user.phone,
+        dob: data.user.dob,
+        address: data.user.address,
+      });
+    } else {
+      alert(data.error || "Failed to save profile");
+    }
+  } catch (err) {
+    console.error("PROFILE SAVE ERROR:", err);
+    alert("Something went wrong while saving");
+  } finally {
+    setSaving(false);
+  }
+};
+
 
   return (
     <>
@@ -330,41 +335,40 @@ const [yearOpen, setYearOpen] = useState(false);
               className="w-full border border-[#D0D7E2] bg-[#F5FAFD] rounded-lg px-3 py-2 text-sm text-[#7A8BA4]"
             />
           </div>
-<div>
-  <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
-    Date of birth
-  </label>
 
-  <button
-    onClick={() => setDobPickerOpen(true)}
-    className="w-full border border-[#D0D7E2] rounded-lg px-3 py-2 text-sm text-left
+          <div>
+            <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
+              Date of birth
+            </label>
+
+            <button
+              onClick={() => setDobPickerOpen(true)}
+              className="w-full border border-[#D0D7E2] rounded-lg px-3 py-2 text-sm text-left
                text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 
                focus:ring-[#0D4F8B]/40"
-  >
-    {profile.dob ? profile.dob : "Select date"}
-  </button>
-</div>
-
-
+            >
+              {profile.dob ? profile.dob : "Select date"}
+            </button>
+          </div>
         </div>
 
         <button
           onClick={handleSave}
           className="mt-4 inline-flex items-center px-4 py-2 rounded-lg bg-[#0D4F8B] text-white text-sm font-medium hover:bg-[#0b3764]"
         >
-          {saving ? "Saved" : "Save changes"}
+          {saving ? "Saving..." : "Save changes"}
         </button>
-        {dobPickerOpen && (
-  <DobCalendar
-    currentDate={profile.dob}
-    onSelect={(date) => {
-      updateProfile({ dob: date });
-      setDobPickerOpen(false);
-    }}
-    onClose={() => setDobPickerOpen(false)}
-  />
-)}
 
+        {dobPickerOpen && (
+          <DobCalendar
+            currentDate={profile.dob}
+            onSelect={(date) => {
+              updateProfile({ dob: date });
+              setDobPickerOpen(false);
+            }}
+            onClose={() => setDobPickerOpen(false)}
+          />
+        )}
       </div>
     </>
   );
@@ -372,9 +376,50 @@ const [yearOpen, setYearOpen] = useState(false);
 
 function AddressCard({ profile, updateProfile }) {
   const addr = profile.address || {};
+  const [saving, setSaving] = useState(false);
+  const { login } = useAuth();
 
   const setAddress = (patch) =>
     updateProfile({ address: { ...addr, ...patch } });
+
+  const handleSave = async () => {
+  setSaving(true);
+  try {
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: profile.name,
+        phone: profile.phone,
+        dob: profile.dob,
+        address: profile.address,
+      }),
+    });
+
+    console.log("PROFILE SAVE STATUS", res.status);
+
+    const data = await res.json();
+    console.log("PROFILE SAVE DATA", data); // <— see what API returns
+
+    if (data.success && data.user) {
+      login(data.user);
+      updateProfile({
+        name: data.user.name,
+        phone: data.user.phone,
+        dob: data.user.dob,
+        address: data.user.address,
+      });
+    } else {
+      alert(data.error || "Failed to save profile");
+    }
+  } catch (err) {
+    console.error("PROFILE SAVE ERROR:", err);
+    alert("Something went wrong while saving");
+  } finally {
+    setSaving(false);
+  }
+};
+
 
   return (
     <>
@@ -420,6 +465,13 @@ function AddressCard({ profile, updateProfile }) {
         <p className="text-xs text-[#7A8BA4]">
           Your address will be used for future shipments and communication.
         </p>
+
+        <button
+          onClick={handleSave}
+          className="mt-4 inline-flex items-center px-4 py-2 rounded-lg bg-[#0D4F8B] text-white text-sm font-medium hover:bg-[#0b3764]"
+        >
+          {saving ? "Saving..." : "Save address"}
+        </button>
       </div>
     </>
   );
@@ -430,9 +482,7 @@ function ShipmentsCard({ title, shipments }) {
     <>
       <h2 className="text-xl font-semibold text-[#0D4F8B] mb-4">{title}</h2>
       {shipments.length === 0 ? (
-        <p className="text-[14px] text-[#7A8BA4]">
-          No records found yet.
-        </p>
+        <p className="text-[14px] text-[#7A8BA4]">No records found yet.</p>
       ) : (
         <div className="space-y-3">
           {shipments.map((s) => (
@@ -444,9 +494,7 @@ function ShipmentsCard({ title, shipments }) {
                 <div className="font-medium text-[#0D4F8B]">{s.id}</div>
                 <div className="text-[#7A8BA4]">{s.date}</div>
               </div>
-              <div className="text-[#0D4F8B] font-semibold">
-                {s.status}
-              </div>
+              <div className="text-[#0D4F8B] font-semibold">{s.status}</div>
             </div>
           ))}
         </div>
@@ -506,41 +554,40 @@ function PlaceholderCard({ title }) {
     <>
       <h2 className="text-xl font-semibold text-[#0D4F8B] mb-4">{title}</h2>
       <p className="text-[14px] text-[#7A8BA4] leading-relaxed">
-        This section is a placeholder. You can later connect it to your
-        backend (e.g., orders, diary images, consultations) while keeping
-        the same UI layout.
+        This section is a placeholder. You can later connect it to your backend
+        (e.g., orders, diary images, consultations) while keeping the same UI
+        layout.
       </p>
     </>
   );
 }
 
-
+// Simple DOB calendar (same as your version, just reused)
 function DobCalendar({ currentDate, onSelect, onClose }) {
   const today = new Date();
-
-  // If user already has DOB → open that month
   const initial = currentDate ? new Date(currentDate) : new Date(1990, 0, 1);
 
   const [month, setMonth] = useState(initial.getMonth());
   const [year, setYear] = useState(initial.getFullYear());
-const months = [
-  "January","February","March","April","May","June",
-  "July","August","September","October","November","December"
-];
+  const [monthOpen, setMonthOpen] = useState(false);
+  const [yearOpen, setYearOpen] = useState(false);
 
-const years = Array.from({ length: 120 }, (_, i) => new Date().getFullYear() - i);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
-const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-const [monthOpen, setMonthOpen] = useState(false);
-const [yearOpen, setYearOpen] = useState(false);
-
-  // Generate year list (1950 → current year)
-  // const years = Array.from(
-  //   { length: today.getFullYear() - 1950 + 1 },
-  //   (_, i) => today.getFullYear() - i
-  // );
+  const years = Array.from({ length: 120 }, (_, i) => today.getFullYear() - i);
 
   const days = new Date(year, month + 1, 0).getDate();
   const firstDay = new Date(year, month, 1).getDay();
@@ -563,89 +610,85 @@ const [yearOpen, setYearOpen] = useState(false);
       {/* CALENDAR MODAL */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
         <div className="bg-white w-full max-w-xs rounded-2xl shadow-lg p-4">
-
           {/* HEADER: Month + Year Dropdown */}
-<div className="flex items-center justify-between mb-4 relative">
+          <div className="flex items-center justify-between mb-4 relative">
+            {/* MONTH DROPDOWN */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setMonthOpen(!monthOpen);
+                  setYearOpen(false);
+                }}
+                className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
+              >
+                {months[month]}
+                <span className="text-xs">▼</span>
+              </button>
 
-  {/* MONTH DROPDOWN */}
-  <div className="relative">
-    <button
-      onClick={() => {
-        setMonthOpen(!monthOpen);
-        setYearOpen(false);
-      }}
-      className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
-    >
-      {months[currentMonth]}
-      <span className="text-xs">▼</span>
-    </button>
+              {monthOpen && (
+                <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-40 max-h-60 overflow-y-auto">
+                  {months.map((m, i) => (
+                    <button
+                      key={i}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
+                        i === month ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
+                      }`}
+                      onClick={() => {
+                        setMonth(i);
+                        setMonthOpen(false);
+                      }}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-    {monthOpen && (
-      <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-40 max-h-60 overflow-y-auto">
-        {months.map((m, i) => (
-          <button
-            key={i}
-            className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
-              i === currentMonth ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
-            }`}
-            onClick={() => {
-              setCurrentMonth(i);
-              setMonthOpen(false);
-            }}
-          >
-            {m}
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
+            {/* YEAR DROPDOWN */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setYearOpen(!yearOpen);
+                  setMonthOpen(false);
+                }}
+                className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
+              >
+                {year}
+                <span className="text-xs">▼</span>
+              </button>
 
-  {/* YEAR DROPDOWN */}
-  <div className="relative">
-    <button
-      onClick={() => {
-        setYearOpen(!yearOpen);
-        setMonthOpen(false);
-      }}
-      className="px-3 py-2 border border-[#D0D7E2] rounded-lg bg-white flex items-center gap-2 text-[#0D4F8B]"
-    >
-      {currentYear}
-      <span className="text-xs">▼</span>
-    </button>
+              {yearOpen && (
+                <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-28 max-h-60 overflow-y-auto">
+                  {years.map((y) => (
+                    <button
+                      key={y}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
+                        y === year ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
+                      }`}
+                      onClick={() => {
+                        setYear(y);
+                        setYearOpen(false);
+                      }}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
-    {yearOpen && (
-      <div className="absolute z-10 bg-white border border-[#E5EDF5] rounded-lg shadow-md mt-1 w-28 max-h-60 overflow-y-auto">
-        {years.map((y) => (
-          <button
-            key={y}
-            className={`w-full text-left px-3 py-2 text-sm hover:bg-[#F5FAFD] ${
-              y === currentYear ? "bg-[#E5F2FF] text-[#0D4F8B]" : ""
-            }`}
-            onClick={() => {
-              setCurrentYear(y);
-              setYearOpen(false);
-            }}
-          >
-            {y}
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
-
-</div>
-
+          {/* DAYS HEADER */}
+          <div className="grid grid-cols-7 text-center text-sm font-semibold text-[#0D4F8B]">
+            {["S", "M", "T", "W", "T", "F", "S"].map((d, index) => (
+              <div key={index} className="py-1">
+                {d}
+              </div>
+            ))}
+          </div>
 
           {/* DAYS GRID */}
-<div className="grid grid-cols-7 text-center text-sm font-semibold text-[#0D4F8B]">
-  {["S", "M", "T", "W", "T", "F", "S"].map((d, index) => (
-    <div key={index} className="py-1">
-      {d}
-    </div>
-  ))}
-</div>
-
-
           <div className="grid grid-cols-7 text-center text-sm">
             {Array(firstDay)
               .fill(null)
@@ -675,4 +718,3 @@ const [yearOpen, setYearOpen] = useState(false);
     </>
   );
 }
-

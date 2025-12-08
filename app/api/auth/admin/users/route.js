@@ -1,20 +1,72 @@
-import jwt from "jsonwebtoken";
-import { localDB } from "@/lib/localDB";
+// import { connectDB } from "@/lib/db";
+import  dbConnect  from "@/lib/db";
+// import Order from "@/models/Order";
+// import { verifyToken } from "@/lib/auth";
 
-function requireAdmin(req) {
-  const token = req.cookies.get("token")?.value;
-  if (!token) throw new Error("No token");
-  const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev-secret");
-  const user = localDB.users.find((u) => u.id === decoded.id);
-  if (!user || user.role !== "admin") throw new Error("Not admin");
-  return user;
-}
-
-export async function GET(req) {
+export async function POST(req) {
   try {
-    requireAdmin(req);
-    return Response.json({ users: localDB.users });
-  } catch (e) {
-    return Response.json({ error: "Not authorized" }, { status: 401 });
+    // await connectDB();
+    await dbConnect()
+
+    const token = req.cookies.get("fityou_token")?.value;
+    if (!token) {
+      return Response.json(
+        { success: false, error: "Not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return Response.json(
+        { success: false, error: "Invalid token" },
+        { status: 401 }
+      );
+    }
+
+    const { address, amount = 13125, planId, planName } = await req.json();
+
+    if (!address) {
+      return Response.json(
+        { success: false, error: "Address required" },
+        { status: 400 }
+      );
+    }
+
+    const order = await Order.create({
+      userId: decoded.id,
+      email: decoded.email,
+      address: {
+        name: address.name || "",
+        surname: address.surname || "",
+        phone: address.phone || "",
+        email: address.email || "",
+        pincode: address.pincode || "",
+        flat: address.flat || "",
+        area: address.area || "",
+        landmark: address.landmark || "",
+        city: address.city || "",
+        state: address.state || "",
+        billingSame: address.billingSame !== false,
+      },
+      amount,
+      planId,
+      planName,
+      status: "pending",
+    });
+
+    return Response.json({
+      success: true,
+      order: {
+        id: order._id,
+        amount: order.amount,
+      },
+    });
+  } catch (err) {
+    console.error("Order creation error:", err);
+    return Response.json(
+      { success: false, error: "Server error" },
+      { status: 500 }
+    );
   }
 }
