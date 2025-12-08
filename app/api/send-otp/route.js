@@ -9,7 +9,26 @@ export async function POST(req) {
 
     const { email } = await req.json();
     if (!email) {
-      return NextResponse.json({ success: false, error: "Email required" });
+      return NextResponse.json(
+        { success: false, error: "Email is required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if environment variables exist
+    const requiredEnvVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASSWORD', 'OTP_FROM'];
+    const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+      console.error("Missing environment variables:", missingVars);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Email service configuration missing",
+          missing: missingVars 
+        },
+        { status: 500 }
+      );
     }
 
     const otp = String(Math.floor(100000 + Math.random() * 900000));
@@ -21,18 +40,25 @@ export async function POST(req) {
     user.otpExpires = Date.now() + 5 * 60 * 1000;
     await user.save();
 
-    // SMTP CONFIG
+    // SMTP CONFIG - FIXED VARIABLE NAME
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: false,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: process.env.SMTP_PORT === '465', // true for 465, false for others
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        pass: process.env.SMTP_PASSWORD,  // ← FIXED THIS LINE
+      },
+      tls: {
+        rejectUnauthorized: false, // Helps with some SSL issues
       },
     });
 
-    // BEAUTIFUL EMAIL UI
+    // Test connection first
+    await transporter.verify();
+    console.log("SMTP connection verified successfully");
+
+    // BEAUTIFUL EMAIL UI (your existing template is fine)
     const htmlTemplate = `
     <div style="background:#f4f9ff;padding:30px;width:100%;font-family:Arial,Helvetica,sans-serif;">
       <div style="
@@ -86,18 +112,33 @@ export async function POST(req) {
     </div>
     `;
 
-    await transporter.sendMail({
+    const mailOptions = {
       from: process.env.OTP_FROM,
       to: email,
       subject: "Your FitYou OTP Code",
       html: htmlTemplate,
-    });
+    };
 
-    return NextResponse.json({ success: true });
+    await transporter.sendMail(mailOptions);
+    console.log(`OTP sent successfully to ${email}`);
+
+    return NextResponse.json({ 
+      success: true, 
+      message: "OTP sent successfully" 
+    });
   } catch (err) {
-    console.error("OTP SEND ERROR:", err);
+    console.error("OTP SEND ERROR DETAILS:", {
+      message: err.message,
+      code: err.code,
+      stack: err.stack
+    });
+    
     return NextResponse.json(
-      { success: false, error: "Server error sending OTP" },
+      { 
+        success: false, 
+        error: "Failed to send OTP",
+        details: process.env.NODE_ENV === 'development' ? err.message : undefined
+      },
       { status: 500 }
     );
   }
