@@ -62,48 +62,52 @@ export default function OtpModal({ open, onClose }) {
     }
   };
 
-  const handleVerify = async () => {
-    const otpString = otp.join("");
-    if (otpString.length !== 6) {
-      setError("Please enter 6-digit OTP");
-      return;
+ // In your OtpModal component, add logging:
+const handleVerify = async () => {
+  const otpString = otp.join("");
+  
+  console.log("🔄 Frontend - Attempting OTP verification:", {
+    email: email,
+    otpString: otpString,
+    otpArray: otp,
+    otpLength: otpString.length,
+    localStorageEmail: localStorage.getItem("fityou_email")
+  });
+
+  setLoading(true);
+  setError("");
+
+  try {
+    const response = await fetch("/api/verify-otp", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        email: email.trim(),
+        otp: otpString.trim()
+      }),
+    });
+
+    console.log("📡 Verification response status:", response.status);
+    
+    const data = await response.json();
+    console.log("📡 Verification response data:", data);
+
+    if (data.success) {
+      console.log("✅ OTP verification successful!");
+      // Your success logic
+    } else {
+      console.log("❌ OTP verification failed:", data.error);
+      setError(data.error || "Invalid OTP");
     }
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const res = await fetch("/api/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp: otpString }),
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        // Call login to update auth state
-        await login();
-        
-        // Close modal first
-        onClose();
-        
-        // Dispatch success event
-        window.dispatchEvent(new Event("otp-success"));
-        
-        // Clear OTP and error
-        setOtp(["", "", "", "", "", ""]);
-        setError("");
-      } else {
-        setError(data.error || "Invalid OTP");
-      }
-    } catch (err) {
-      setError("Network error. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+    console.error("💥 Verification network error:", err);
+    setError("Network error. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleResend = async () => {
     setLoading(true);
