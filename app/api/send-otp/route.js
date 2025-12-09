@@ -4,33 +4,73 @@ import User from "@/models/User";
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
+  console.log("📧 /api/send-otp called");
+  
   try {
+    // Check environment variables first
+    const requiredEnvVars = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
+    const missingVars = requiredEnvVars.filter(key => !process.env[key]);
+    
+    if (missingVars.length > 0) {
+      console.error("❌ Missing env vars:", missingVars);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Email service not configured",
+          missing: missingVars 
+        },
+        { status: 500 }
+      );
+    }
+
+    console.log("✅ SMTP config check passed");
+    
     await dbConnect();
+    console.log("✅ Database connected");
 
     const { email } = await req.json();
     if (!email) {
-      return NextResponse.json({ success: false, error: "Email required" });
+      return NextResponse.json({ 
+        success: false, 
+        error: "Email required" 
+      }, { status: 400 });
     }
 
+    console.log("📨 Processing email:", email);
+
     const otp = String(Math.floor(100000 + Math.random() * 900000));
+    console.log("🔢 Generated OTP:", otp);
 
     let user = await User.findOne({ email });
-    if (!user) user = await User.create({ email });
+    if (!user) {
+      console.log("👤 Creating new user:", email);
+      user = await User.create({ email });
+    } else {
+      console.log("👤 Found existing user");
+    }
 
     user.otpCode = otp;
-    user.otpExpires = Date.now() + 5 * 60 * 1000;
+    user.otpExpires = Date.now() + 5 * 60 * 1000; // 5 minutes
     await user.save();
+    console.log("💾 OTP saved to database");
 
     // SMTP CONFIG
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: false,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: process.env.SMTP_PORT === '465',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        rejectUnauthorized: false, // Helps with SSL issues
+      },
     });
+
+    console.log("🔍 Verifying SMTP connection...");
+    await transporter.verify();
+    console.log("✅ SMTP connection verified");
 
     // BEAUTIFUL EMAIL UI
     const htmlTemplate = `
@@ -86,18 +126,40 @@ export async function POST(req) {
     </div>
     `;
 
+    console.log("🚀 Sending email...");
     await transporter.sendMail({
-      from: process.env.OTP_FROM,
+      from: process.env.OTP_FROM || process.env.SMTP_USER,
       to: email,
       subject: "Your FitYou OTP Code",
       html: htmlTemplate,
     });
 
-    return NextResponse.json({ success: true });
+    console.log("✅ Email sent successfully to:", email);
+    return NextResponse.json({ 
+      success: true,
+      message: "OTP sent successfully" 
+    });
+    
   } catch (err) {
-    console.error("OTP SEND ERROR:", err);
+    console.error("💥 OTP SEND ERROR:", {
+      message: err.message,
+      code: err.code,
+      stack: err.stack?.split('\n')[0]
+    });
+    
+    let errorMessage = "Server error sending OTP";
+    if (err.code === 'EAUTH') {
+      errorMessage = "Email authentication failed. Check SMTP credentials.";
+    } else if (err.code === 'ECONNECTION') {
+      errorMessage = "Cannot connect to email server.";
+    }
+    
     return NextResponse.json(
-      { success: false, error: "Server error sending OTP" },
+      { 
+        success: false, 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? err.message : undefined
+      },
       { status: 500 }
     );
   }

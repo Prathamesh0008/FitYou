@@ -1,11 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from 'next/navigation';
+
+
 
 export default function ClinicalGraphSection() {
   const graphRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const animationTriggered = useRef(false);
+  const router = useRouter();
 
   const weights = {
     initial: "85kg",
@@ -265,9 +269,12 @@ export default function ClinicalGraphSection() {
             </ul>
           </div>
           
-          <button className="mt-8 bg-gradient-to-r from-[#0D4F8B] to-[#1A6DC2] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            View Full Clinical Study
-          </button>
+          <button 
+      onClick={() => router.push('/program')}
+      className="mt-8 bg-gradient-to-r from-[#0D4F8B] to-[#1A6DC2] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    >
+      View Full Clinical Study
+    </button>
         </div>
 
       </div>
