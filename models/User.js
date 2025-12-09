@@ -1,23 +1,4 @@
-// import mongoose from "mongoose";
 
-// const UserSchema = new mongoose.Schema(
-//   {
-//     email: { type: String, required: true, unique: true },
-//     name: { type: String, default: "" },
-//     phone: { type: String, default: "" },
-//     address: { type: String, default: "" },
-//     dob: { type: String, default: "" },
-
-//     // IMPORTANT → STORE QUIZ DATA HERE
-//     quiz: { type: Object, default: {} },
-
-//     otpCode: String,
-//     otpExpires: Date,
-//   },
-//   { timestamps: true }
-// );
-
-// export default mongoose.models.User || mongoose.model("User", UserSchema);
 
 import mongoose from "mongoose";
 

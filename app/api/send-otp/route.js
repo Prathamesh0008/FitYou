@@ -19,7 +19,7 @@ export async function POST(req) {
     const otp = String(Math.floor(100000 + Math.random() * 900000));
     console.log("🔢 Generated OTP:", otp);
 
-    // Try database connection (but don't fail if it doesn't work)
+    // Try database connection
     let dbSuccess = false;
     try {
       await dbConnect();
@@ -41,20 +41,6 @@ export async function POST(req) {
       // Continue without database
     }
 
-    // Check if we can send email
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.warn("⚠️ SMTP not configured, returning OTP in response");
-      
-      return NextResponse.json({
-        success: true,
-        message: "OTP generated (email service not configured)",
-        otp: otp, // Return OTP in development
-        emailSent: false,
-        savedToDatabase: dbSuccess,
-        note: "Configure SMTP environment variables for production"
-      });
-    }
-
     // Send email
     console.log("📤 Attempting to send email...");
     try {
@@ -74,7 +60,6 @@ export async function POST(req) {
       await transporter.verify();
       console.log("✅ SMTP connection verified");
 
-      // FIXED: Add the actual email template
       const htmlTemplate = `
       <div style="background:#f4f9ff;padding:30px;width:100%;font-family:Arial,Helvetica,sans-serif;">
         <div style="
@@ -87,7 +72,6 @@ export async function POST(req) {
           text-align:center;
         ">
 
-          <!-- LOGO -->
           <img src="https://instasize.com/api/image/31b93bf1504858963649f40913a0f55450500ccb6c267a15e7f09393d3accada.png" 
               alt="FitYou" 
               style="width:140px;margin-bottom:20px;" />
@@ -98,7 +82,6 @@ export async function POST(req) {
             This code is valid for <strong>5 minutes</strong>.
           </p>
 
-          <!-- OTP BOX -->
           <div style="
             margin:25px auto;
             background:#F0F7FF;
@@ -147,20 +130,14 @@ export async function POST(req) {
       });
       
     } catch (emailError) {
-      console.error("❌ Email sending failed:", {
-        message: emailError.message,
-        code: emailError.code,
-        response: emailError.response
-      });
+      console.error("❌ Email sending failed:", emailError.message);
       
-      // Still return success if we saved to DB
       return NextResponse.json({
         success: dbSuccess,
         message: dbSuccess ? "OTP saved but email failed" : "Failed to send OTP",
         error: emailError.message,
         emailSent: false,
-        savedToDatabase: dbSuccess,
-        otp: process.env.NODE_ENV === 'development' ? otp : undefined
+        savedToDatabase: dbSuccess
       });
     }
 
@@ -174,7 +151,8 @@ export async function POST(req) {
     }, { status: 500 });
   }
 }
-// Add this to your /api/send-otp/route.js
+
+// GET method for testing
 export async function GET() {
   return NextResponse.json({
     message: "Use POST method to send OTP",
@@ -183,5 +161,5 @@ export async function GET() {
       headers: { "Content-Type": "application/json" },
       body: { email: "user@example.com" }
     }
-  }, { status: 405 }); // Method Not Allowed
+  }, { status: 405 });
 }
