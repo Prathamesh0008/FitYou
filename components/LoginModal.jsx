@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { IoClose } from "react-icons/io5";
@@ -10,41 +8,78 @@ export default function LoginModal({ open, onClose }) {
 
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const sendOtp = async () => {
-    if (!email) return alert("Enter your email");
+    // Validate email
+    const emailValue = email.trim().toLowerCase();
+    
+    if (!emailValue) {
+      setError("Please enter your email");
+      return;
+    }
+    
+    if (!emailValue.includes('@')) {
+      setError("Please enter a valid email address");
+      return;
+    }
 
     setLoading(true);
+    setError("");
 
     try {
+      console.log("📤 Sending OTP to:", emailValue);
+      
       const res = await fetch("/api/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: emailValue }),
       });
 
       const data = await res.json();
 
+      console.log("📩 OTP send response:", data);
+
       if (!data.success) {
-        alert(data.error || "Failed to send OTP");
+        setError(data.error || "Failed to send OTP");
         return;
       }
 
-      // Store email in session storage (more secure than global)
-      sessionStorage.setItem("fityou_pending_email", email);
+      // ✅ CRITICAL FIX: Save to localStorage with EXACT key that OtpModal expects
+      console.log("💾 Saving email for OTP verification:", emailValue);
+      localStorage.setItem("fityou_email", emailValue);
+      
+      // Also save to sessionStorage as backup
+      sessionStorage.setItem("fityou_email", emailValue);
+      
+      // Verify it was saved
+      const savedEmail = localStorage.getItem("fityou_email");
+      console.log("✅ Email saved successfully?", savedEmail === emailValue ? "Yes" : "No");
+      console.log("📦 Actual saved value:", savedEmail);
 
       // Close this modal
       onClose();
 
-      // Open OTP modal
+      // Open OTP modal with slight delay (CRITICAL: Give time for state to update)
       setTimeout(() => {
-        window.dispatchEvent(new Event("open-otp"));
-      }, 20);
+        console.log("🚀 Dispatching open-otp event with email:", emailValue);
+        // Pass email in event detail
+        window.dispatchEvent(new CustomEvent("open-otp", { 
+          detail: { email: emailValue } 
+        }));
+      }, 100); // Increased delay to ensure storage is ready
+      
     } catch (error) {
-      console.error("OTP Error:", error);
-      alert("Failed to send OTP.");
+      console.error("💥 OTP Error:", error);
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      sendOtp();
     }
   };
 
@@ -62,7 +97,7 @@ export default function LoginModal({ open, onClose }) {
           className="
             bg-white 
             rounded-[18px] 
-            shadow-[0_4px_30px_rgba(0,0,0,0.12)]
+            shadow-[0_4px_30px rgba(0,0,0,0.12)]
             w-full 
             max-w-[500px]
             p-10 
@@ -92,7 +127,11 @@ export default function LoginModal({ open, onClose }) {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
+              onKeyPress={handleKeyPress}
               placeholder="Email address"
               className="
                 w-full
@@ -107,13 +146,14 @@ export default function LoginModal({ open, onClose }) {
                 focus:ring-2
                 focus:ring-[#0D4F8B]/40
               "
+              disabled={loading}
             />
           </div>
 
           {/* ERROR MESSAGE */}
-          {!email && (
+          {error && (
             <p className="text-red-500 text-[12px] mt-1 pl-1">
-              Please enter your email address
+              {error}
             </p>
           )}
 
@@ -131,6 +171,13 @@ export default function LoginModal({ open, onClose }) {
           >
             {loading ? "Sending..." : "Send code"}
           </button>
+          
+          {/* Debug info (can remove in production) */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-4 text-xs text-gray-500">
+              <p>Debug: Will save to localStorage key: "fityou_email"</p>
+            </div>
+          )}
         </div>
       </div>
     </>

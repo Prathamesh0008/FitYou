@@ -73,10 +73,36 @@ export default function Navbar() {
   const isProfilePage = pathname === "/profile";
 
   /* ------------------------------
-     OPEN OTP EVENT LISTENER
+     OPEN OTP EVENT LISTENER - UPDATED
   ------------------------------ */
   useEffect(() => {
-    const handler = () => setTimeout(() => setOtpOpen(true), 50);
+    const handler = (e) => {
+      console.log("🔔 open-otp event received:", e.detail);
+      
+      // Get email from event or localStorage
+      const email = e.detail?.email || localStorage.getItem("fityou_email");
+      
+      if (email && email.includes('@')) {
+        console.log("✅ Opening OTP modal for email:", email);
+        
+        // Close login modal first
+        setLoginOpen(false);
+        
+        // Give time for modal transition, then open OTP modal
+        setTimeout(() => {
+          setOtpOpen(true);
+          
+          // Also send email via custom event for OtpModal to catch
+          window.dispatchEvent(new CustomEvent("otp-email", { 
+            detail: { email } 
+          }));
+        }, 150);
+      } else {
+        console.error("❌ No valid email found for OTP modal");
+        alert("Email not found. Please login again.");
+      }
+    };
+    
     window.addEventListener("open-otp", handler);
     return () => window.removeEventListener("open-otp", handler);
   }, []);
@@ -86,12 +112,16 @@ export default function Navbar() {
   ------------------------------ */
   useEffect(() => {
     const handler = () => {
+      console.log("🎉 OTP success event received");
+      setOtpOpen(false);
       setSuccessOpen(true);
+      
       setTimeout(() => {
         setSuccessOpen(false);
         router.push("/");
       }, 1200);
     };
+    
     window.addEventListener("otp-success", handler);
     return () => window.removeEventListener("otp-success", handler);
   }, [router]);
@@ -100,7 +130,11 @@ export default function Navbar() {
      OPEN LOGIN FROM OTHER PAGES
   ------------------------------ */
   useEffect(() => {
-    const handler = () => setLoginOpen(true);
+    const handler = () => {
+      console.log("🔓 open-login event received");
+      setLoginOpen(true);
+    };
+    
     window.addEventListener("open-login", handler);
     return () => window.removeEventListener("open-login", handler);
   }, []);
@@ -110,6 +144,10 @@ export default function Navbar() {
   ------------------------------ */
   const handleLogout = () => {
     logout();
+    // Clear stored email
+    localStorage.removeItem("fityou_email");
+    sessionStorage.removeItem("fityou_email");
+    
     router.push("/");
     setOpen(false);
   };
@@ -241,6 +279,19 @@ export default function Navbar() {
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
       <OtpModal open={otpOpen} onClose={() => setOtpOpen(false)} />
       <SuccessModal open={successOpen} />
+      
+      {/* Debug button (remove in production) */}
+      {process.env.NODE_ENV === 'development' && (
+        <button
+          onClick={() => {
+            const email = localStorage.getItem("fityou_email");
+            alert(`Debug Info:\nEmail in storage: ${email || "NOT FOUND"}\nLogin Open: ${loginOpen}\nOTP Open: ${otpOpen}`);
+          }}
+          className="fixed bottom-4 right-4 bg-gray-800 text-white text-xs px-2 py-1 rounded"
+        >
+          Debug
+        </button>
+      )}
     </header>
   );
 }
