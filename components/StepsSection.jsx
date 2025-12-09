@@ -66,14 +66,14 @@ export default function StepsSection() {
         {/* BUTTONS */}
         <div className="mt-14 flex flex-col items-center gap-4">
           <Link
-            href="/consultation"
+            href="/quiz"
             className="bg-[#A7C3CE] text-[#1A365D] px-10 py-3 rounded-lg text-[17px] font-medium shadow-sm hover:bg-[#9FBEC9] transition"
           >
             Start consultation
           </Link>
 
           <Link
-            href="/programme"
+            href="/program"
             className="border border-[#FFCC99] bg-[#FFF6EB] text-[#1A365D] px-10 py-3 rounded-lg text-[17px] font-medium hover:bg-[#FFEBD7] transition"
           >
             View our programme

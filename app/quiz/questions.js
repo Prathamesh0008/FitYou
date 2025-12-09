@@ -115,7 +115,7 @@ export const QUESTIONS = [
     id: "seriousThoughts",
     type: "buttons",
     title:
-      "Have you ever had very serious thoughts about your own safety or wellbeing?",
+      "Have you ever had very sucidial thoughts about your own safety or wellbeing?",
     options: ["Yes", "No"],
   },
 

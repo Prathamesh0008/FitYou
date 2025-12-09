@@ -159,7 +159,7 @@ export default function HomePage() {
     </div>
   </div>
 </section> */}
-<WhyQualify/>
+{/* <WhyQualify/> */}
 
 
       {/* CALCULATOR SECTION */}

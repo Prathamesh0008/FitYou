@@ -49,7 +49,7 @@ const scrollToSection = (ref) => {
   return (
     <div className="bg-white font-laila pb-20 text-[18px]">
      {/* Sticky back button BELOW navbar */}
-<div className="sticky top-[70px] z-40 bg-white border-b border-[#E4EEF2]">
+<div className=" top-[70px] z-40 bg-white border-b border-[#E4EEF2]">
   <div className="max-w-6xl mx-auto px-4 py-4">
     <BackButton label="Back" />
   </div>
@@ -911,7 +911,9 @@ const scrollToSection = (ref) => {
      View programme
    </button>
 
-  <button className="w-full bg-[#FFF7EB] border border-[#F4C892] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[17px]">
+  <button
+  onClick={()=>router.push("/quiz")}
+  className="w-full bg-[#FFF7EB] border border-[#F4C892] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[17px]">
     Do I qualify?
   </button>
 </div>

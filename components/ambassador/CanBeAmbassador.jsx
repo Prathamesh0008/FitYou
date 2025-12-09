@@ -1,78 +1,81 @@
-// FitYou\components\ambassador\CanBeAmbassador.jsx
+// FitYou/components/ambassador/CanBeAmbassador.jsx
 "use client";
+
+import { FaPills, FaRunning, FaCarrot } from "react-icons/fa"; // ← ADDED
 
 export default function CanBeAmbassador({ scrollToForm }) {
   const items = [
     {
       title: "Yes, if you're using weight loss medicines",
-      text: "Share your real, day-to-day experiences of your weight loss journey. Inspire others with videos, posts, and reviews.",
-      color: "bg-blue-50",
-      border: "border-blue-200",
+      text: "Share your real, day-to-day experiences and inspire others.",
+      color: "bg-[#F0F6FF]",
+      border: "border-[#D4E6F5]",
+      icon: <FaPills className="text-[#002060] text-3xl sm:text-4xl" />,
     },
     {
       title: "Yes, if you're promoting healthy living",
-      text: "If you share content about health, fitness or self-care, your audience may be interested in our solution.",
-      color: "bg-emerald-50",
-      border: "border-emerald-200",
+      text: "If you create fitness or health content, your audience may benefit.",
+      color: "bg-[#E9FDF3]",
+      border: "border-[#C9F1DD]",
+      icon: <FaRunning className="text-[#002060] text-3xl sm:text-4xl" />,
     },
     {
       title: "Yes, if you're promoting a healthy diet",
-      text: "Create cooking content, food reviews, and lifestyle videos — we'd love to collaborate.",
-      color: "bg-amber-50",
-      border: "border-amber-200",
+      text: "Share recipes, wellness tips, and lifestyle content with us.",
+      color: "bg-[#FFF7E8]",
+      border: "border-[#F5E2BB]",
+      icon: <FaCarrot className="text-[#002060] text-3xl sm:text-4xl" />,
     },
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-white px-4 sm:px-6">
+    <section className="py-16 sm:py-24 bg-white px-4 sm:px-6 font-laila">
       <div className="max-w-7xl mx-auto w-full">
+
+        {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#002060] mb-4 sm:mb-6">
-            Can <span className="text-[#AAC9D6] underline decoration-wavy">you</span> be a FitYou ambassador?
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[#002060] mb-4 sm:mb-6">
+            Can <span className="text-[#34597A]">you</span> be a FitYou ambassador?
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600">
-            Anyone on a weight loss or health journey is welcome to join our vibrant community.
-            Share your story, inspire others, and grow together.
+          <p className="text-base sm:text-lg text-gray-600">
+            Anyone on a health journey is welcome to join our community.
           </p>
         </div>
 
+        {/* Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {items.map((item, index) => (
-            <div 
-      key={index}
-      className={`${item.color} ${item.border} border rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:shadow-lg`}
-    >
-              <div className="relative mb-4 sm:mb-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/80 backdrop-blur-sm flex items-center justify-center text-2xl sm:text-3xl shadow-lg">
-                  {index === 0 && "💊"}
-                  {index === 1 && "🏃‍♂"}
-                  {index === 2 && "🥗"}
+            <div
+              key={index}
+              className={`${item.color} ${item.border} border rounded-2xl p-6 sm:p-8 hover:shadow-md transition-all duration-300`}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-3xl sm:text-4xl">
+                  {item.icon}
                 </div>
-                <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-md">
+
+                <div className="text-xs sm:text-sm w-7 h-7 rounded-full bg-white flex items-center justify-center border">
                   {index + 1}
                 </div>
               </div>
-              
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#002060] mb-3 sm:mb-4">
+
+              <h3 className="text-lg sm:text-xl font-medium text-[#002060] mb-2">
                 {item.title}
               </h3>
-              <p className="text-gray-600 text-sm sm:text-base mb-6 sm:mb-8">{item.text}</p>
-              
-              <div className="w-10 h-0.5 sm:w-12 sm:h-1 bg-gradient-to-r from-[#002060] to-[#AAC9D6] rounded-full mb-4 sm:mb-6"></div>
+
+              <p className="text-gray-600 text-sm sm:text-base">{item.text}</p>
             </div>
           ))}
         </div>
 
+        {/* Button */}
         <div className="text-center mt-12 sm:mt-20">
-          <button 
+          <button
             onClick={scrollToForm}
-            className="px-8 py-3 sm:px-12 sm:py-4 bg-[#002060] text-white rounded-xl font-semibold text-base sm:text-lg hover:bg-[#001a4d] transition-all duration-300 active:scale-95"
+            className="px-8 py-3 sm:px-12 sm:py-4 bg-[#002060] text-white rounded-xl font-normal text-base sm:text-lg hover:bg-[#001a48] transition-all duration-300 active:scale-95"
           >
             Apply now
           </button>
-          <p className="text-gray-500 mt-4 sm:mt-6 text-sm sm:text-lg">
-            Join hundreds of ambassadors making a difference
-          </p>
         </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
-
-
+//app\glp1-science\page.jsx
 
 
 "use client";
@@ -22,7 +21,8 @@ export default function Glp1SciencePage() {
   .fade-up {
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeUp 0.8s ease-out forwards;
+    animation: fadeUp 0.8s ease-
+    out forwards;
   }
 
   @keyframes fadeUp {
@@ -151,7 +151,7 @@ export default function Glp1SciencePage() {
 `}</style>
 
 
-      <div className="min-h-screen bg-[#F7FBFC] font-laila text-[#375C7A] ">
+      <div className="min-h-screen bg-[#F7FAFF] font-laila text-[#375C7A] ">
         {/* ---------------- HERO SECTION ---------------- */}
     
         <section className="max-w-6xl mx-auto px-4 pt-24 pb-20 grid md:grid-cols-2 gap-10 items-center">
@@ -177,9 +177,9 @@ export default function Glp1SciencePage() {
           </div>
 
           {/* RIGHT SIDE IMAGE */}
-          <div className="w-full rounded-3xl overflow-hidden shadow-md">
+          <div className="w-full rounded-2xl overflow-hidden shadow-md">
             <img
-              src="/glp1-science/glp1-hero.png"
+              src="/guide2/glpHero.jpeg"
               alt="GLP-1 Scientific Illustration"
               className="w-full h-auto object-cover"
             />
@@ -357,9 +357,9 @@ export default function Glp1SciencePage() {
             <div className="grid grid-cols-[70px_1fr] gap-6 items-start">
               {/* ICON */}
               <img
-                src="/glp1-science/icon-appetite.png"
+                src="/guide2/Science1.png"
                 alt="Appetite Icon"
-                className="w-14 h-14"
+                className="w-20 h-20"
               />
 
               {/* TEXT CONTENT */}
@@ -380,9 +380,9 @@ export default function Glp1SciencePage() {
             {/* ITEM 2 */}
             <div className="grid grid-cols-[70px_1fr] gap-6 items-start">
               <img
-                src="/glp1-science/icon-stomach.png"
+                src="/guide2/Science2.png"
                 alt="Digestion Icon"
-                className="w-14 h-14"
+                className="w-20 h-20"
               />
 
               <div>
@@ -402,9 +402,9 @@ export default function Glp1SciencePage() {
             {/* ITEM 3 */}
             <div className="grid grid-cols-[70px_1fr] gap-6 items-start">
               <img
-                src="/glp1-science/icon-cells.png"
+                src="/guide2/Science3.png"
                 alt="Blood Sugar Icon"
-                className="w-14 h-14"
+                className="w-20 h-20"
               />
 
               <div>
@@ -423,22 +423,26 @@ export default function Glp1SciencePage() {
           </div>
         </section>
 
-        <div className="max-w-xl mx-auto text-center mt-2 space-y-4">
-  <button 
+        <div className="flex flex-col items-center gap-4">
+
+      <button 
       onClick={()=>router.push("/program")}
-      className="w-full bg-[#A7CBD7] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
+      className="w-[260px] md:w-[300px] bg-[#A7CBD7] hover:bg-[#a5d7e7] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
         View programme
       </button>
 
-  <button className="w-full bg-[#FFF7EB] border border-[#F4C892] text-[#0D4F8B] font-semibold py-3 rounded-lg text-[17px] mb-6">
-    Do I qualify?
-  </button>
-</div>
+      <button
+      onClick={()=>router.push("/quiz")}
+      className="w-[260px] md:w-[300px] bg-[#FFD4A8] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
+        Do I qualify
+      </button>
+
+    </div>
 
         {/* ---------- IS GLP-1 SCIENTIFICALLY PROVEN? (FITYOU SAFE VERSION) ---------- */}
         <section
           id="proven"
-          className="max-w-5xl mx-auto px-4 pt-10 pb-24"
+          className="max-w-5xl mx-auto px-4 pt-10 pb-5"
         >
           <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6">
             Is GLP-1 scientifically proven?
@@ -462,19 +466,15 @@ export default function Glp1SciencePage() {
           </p>
 
           {/* ---------- STUDY RESULTS CARD (SAFE VERSION + FIXED SIZE) ---------- */}
-          <div className="bg-white rounded-3xl shadow-md border border-[#E2EAF3] p-8 mb-10">
-            <h3 className="text-lg font-semibold text-[#0D4F8B] mb-6">
-              Study observations
-            </h3>
+          <div className="bg-white rounded-xl shadow-md border border-[#E2EAF3] mb-10 w-fit mx-auto overflow-hidden">
+  <img
+    src="/glp1-science/behaviour-chart.png"
+    alt="Behaviour Study Chart"
+    className="max-w-[650px] w-full h-auto object-contain"
+  />
+</div>
 
-            <div className="w-full flex justify-center">
-              <img
-                src="/glp1-science/behaviour-chart.png"
-                alt="Behaviour Study Chart"
-                className="max-w-[650px] w-full h-auto object-contain rounded-xl"
-              />
-            </div>
-          </div>
+
 
           {/* ---------- RESEARCH FINDINGS (FITYOU SAFE VERSION) ---------- */}
           <section className="max-w-5xl mx-auto px-0 pt-10 pb-24">
@@ -499,9 +499,6 @@ export default function Glp1SciencePage() {
             <div className="grid md:grid-cols-2 gap-10 items-start">
               {/* LEFT — STUDY CARD */}
               <div className="bg-white rounded-3xl shadow-md border border-[#E2EAF3] p-8">
-                <h3 className="text-lg font-semibold text-[#0D4F8B] mb-6">
-                  Study results
-                </h3>
 
                 <div className="w-full flex justify-center">
                   <img
@@ -543,7 +540,7 @@ export default function Glp1SciencePage() {
         {/* ---------- HOW LONG DOES IT TAKE? — 3 SECTIONS MATCHED ---------- */}
         <section
           id="how-long"
-          className="max-w-6xl mx-auto px-4 pt-10 pb-24"
+          className="max-w-6xl mx-auto px-4  pt-10 pb-24"
         >
           {/* ------------------ SECTION TITLE ------------------ */}
           <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mb-6">
@@ -562,7 +559,7 @@ export default function Glp1SciencePage() {
             {/* LEFT GRAPH */}
             <div className="flex justify-center">
               <img
-                src="/glp1-science/progress-curve-1.png"
+                src="/guide2/graph1.png"
                 alt="Body adapting graph"
                 className="max-w-[360px] w-full h-auto object-contain"
               />
@@ -589,7 +586,7 @@ export default function Glp1SciencePage() {
             {/* LEFT GRAPH */}
             <div className="flex justify-center">
               <img
-                src="/glp1-science/progress-curve-2.png"
+                src="/guide2/graph2.png"
                 alt="Progress graph"
                 className="max-w-[360px] w-full h-auto object-contain"
               />
@@ -616,7 +613,7 @@ export default function Glp1SciencePage() {
             {/* LEFT GRAPH */}
             <div className="flex justify-center">
               <img
-                src="/glp1-science/progress-curve-3.png"
+                src="/guide2/graph3.png"
                 alt="Fast progress graph"
                 className="max-w-[360px] w-full h-auto object-contain"
               />
@@ -641,137 +638,86 @@ export default function Glp1SciencePage() {
         </section>
 
         {/* ---------- IMPORTANCE OF GRADUAL PROGRESS (PREMIUM VERSION) ---------- */}
-        <section
-          id="importance"
-          className="max-w-6xl mx-auto px-4 pt-10 pb-24"
-        >
-          <h2 className="text-3xl md:text-4xl text-[#0D4F8B] mb-6">
-            Importance of gradual progress
-          </h2>
+         <section className="bg-[#F7FAFF] py-12 md:py-16">
+      <div className="max-w-4xl mx-auto px-4 md:px-0 text-[#123873]">
+        {/* HEADING */}
+        <h2 className="text-[32px] md:text-[40px] mb-4 text-[#002074]">
+          Importance of doses
+        </h2>
 
-          <p className="text-[18px] text-[#375C7A] leading-[1.7] mb-8 max-w-3xl">
-            Healthy routines grow best when they start small and increase slowly.
-            Gradual progress allows your body and mind to adapt naturally, making
-            your habits easier to maintain long-term.
-          </p>
+        {/* INTRO LINE */}
+        <p className="text-[18px] leading-[1.7] mb-8 text-[#375C7A]">
+          Semaglutide is available in different doses for both tablets and injections.
+          This makes it possible to start gently and increase only when your body
+          is ready.
+        </p>
 
-          {/* ---------- BOX 1: HABIT LEVELS ---------- */}
-          <div className="bg-[#0D4F8B] text-white rounded-3xl p-6 w-full max-w-lg mb-12 shadow-lg relative overflow-hidden">
-            {/* LIGHT GRADIENT GLOW */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+        {/* IMAGE 1 – TABLETS / INJECTIONS DOSES */}
+        {/* IMAGE 1 – TABLETS / INJECTIONS DOSES */}
+<div className="flex justify-start mb-8">
+  <div className="w-fit overflow-hidden rounded-1xl shadow-md">
+    <img
+      src="/guide2/glp1.png"
+      alt="Semaglutide tablet and injection dosage levels"
+      className="block max-w-[375px] h-auto"  // adjust size here
+    />
+  </div>
+</div>
 
-            <p className="font-semibold mb-4 relative z-10">Habit intensity levels</p>
 
-            {/* Pills */}
-            <div className="flex gap-3 items-center relative z-10">
-              {/* Light */}
-              <span className="bg-[#3B82F6] px-3 py-1 text-xs rounded-md shadow">
-                Light
-              </span>
+        {/* PARAGRAPH 1 */}
+        <p className="text-[18px] leading-[1.7] mb-10 text-[#375C7A]">
+          It is essential that anyone starting GLP-1 treatment begins on the
+          lowest possible starting dose. Your body needs time to adapt to a new
+          medication; jumping straight to a higher dose increases the chance of
+          side-effects and makes treatment harder to tolerate.
+        </p>
 
-              {/* Arrow */}
-              <span className="text-white text-xl animate-pulse">→</span>
+        {/* IMAGE 2 – STARTING DOSAGES */}
+        <div className="flex justify-start mb-8">
+  <div className="w-fit overflow-hidden rounded-1xl shadow-md">
+    <img
+      src="/guide2/glp1.png"
+      alt="Semaglutide tablet and injection dosage levels"
+      className="block max-w-[375px] h-auto"  // adjust size here
+    />
+  </div>
+</div>
 
-              {/* Moderate */}
-              <span className="bg-[#2563EB] px-3 py-1 text-xs rounded-md shadow">
-                Moderate
-              </span>
+        {/* PARAGRAPH 2 */}
+        <p className="text-[18px] leading-[1.7] mb-10 text-[#375C7A]">
+          Every four weeks you can move up to the next dose level. This slow,
+          stepwise increase gives your body enough time to adjust to the
+          treatment and helps reduce the risk of nausea, bloating or other
+          gastric symptoms. A steady build-up usually leads to smoother progress.
+        </p>
 
-              {/* Arrow */}
-              <span className="text-white text-xl animate-pulse">→</span>
+        {/* IMAGE 3 – EVERY 4 WEEKS PROGRESSION */}
+        <div className="flex justify-start mb-8">
+  <div className="w-fit overflow-hidden rounded-1xl shadow-md">
+    <img
+      src="/guide2/glp3.png"
+      alt="Semaglutide tablet and injection dosage levels"
+      className="block max-w-[375px] h-auto"  // adjust size here
+    />
+  </div>
+</div>
 
-              {/* Strong */}
-              <span className="bg-[#1E3A8A] px-3 py-1 text-xs rounded-md shadow">
-                Strong
-              </span>
-            </div>
-          </div>
-
-          <p className="text-[18px] text-[#375C7A] leading-[1.7] max-w-3xl mb-12">
-            Beginning with small steps creates a foundation. As these habits feel
-            more natural, gradually increasing difficulty leads to stronger, more
-            reliable routines.
-          </p>
-
-          {/* ---------- BOX 2: STARTING LEVELS ---------- */}
-          <div className="bg-[#0D4F8B] text-white rounded-3xl p-6 w-full max-w-lg mb-12 shadow-lg relative overflow-hidden">
-            {/* SUBTLE GLOW */}
-             <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none"></div>
-
-            <p className="font-semibold mb-3 relative z-10">
-              Starting habit levels
-            </p>
-
-            {/* Pills row */}
-            <div className="flex gap-3 relative z-10">
-              {/* Small Steps */}
-              <span className="bg-[#BFDBFE] text-[#0D4F8B] px-3 py-1 text-xs rounded-md shadow">
-                Small steps
-              </span>
-
-              {/* Arrow */}
-              <span className="text-white text-xl animate-pulse">→</span>
-
-              {/* Consistency */}
-              <span className="bg-[#93C5FD] text-[#0D4F8B] px-3 py-1 text-xs rounded-md shadow">
-                Steady consistency
-              </span>
-
-              {/* Arrow */}
-              <span className="text-white text-xl animate-pulse">→</span>
-
-              {/* Strong Routine */}
-              <span className="bg-[#60A5FA] text-white px-3 py-1 text-xs rounded-md shadow">
-                Strong routine
-              </span>
-            </div>
-
-            <p className="mt-4 text-xs text-[#DCEAFE] relative z-10">
-              Start gradually → increase when habits feel natural
-            </p>
-          </div>
-
-          <p className="text-[18px] text-[#375C7A] leading-[1.7] max-w-3xl mb-12">
-            Increasing difficulty only once routines feel comfortable makes them more
-            sustainable and reduces the chance of burnout.
-          </p>
-
-          {/* ---------- BOX 3: WEEKLY PROGRESSION ---------- */}
-          <div className="bg-[#0D4F8B] text-white rounded-3xl p-6 w-full max-w-lg shadow-lg relative overflow-hidden">
-            {/* GRADIENT HIGHLIGHT */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-
-            <p className="font-semibold mb-3 relative z-10">How routines progress</p>
-
-            {/* Label */}
-            <p className="text-xs text-[#DCEAFE] mb-4 relative z-10">
-              Every few weeks
-            </p>
-
-            <div className="flex gap-3 items-center relative z-10">
-              <span className="bg-[#3B82F6] px-3 py-1 text-xs rounded-md shadow">
-                Light
-              </span>
-
-              {/* Flow arrows */}
-              <span className="text-white text-xl animate-pulse">→</span>
-
-              <span className="bg-[#2563EB] px-3 py-1 text-xs rounded-md shadow">
-                Moderate
-              </span>
-
-              <span className="text-white text-xl animate-pulse">→</span>
-
-              <span className="bg-[#1E3A8A] px-3 py-1 text-xs rounded-md shadow">
-                Strong
-              </span>
-            </div>
-
-            <p className="mt-4 text-xs text-[#DCEAFE] relative z-10">
-              Progress grows with consistency — not pressure
-            </p>
-          </div>
-        </section>
+        {/* PARAGRAPH 3 – SAFETY NOTE */}
+        <p className="text-[18px] leading-[1.7] mb-4 text-[#375C7A]">
+          It&apos;s very important not to increase your dose earlier than advised,
+          or to skip dose levels. If you rush through the schedule, your body may
+          not respond as it should and you are more likely to experience stronger
+          gastric side-effects. In some cases this can interrupt your progress or
+          even force you to pause treatment altogether.
+        </p>
+        <p className="text-[18px] leading-[1.7] text-[#375C7A]">
+          Following the recommended FitYou dosing plan helps your body adapt
+          gradually, keeps side-effects manageable and supports safe, sustainable
+          weight loss over time.
+        </p>
+      </div>
+    </section>
 
         {/* ---------- BENEFITS (AKTIVE WIDTH) ---------- */}
         <section
@@ -806,7 +752,7 @@ export default function Glp1SciencePage() {
       <li>a stronger connection to natural hunger cues</li>
     </ul>
 
-    <p className="text-[18px] text-[#375C7A] leading-[1.7] mb-8">
+    <p className="text-[18px] text-[#375C7A] leading-[1.7] mb-2">
       These changes help create a foundation for long-term wellbeing and can
       make sustainable progress feel much more achievable.
     </p>
@@ -814,28 +760,31 @@ export default function Glp1SciencePage() {
   </div>
 
 {/* CTA Button */}
-  <div className="max-w-xl mx-auto text-center mt-2 space-y-4">
+  {/* <div className="max-w-xl mx-auto text-center mt-2 space-y-4">
   <button 
   onClick={()=>router.push("program")}
   className="w-80 bg-[#A7CBD7] hover:bg-[#a5d7e7] text-[#002074] font-semibold py-3 rounded-lg text-[18px]">
     View programme
   </button>
-</div>
+</div> */}
 </section>
 
 
         {/* ---------- HOW TO MAKE THE MOST OUT OF YOUR ROUTINE ---------- */}
         <section
           id="routine"
-          className="max-w-5xl mx-auto px-4 pt-10 pb-24"
+          className="max-w-5xl mx-auto px-4 pt-2 pb-24"
         >
-          <h2 className="text-3xl md:text-[40px]  text-[#0D4F8B] mb-6 max-w-[650px]">
+          <h2 className="text-3xl md:text-4xl  text-[#0D4F8B] mt-2 mb-6 max-w-[650px]">
             How you can make the most out of your routine
           </h2>
 
           <div className="max-w-[650px]">
             <p className="text-[18px] text-[#375C7A] leading-[1.7] mb-10">
-              While taking GLP-1 is the first step towards achieving your weight loss goals, you do need to implement certain diet and lifestyle changes in order to get the most out of your treatment..
+              Understanding how your hunger rhythm works is only the first step. To
+              see meaningful changes, pairing this knowledge with supportive habits
+              can amplify your progress and make your day-to-day routine feel
+              easier.
             </p>
           </div>
 
@@ -984,7 +933,9 @@ export default function Glp1SciencePage() {
         View programme
       </button>
 
-      <button className="w-[260px] md:w-[300px] bg-[#FFD4A8] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
+      <button
+      onClick={()=>router.push("/quiz")}
+      className="w-[260px] md:w-[300px] bg-[#FFD4A8] text-[#0A3A82] font-semibold py-3 rounded-lg text-[17px] shadow-sm">
         Do I qualify
       </button>
 
