@@ -240,7 +240,7 @@ export default function HomePage() {
       <WhyItWorks/>
 
       {/* TESTIMONIALS */}
-      <section className="mt-5 mx-auto max-w-6xl px-4 pb-16">
+      {/* <section className="mt-5 mx-auto max-w-6xl px-4 pb-16">
         <div className="flex flex-col justify-between md:flex-row md:items-end">
           <div>
             <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
@@ -273,10 +273,10 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* WHY MEDICAL AWARENESS MATTERS */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
+      {/* <section className="mx-auto max-w-6xl px-4 pb-20">
         <div className="rounded-3xl bg-[#E9F3FF] border border-[#BFD6F2] p-6 shadow-sm text-[#375C7A] md:p-10">
           <h2 className="text-xl font-semibold md:text-2xl text-[#0D4F8B]">
             Why medical awareness matters before starting any weight program
@@ -315,7 +315,7 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CLINICAL TRIALS SECTION */}
      

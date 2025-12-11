@@ -44,7 +44,7 @@ export default function BrainTrickSection() {
 
           <div className="rounded-2xl overflow-hidden w-full  bg-[#8CB7C6] max-w-md mx-auto md:mx-0 shadow-2xl">
             <Image
-              src="/guide/doctors1.png"
+              src="/guide/doctorboxx.svg"
               alt="Doctor holding tablet"
               width={480}
               height={320}

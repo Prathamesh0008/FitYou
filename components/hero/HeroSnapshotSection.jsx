@@ -130,7 +130,42 @@ export default function HeroSnapshotSection({ benefits = [], readinessTrends = [
 
   /* ---------------- MAIN UI ---------------- */
   return (
-    <section className="relative mx-auto max-w-6xl flex flex-col-reverse md:flex-row md:items-center gap-10 px-4 pb-20 pt-10 md:pt-20">
+    <section className="relative mx-auto max-w-6xl flex flex-col md:flex-row md:items-center gap-10 px-4 pb-20 pt-10 md:pt-20">
+
+      {/* LEFT SIDE: TEXT CONTENT */}
+      <div className="w-full md:w-1/2 text-center md:text-left">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#BFD6F2] bg-[#E9F3FF] px-3 py-1 text-[11px] font-medium text-[#0D4F8B] shadow-sm">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF6A]" />
+          Medically-aware weight management
+        </div>
+
+        <h1 className="mt-3 text-3xl sm:text-4xl md:text-5xl leading-tight text-[#0D4F8B]">
+          Not just "weight loss."
+          <br />
+          <span className="text-[#0D4F8B]">A safer way to start.</span>
+        </h1>
+
+        <p className="mt-4 max-w-xl mx-auto md:mx-0 text-sm md:text-base text-[#375C7A] leading-relaxed">
+          Fityou starts with a simple health quiz to screen for basic risks,
+          then unlocks structured weekly routines that are realistic and safe.
+        </p>
+
+        <div className="mt-6 flex flex-wrap justify-center md:justify-start gap-3">
+          <Link
+            href="/quiz"
+            className="rounded-full bg-[#0D4F8B] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-[#0A3E70] transition"
+          >
+            Start eligibility quiz
+          </Link>
+
+          <Link
+            href="/program"
+            className="text-sm font-medium text-[#0D4F8B] underline-offset-4 hover:underline"
+          >
+            Explore the program →
+          </Link>
+        </div>
+      </div>
 
       {/* RIGHT SIDE: SNAPSHOT CARD */}
       <div className="relative w-full md:w-1/2 flex justify-center md:justify-end">
@@ -154,7 +189,7 @@ export default function HeroSnapshotSection({ benefits = [], readinessTrends = [
                 YOUR SNAPSHOT
               </p>
               <p className="text-sm font-semibold text-[#0D4F8B]">
-                Today’s readiness
+                Today's readiness
               </p>
             </div>
 
@@ -208,41 +243,6 @@ export default function HeroSnapshotSection({ benefits = [], readinessTrends = [
               </p>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* LEFT SIDE: TEXT CONTENT */}
-      <div className="w-full md:w-1/2 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#BFD6F2] bg-[#E9F3FF] px-3 py-1 text-[11px] font-medium text-[#0D4F8B] shadow-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#4CAF6A]" />
-          Medically-aware weight management
-        </div>
-
-        <h1 className="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-[#0D4F8B]">
-          Not just “weight loss.”
-          <br />
-          <span className="text-[#0D4F8B]">A safer way to start.</span>
-        </h1>
-
-        <p className="mt-4 max-w-xl mx-auto md:mx-0 text-sm md:text-base text-[#375C7A] leading-relaxed">
-          Fityou starts with a simple health quiz to screen for basic risks,
-          then unlocks structured weekly routines that are realistic and safe.
-        </p>
-
-        <div className="mt-6 flex flex-wrap justify-center md:justify-start gap-3">
-          <Link
-            href="/quiz"
-            className="rounded-full bg-[#0D4F8B] px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-[#0A3E70] transition"
-          >
-            Start eligibility quiz
-          </Link>
-
-          <Link
-            href="/program"
-            className="text-sm font-medium text-[#0D4F8B] underline-offset-4 hover:underline"
-          >
-            Explore the program →
-          </Link>
         </div>
       </div>
 

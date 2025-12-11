@@ -38,9 +38,9 @@ export default function StepsSection() {
       "If the doctor approves you for treatment, you will receive your injections’ first month’s supply in a few days."
   }
 ].map((step, i) => (
-  <div key={i} className="flex flex-col items-center text-center">
+  <div key={i} className="flex flex-col  items-center text-center">
 
-    <div className="relative w-[260px] h-[170px] rounded-xl overflow-hidden shadow-sm">
+    <div className="relative w-[310px]  h-[250px] rounded-xl overflow-hidden shadow-sm">
       <Image
         src={step.img}
         alt=""

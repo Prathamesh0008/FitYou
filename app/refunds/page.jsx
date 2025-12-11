@@ -11,7 +11,7 @@ export default function RefundPolicyPage() {
       <div className="max-w-5xl mx-auto px-6 lg:px-20 py-16 font-laila">
         {/* MAIN HEADING */}
         <h1
-  className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight mb-11"
+  className="text-4xl sm:text-4xl lg:text-6xl  leading-tight mb-11"
   style={{ color: "#0B2972" }}
 >
   {/* Desktop / large view: "Cancellations and refunds" on one line, "policy" on second */}

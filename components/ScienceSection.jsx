@@ -18,7 +18,7 @@ export default function ScienceSection() {
   <div className="hidden md:flex gap-2">
     <div className="w-1/2">
       <Image
-        src="/guide/newlady.jpg"
+        src="/guide/ladybox.svg"
         alt="FitYou User"
         width={600}
         height={400}
@@ -28,7 +28,7 @@ export default function ScienceSection() {
 
     <div className="w-1/2">
       <Image
-        src="/guide/doctorbox.jpg"
+        src="/guide/doctorlogo.svg"
         alt="Doctor"
         width={600}
         height={400}
@@ -40,7 +40,7 @@ export default function ScienceSection() {
   {/* MOBILE IMAGE */}
   <div className="md:hidden w-full">
     <Image
-      src="/guide/newlady.jpg"
+      src="/guide/ladybrownbox.svg"
       alt="FitYou mobile"
       width={600}
       height={400}

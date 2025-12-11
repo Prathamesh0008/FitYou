@@ -14,7 +14,7 @@ const doctorAvatar = "/doctor/doctor.png";
 const WEIGHT_VALUES = Array.from({ length: 161 }, (_, i) => 40 + i);
 
 // ------------------ QUESTION CONFIG WITH SUB-QUESTIONS & RULES ------------------
-const QUESTIONS = [
+export const QUESTIONS = [
   // ------------------ BASIC MEASUREMENTS ------------------
   { id: "height", type: "height", title: "Please provide your height." },
 
@@ -82,26 +82,101 @@ const QUESTIONS = [
   },
 
   // ------------------ WEIGHT-LOSS MEDICATION HISTORY ------------------
-  {
-    id: "prevMeds",
-    type: "buttons",
-    title: "Have you previously taken any medicine(s) to help with weight loss?",
-    options: ["Yes", "No"],
-    sub: [
-      {
-        id: "prevMeds_name",
-        type: "text",
-        placeholder: "Which medicine(s) did you take?",
-        required: true,
-      },
-      {
-        id: "prevMeds_sideEffects",
-        type: "text",
-        placeholder: "Did you face any side effects?",
-        required: false,
-      },
-    ],
-  },
+ {
+  id: "prevMeds",
+  type: "buttons",
+  title: "Have you previously taken any medicine(s) to help with weight loss?",
+  options: ["Yes", "No"],
+  sub: [
+    {
+      id: "prevMeds_recent",
+      type: "select",
+      placeholder: "Which medication did you use most recently?",
+      required: true,
+      options: [
+        "Wegovy",
+        "Saxenda",
+        "Mounjaro",
+        "Rybelsus",
+        "Ozempic",
+        "Other"
+      ],
+    },
+    {
+      id: "prevMeds_dose",
+      type: "select",
+      placeholder: "What dosage did you use?",
+      required: true,
+      options: [
+        "0.25 mg",
+        "0.5 mg",
+        "1 mg",
+        "1.7 mg",
+        "2.4 mg",
+        "5 mg",
+        "10 mg",
+        "15 mg",
+        "Other"
+      ],
+    },
+    {
+      id: "prevMeds_lastUsed",
+      type: "select",
+      placeholder: "When did you last use this medicine?",
+      required: true,
+      options: [
+        "I am currently using it",
+        "In the last 3 months",
+        "More than 3 months ago"
+      ],
+    },
+    {
+      id: "prevMeds_duration",
+      type: "select",
+      placeholder: "How long did you use it for?",
+      required: true,
+      options: [
+        "Less than 1 month",
+        "1–3 months",
+        "3–6 months",
+        "6–12 months",
+        "More than 1 year"
+      ],
+    },
+    {
+      id: "prevMeds_weightLost",
+      type: "select",
+      placeholder: "How much weight did you lose?",
+      required: false,
+      options: [
+        "No weight lost",
+        "0–5 kg",
+        "5–10 kg",
+        "More than 10 kg"
+      ],
+    },
+    {
+      id: "prevMeds_sideEffects",
+      type: "select",
+      placeholder: "Did you experience any side effects?",
+      required: true,
+      options: ["Yes", "No"],
+    },
+    {
+      id: "prevMeds_sideEffectsList",
+      type: "textarea",
+      placeholder: "If yes, please describe the side effects",
+      required: false,
+    },
+    {
+      id: "prevMeds_reasonContinue",
+      type: "textarea",
+      placeholder: "Why do you wish to continue treatment?",
+      required: false,
+    },
+  ],
+},
+
 
   {
     id: "sleep",
@@ -206,7 +281,7 @@ const QUESTIONS = [
     id: "seriousThoughts",
     type: "buttons",
     title:
-      "Have you ever had very suicidal thoughts about your own safety or wellbeing?",
+      "Have you ever had very serious thoughts about your own safety or wellbeing?",
     options: ["Yes", "No"],
     eligibility: {
       notEligibleIf: (answers) => answers.seriousThoughts === "Yes",
@@ -352,6 +427,15 @@ const QUESTIONS = [
   },
 ];
 
+const getFilteredQuestions = (gender) => {
+  return QUESTIONS.filter((q) => {
+    // ❌ Hide pregnancy question for males
+    if (q.id === "pregnancy" && gender === "Male") return false;
+
+    return true;
+  });
+};
+
 // small helper for date formatting
 const formatDateYMD = (date) => {
   const y = date.getFullYear();
@@ -369,6 +453,8 @@ const isSameDay = (a, b) =>
 
 // ---- MAIN PAGE ----
 export default function QuizPage() {
+ 
+  
   const router = useRouter();
   const { user } = useAuth();
 // ADD THIS STATE AT TOP:
@@ -405,10 +491,18 @@ const [openDropdown, setOpen] = useState(null);
     additionalInfo: "",
     injectionPreference: "",
     majorConditions: [],
+prevMeds_recent: "",
+prevMeds_dose: "",
+prevMeds_lastUsed: "",
+prevMeds_duration: "",
+prevMeds_weightLost: "",
+prevMeds_sideEffectsList: "",
+prevMeds_reasonContinue: "",
 
     // sub-fields
     prevMeds_name: "",
     prevMeds_sideEffects: "",
+
     bpMedication: "",
     bpReading: "",
     diabetesType: "",
@@ -436,14 +530,24 @@ const [openDropdown, setOpen] = useState(null);
   const [pendingSubmitAfterLogin, setPendingSubmitAfterLogin] = useState(false);
 
   // Load animation
+    // Load animation
   useEffect(() => {
     fetch("/lottie/Marathon.json")
       .then((res) => res.json())
       .then((data) => setMarathonAnim(data));
   }, []);
 
-  const totalSteps = QUESTIONS.length;
-  const currentQuestion = introDone ? QUESTIONS[stepIndex] : null;
+  // ✅ Use filtered questions instead of raw QUESTIONS
+const filteredQuestions = useMemo(
+  () => getFilteredQuestions(answers.gender),
+  [answers.gender]
+);
+
+
+const totalSteps = filteredQuestions.length;
+const currentQuestion = introDone ? filteredQuestions[stepIndex] : null;
+
+
 
   const today = useMemo(() => new Date(), []);
   // eslint-disable-next-line no-unused-vars
@@ -486,7 +590,8 @@ const [openDropdown, setOpen] = useState(null);
       answers.injectionPreference === "Yes" ? "injection" : "tablet";
     params.set("type", type);
   }
-    router.push(`/recommendations?${params.toString()}`);
+    router.push(`/quiz/result?data=${encodeURIComponent(JSON.stringify(answers))}`);
+
   };
 
   // Save quiz to MongoDB (not used directly in main flow, but kept)
@@ -658,6 +763,13 @@ const [openDropdown, setOpen] = useState(null);
     });
     if (error) setError("");
   };
+const calculateBMI = () => {
+  const h = Number(answers.heightCm);
+  const w = Number(answers.weightKg);
+  if (!h || !w) return null;
+  const hMeters = h / 100;
+  return w / (hMeters * hMeters);
+};
 
   // ---- VALIDATE & NEXT ----
   const validateAndNext = () => {
@@ -684,12 +796,22 @@ const [openDropdown, setOpen] = useState(null);
     }
 
     // Weight
-    if (q.type === "weight") {
-      if (!answers.weightKg) {
-        setError("Please select your weight.");
-        return;
-      }
-    }
+if (q.type === "weight") {
+  if (!answers.weightKg) {
+    setError("Please select your weight.");
+    return;
+  }
+
+  // calculate BMI after user selects weight
+  ensureHeightWeight();
+  const bmi = calculateBMI();
+
+  if (bmi && bmi <= 26) {
+    setError("Unfortunately, your BMI is below the minimum requirement (BMI must be above 26).");
+    return; // ❌ DO NOT MOVE FORWARD
+  }
+}
+
 
     // Date
     if (q.type === "date") {
@@ -1336,7 +1458,7 @@ const initial = currentDate ? new Date(currentDate) : today;
   const [yearOpen, setYearOpen] = useState(false);
 
   const months = [
-    "January",
+    "January",   
     "February",
     "March",
     "April",

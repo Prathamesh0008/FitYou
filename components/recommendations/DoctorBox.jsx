@@ -3,23 +3,23 @@
 
 import { ChevronLeft, Info } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function DoctorBox({ weight, height }) {
 
-  // Build URL for medical consultation intro
-  const backUrl = `/quiz/medical?weight=${weight || ""}&height=${height || ""}`;
+export default function DoctorBox()
+ {
+  const params = useSearchParams();
+const data = params.get("data");
 
   return (
-    <section className="w-full bg-[#E7F3FA] pb-4">
+    <section className="w-full bg-[#E7F3FA] pb-4"> {/* Reduced bottom spacing */}
       <div className="max-w-6xl mx-auto px-6 pt-10">
 
         {/* TOP BAR */}
-        <div className="flex items-center justify-between mb-7 md:mb-12">
+        <div className="flex items-center justify-between  mb-7 md:mb-12">
           <div className="flex items-center gap-2">
-
-            {/* 🔙 FIXED BACK BUTTON → Goes to Medical Consultation Intro */}
-            <Link href={backUrl}>
-              <ChevronLeft size={22} className="text-[#0D4F8B] cursor-pointer" />
+            <Link href={`/quiz/result?data=${encodeURIComponent(data)}`}>
+              <ChevronLeft size={22} className="text-[#0D4F8B]" />
             </Link>
 
             <h1 className="text-xl md:text-3xl font-semibold text-[#0D4F8B]">
@@ -33,8 +33,12 @@ export default function DoctorBox({ weight, height }) {
         </div>
 
         {/* WHITE DOCTOR CARD */}
-        <div className="bg-white shadow-sm px-5 py-5 rounded-xl flex items-center gap-4 md:gap-6">
-
+        <div
+          className="
+            bg-white shadow-sm px-5 py-5 rounded-xl 
+            flex items-center gap-4 md:gap-6
+          "
+        >
           {/* LEFT IMAGE */}
           <div className="flex-shrink-0">
             <img
@@ -57,6 +61,7 @@ export default function DoctorBox({ weight, height }) {
             <p className="text-xs text-[#3E5678]">M.S (General Surgery), FMAS</p>
           </div>
         </div>
+
       </div>
     </section>
   );

@@ -10,7 +10,7 @@ export default function PatientResponsibilityPage() {
       <div className="max-w-5xl mx-auto px-6 lg:px-20 py-16 font-laila">
         {/* RESPONSIVE HEADING */}
      <h1
-  className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight mb-16"
+  className="text-5xl sm:text-6xl lg:text-7xl  leading-tight mb-16"
   style={{ color: "#0B2972" }}
 >
   {/* Desktop / tablet: 2 lines */}

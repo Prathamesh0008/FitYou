@@ -50,7 +50,7 @@ export default function Footer() {
               <li><Link href="/program" className="hover:text-[#2B6CB0]">FitYou Program</Link></li>
               <li><Link href="/glp1-science" className="hover:text-[#2B6CB0]">GLP-1 Science</Link></li>
               <li><Link href="/faq" className="hover:text-[#2B6CB0]">FAQ</Link></li>
-              <li><Link href="/program/benefits" className="hover:text-[#2B6CB0]">Benefits</Link></li>
+              {/* <li><Link href="/program/benefits" className="hover:text-[#2B6CB0]">Benefits</Link></li> */}
             </ul>
           </div>
 
@@ -63,7 +63,7 @@ export default function Footer() {
               <li><Link href="/terms" className="hover:text-[#2B6CB0]">Terms & Conditions</Link></li>
               <li><Link href="/privacy" className="hover:text-[#2B6CB0]">Privacy Policy</Link></li>
               <li><Link href="/refunds" className="hover:text-[#2B6CB0]">Refund Policy</Link></li>
-              <li><Link href="/safety" className="hover:text-[#2B6CB0]">Safety Guidelines</Link></li>
+              {/* <li><Link href="/safety" className="hover:text-[#2B6CB0]">Safety Guidelines</Link></li> */}
               <li><Link href="/patient-responsibility" className="hover:text-[#2B6CB0]">Health patient</Link></li>
             </ul>
           </div>
@@ -109,42 +109,42 @@ export default function Footer() {
               <img 
                 src="/payments/visa.png" 
                 alt="Visa" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
             <div className="h-12 relative w-auto">
               <img 
                 src="/payments/mastercard.png" 
                 alt="Mastercard" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
             <div className="h-12 relative w-auto">
               <img 
                 src="/payments/amex.png" 
                 alt="American Express" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
             <div className="h-12 relative w-auto">
               <img 
                 src="/payments/paypal.png" 
                 alt="PayPal" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
             <div className="h-12 relative w-auto">
               <img 
                 src="/payments/apple-pay.png" 
                 alt="Apple Pay" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
             <div className="h-12 relative w-auto">
               <img 
                 src="/payments/google-pay.png" 
                 alt="Google Pay" 
-                className="h-12 w-auto object-contain filter grayscale opacity-70" 
+                className="h-12 w-auto object-contain filter grayscale opacity-70 hover:filter-none" 
               />
             </div>
           </div>

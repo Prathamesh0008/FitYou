@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll } from "framer-motion";
 
 export default function WhyItWorks() {
   const ref = useRef(null);
@@ -13,233 +13,254 @@ export default function WhyItWorks() {
   const testimonials = [
     {
       icon: "food",
-      title: '"I love food too much to diet"',
-      text: "Sarah used to crave snacks constantly. Now she eats her favorite meals but stops naturally after smaller portions.",
+      title: '"I can still enjoy my favorite foods"',
+      text: "Sarah learned portion control strategies and lost 8kg while still enjoying meals she loves.",
       person: "Sarah T., Mumbai",
-      delay: 0.1
+      delay: 0.1,
+      color: "from-blue-50 to-blue-100"
     },
     {
       icon: "clock",
-      title: '"No time for intense workouts"',
-      text: "Rahul walks 25 mins 4x/week. Combined with our program, he lost 12kg in 4 months without gym membership.",
+      title: '"Fits into my busy schedule"',
+      text: "Rahul walks 25 mins 4x/week and uses our meal plans. Lost 12kg in 4 months.",
       person: "Rahul S., Delhi", 
       align: "right",
-      delay: 0.2
+      delay: 0.2,
+      color: "from-emerald-50 to-emerald-100"
     },
     {
       icon: "target",
-      title: '"Motivation always fails me"',
-      text: "Priya struggled with yo-yo dieting. Our medical support + weekly check-ins kept her consistent for 6+ months.",
+      title: '"Finally found consistency"',
+      text: "Weekly check-ins helped Priya stay on track for 6+ months without yo-yo dieting.",
       person: "Priya K., Bangalore",
-      delay: 0.3
+      delay: 0.3,
+      color: "from-amber-50 to-amber-100"
     },
     {
       icon: "scale",
-      title: '"Tried everything, nothing worked"',
-      text: "Vikram (42) failed 5 diets. Medical intervention changed his metabolism – down 18kg, keeping it off 1 year.",
+      title: '"What actually works long-term"',
+      text: "After 5 failed diets, Vikram found success with our approach - down 18kg and keeping it off.",
       person: "Vikram M., Chennai",
       align: "right",
-      delay: 0.4
+      delay: 0.4,
+      color: "from-purple-50 to-purple-100"
     },
     {
       icon: "brain",
-      title: "Why doctors recommend us",
-      text: "Clinically proven GLP-1 agonists + behavioral science. 85% success rate vs 20% traditional diets.",
+      title: "Doctors trust our approach",
+      text: "Combining proven methods with medical supervision leads to 85% success at 12 months.",
       person: "Dr. Anjali R., Endocrinologist",
-      isDoctor: true
+      isDoctor: true,
+      color: "from-cyan-50 to-cyan-100"
     }
   ];
 
   return (
     <section 
       ref={ref} 
-      className="relative bg-gradient-to-b from-[#1E618A] via-[#255D8E] to-[#1A4D72] text-white py-16 sm:py-20 md:py-24 lg:pb-40 lg:pt-52 overflow-visible"
+      className="relative bg-gradient-to-b from-white via-blue-50/30 to-white py-16 sm:py-20 md:py-24 overflow-visible"
     >
-      {/* 🌊 TOP CURVE - Fully responsive */}
-      <svg
-        className="absolute top-0 left-0 w-full h-[200px] xs:h-[220px] sm:h-[260px] md:h-[320px] lg:h-[380px] xl:h-[420px]"
-        viewBox="0 0 1440 240"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#2A7BB5" />
-            <stop offset="50%" stopColor="#1E618A" />
-            <stop offset="100%" stopColor="#0D4F8B" />
-          </linearGradient>
-        </defs>
-        <path fill="url(#topGradient)" d="M0,120 C300,260 900,0 1440,140 L1440,0 L0,0 Z" />
-      </svg>
-
-      {/* ✨ RESPONSIVE FLOATING DOTS */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-12 sm:top-20 left-4 sm:left-10 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-white/50 rounded-full animate-ping" />
-        <div className="absolute top-2/3 right-4 sm:right-10 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/40 rounded-full animate-pulse delay-1000" />
-        <div className="absolute top-1/4 left-1/4 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white/30 rounded-full animate-bounce [animation-delay:1s]" />
+      {/* Light decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 right-10 w-64 h-64 bg-blue-100/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-emerald-100/20 rounded-full blur-3xl" />
       </div>
 
+      {/* Soft top wave */}
+      <svg
+        className="absolute top-0 left-0 w-full h-24 sm:h-32"
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+      >
+        <path fill="white" d="M0,60 C300,120 900,0 1440,60 L1440,0 L0,0 Z" />
+      </svg>
+
       {/* MAIN CONTENT */}
-      <div className="relative z-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Header - Fully responsive */}
+      <div className="relative z-10 px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+        {/* Header - Light and clean */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12 sm:mb-16"
         >
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex flex-col sm:flex-row items-center gap-3 bg-white/20 backdrop-blur-md rounded-2xl sm:rounded-3xl px-6 py-5 sm:px-8 sm:py-6 md:px-12 md:py-8 border border-white/30 shadow-2xl mx-auto max-w-2xl"
-          >
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full animate-pulse flex-shrink-0" />
-            <div className="text-left sm:text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
-                Why It Actually Works
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-[#D6E6EE] mt-2 sm:mt-3 font-semibold max-w-lg mx-auto leading-relaxed">
-                Real results from real doctors and patients. 
-                <span className="text-white font-bold block sm:inline">85% success rate.</span>
-              </p>
+          <div className="inline-block mb-6">
+            <div className="inline-flex items-center gap-3 mb-4 px-4 py-2 bg-blue-50 rounded-full border border-blue-100">
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-blue-700">
+                Real Stories, Real Results
+              </span>
             </div>
-          </motion.div>
+            
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0B2972] leading-tight mb-4">
+              Why People Succeed Here
+            </h1>
+            
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Our approach combines medical expertise with practical lifestyle changes
+            </p>
+          </div>
+
+          {/* Simple stats */}
+          <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-8">
+            {[
+              { value: "85%", label: "Success Rate" },
+              { value: "12K+", label: "People Helped" },
+              { value: "94%", label: "Stay On Track" }
+            ].map((stat, index) => (
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1">{stat.value}</div>
+                <div className="text-sm text-gray-500">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Testimonials Grid - Fully responsive */}
-        <div className="mb-12 lg:mb-20">
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 auto-rows-fr">
+        {/* Testimonials Grid */}
+        <div className="mb-16 md:mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {testimonials.slice(0, 4).map((testimonial, index) => (
               <TestimonialCard key={index} {...testimonial} index={index} />
             ))}
           </div>
 
-          {/* Center testimonial - responsive */}
+          {/* Center testimonial */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="mt-8 sm:mt-12 md:mt-16 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="mt-12 max-w-2xl mx-auto"
           >
             <TestimonialCard {...testimonials[4]} index={4} />
           </motion.div>
         </div>
 
-        {/* Trust Indicators - Fully responsive */}
+        {/* Trust badges */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 lg:gap-8 justify-center pb-8 sm:pb-12"
+          className="bg-gradient-to-r from-blue-50/50 to-emerald-50/50 rounded-2xl p-6 sm:p-8 border border-blue-100"
         >
-          {[
-            { label: "Clinically Proven" },
-            { label: "Doctor Recommended" },
-            { label: "85% Success Rate" }
-          ].map((item, index) => (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-2 bg-white/20 px-4 py-2.5 sm:px-4 sm:py-2.5 md:px-5 md:py-3 rounded-xl shadow-sm border border-white/30 backdrop-blur-sm hover:bg-white/25 transition-all duration-300 min-w-[140px] sm:min-w-[160px] text-xs sm:text-sm text-center"
-              whileHover={{ scale: 1.05, y: -2 }}
-            >
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full flex-shrink-0" />
-              <span className="font-medium text-white">{item.label}</span>
-            </motion.div>
-          ))}
+          <p className="text-center text-sm font-medium text-blue-700 mb-4">
+            Trusted Approaches
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              "Medical Supervision",
+              "Evidence-Based Methods",
+              "Sustainable Habits",
+              "Personalized Plans"
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-blue-100 hover:shadow-md transition-shadow duration-300"
+              >
+                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                <span className="text-sm font-medium text-gray-700">{item}</span>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
 
-      {/* 🌊 BOTTOM CURVE - Fully responsive */}
+      {/* Soft bottom wave */}
       <svg
-        className="absolute bottom-0 left-0 w-full h-[160px] sm:h-[200px] md:h-[260px] lg:h-[320px]"
-        viewBox="0 0 1460 200"
+        className="absolute bottom-0 left-0 w-full h-24 sm:h-32"
+        viewBox="0 0 1440 120"
         preserveAspectRatio="none"
       >
-        <defs>
-          <linearGradient id="bottomGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#F7FAFF" />
-          </linearGradient>
-        </defs>
-        <path fill="url(#bottomGradient)" d="M0,0 C300,160 900,80 1440,200 L1440,240 L0,240 Z" />
+        <path fill="white" d="M0,0 C300,0 900,120 1440,60 L1440,120 L0,120 Z" />
       </svg>
     </section>
   );
 }
 
-/* Fully Responsive TestimonialCard */
-function TestimonialCard({ icon, title, text, person, align, index, isDoctor }) {
+/* Clean TestimonialCard */
+function TestimonialCard({ icon, title, text, person, align, index, isDoctor, color }) {
   const renderIcon = (iconType) => {
-    const size = "w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14";
+    const size = "w-5 h-5";
     switch(iconType) {
       case "food":
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM20 8V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v3m12 0v10a2 2 0 01-2 2h-4a2 2 0 01-2-2V8m12 0H12"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+          </svg>
+        );
       case "clock":
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        );
       case "target":
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        );
       case "scale":
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+          </svg>
+        );
       case "brain":
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        );
       default:
-        return <svg className={`${size}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>;
+        return (
+          <svg className={size} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        );
     }
   };
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 60 }} 
+      initial={{ opacity: 0, y: 20 }} 
       whileInView={{ opacity: 1, y: 0 }} 
-      transition={{ duration: 0.8, delay: index * 0.15 }} 
+      transition={{ duration: 0.4, delay: index * 0.1 }} 
       viewport={{ once: true }} 
-      className="group relative w-full max-w-sm sm:max-w-md mx-auto md:mx-0"
+      className="group"
     >
-      <div className={`flex items-start gap-4 sm:gap-5 md:gap-6 lg:gap-7 w-full ${align === "right" ? "flex-row-reverse justify-end" : "justify-start"}`}>
-        {/* Icon Container - Responsive */}
-        <motion.div 
-          initial={{ scale: 0, rotate: align === "right" ? 10 : -10 }} 
-          whileInView={{ scale: 1, rotate: 0 }} 
-          whileHover={{ scale: 1.05 }} 
-          className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mt-1 sm:mt-2 group-hover:scale-[1.05] transition-all duration-300"
-        >
-          <div className="w-full h-full bg-white/20 rounded-xl sm:rounded-2xl md:rounded-2xl flex items-center justify-center shadow-lg border-2 border-white/40 overflow-hidden group-hover:border-white/60 hover:shadow-xl transition-all duration-300">
-            <div className="text-white font-bold">{renderIcon(icon)}</div>
+      <div className={`flex items-start gap-4 ${align === "right" ? "flex-row-reverse" : ""}`}>
+        {/* Icon Container */}
+        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-white to-gray-50 rounded-xl flex items-center justify-center border border-gray-200 shadow-sm group-hover:shadow-md transition-all duration-300">
+          <div className="text-blue-600">
+            {renderIcon(icon)}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Content Card - Responsive */}
-        <div className="relative bg-white/15 backdrop-blur-sm shadow-xl md:shadow-2xl rounded-2xl sm:rounded-3xl px-5 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8 border border-white/30 hover:shadow-3xl hover:border-white/50 transition-all duration-500 flex-1 group-hover:-translate-y-1 min-w-0">
-          {/* Quote bubble */}
-          <motion.div 
-            initial={{ scale: 0 }} 
-            whileInView={{ scale: 1 }} 
-            className="absolute -top-2 sm:-top-3 left-5 sm:left-6 w-6 h-6 sm:w-7 sm:h-7 bg-white/30 rounded-xl flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-md border border-white/40"
-          >
-            "
-          </motion.div>
+        {/* Content Card */}
+        <div className={`flex-1 bg-gradient-to-br ${color || "from-gray-50 to-white"} rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all duration-300 group-hover:border-gray-300`}>
+          <blockquote className="text-sm sm:text-base font-medium text-gray-800 leading-relaxed mb-3">
+            {title}
+          </blockquote>
           
-          {/* Tail */}
-          <div className={`absolute top-6 sm:top-7 w-3 h-3 sm:w-4 sm:h-4 bg-white/20 shadow-sm rounded-lg ${align === "right" ? "-right-2 sm:-right-2.5 md:-right-3 rotate-[30deg]" : "-left-2 sm:-left-2.5 md:-left-3 rotate-[-30deg]"}`} />
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            {text}
+          </p>
           
-          <div className="relative z-10">
-            <blockquote className="font-semibold text-base sm:text-lg md:text-xl text-white leading-tight mb-3 sm:mb-4 line-clamp-2 group-hover:line-clamp-none">
-              <span className="text-white/70">"</span>{title}<span className="text-white/70">"</span>
-            </blockquote>
-            <p className="text-xs sm:text-sm md:text-base text-[#D6E6EE] leading-relaxed mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-2 md:line-clamp-3">
-              {text}
-            </p>
-            <div className="flex items-center gap-2 sm:gap-3 pt-px">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-white/80 to-white/60 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
-                <span className="text-[#1A4D72] font-semibold text-xs sm:text-sm">✓</span>
+          <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-100 to-blue-50 rounded-full flex items-center justify-center border border-blue-200">
+              <span className="text-blue-600 text-xs font-bold">✓</span>
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className={`text-sm font-semibold text-gray-800 truncate ${isDoctor ? "text-blue-700" : ""}`}>
+                {person}
               </div>
-              <div className="min-w-0 flex-1">
-                <div className={`text-xs sm:text-sm font-semibold text-white truncate pr-2 ${isDoctor ? "text-white" : ""}`}>
-                  {person}{isDoctor && <span className="ml-1 text-xs text-white font-medium">(MD)</span>}
-                </div>
-                <div className="text-xs text-white/70 hidden sm:block">Real patient result</div>
+              <div className="text-xs text-gray-500 font-medium">
+                {isDoctor ? "Medical Professional" : "Real Member"}
               </div>
             </div>
           </div>
