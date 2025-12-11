@@ -581,18 +581,12 @@ const currentQuestion = introDone ? filteredQuestions[stepIndex] : null;
   };
 
   // Build URL for result page
+  // ✅ Build URL for LOADING page with FULL QUIZ DATA
   const redirectToResult = () => {
-    const params = new URLSearchParams();
-    if (answers.heightCm) params.set("height", answers.heightCm);
-    if (answers.weightKg) params.set("weight", answers.weightKg);
-      if (answers.injectionPreference) {
-    const type =
-      answers.injectionPreference === "Yes" ? "injection" : "tablet";
-    params.set("type", type);
-  }
-    router.push(`/quiz/result?data=${encodeURIComponent(JSON.stringify(answers))}`);
-
+    const data = encodeURIComponent(JSON.stringify(answers));
+    router.push(`/quiz/loading?data=${data}`);
   };
+
 
   // Save quiz to MongoDB (not used directly in main flow, but kept)
   const saveQuizToServer = async (emailArg) => {
@@ -836,7 +830,16 @@ if (q.type === "weight") {
         return;
       }
     }
-
+          // ❌ Block Continue if question has sub-questions but user did NOT select Yes/No
+    if (q.type === "buttons" && q.sub && !answers[q.id]) {
+      setError("Please select an option to continue.");
+      return;
+    }
+    // ❌ Block questions that have NO sub but DO have eligibility rules
+    if (q.type === "buttons" && q.eligibility && !q.sub && !answers[q.id]) {
+      setError("Please select an option to continue.");
+      return;
+    }
     // Sub-field validation (for buttons with YES)
     if (q.type === "buttons" && q.sub && answers[q.id] === "Yes") {
       for (const subField of q.sub) {

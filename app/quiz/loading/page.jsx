@@ -58,12 +58,14 @@ export default function QuizLoadingPage() {
                     <div className="flex flex-col">
                     <p className="text-[15px] mb-1">{item.label}</p>
 
-                    <div className="w-[220px] h-[22px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
+                    <div className="w-[220px] md:w-[260px] h-[16px] rounded-lg bg-[#A6CDD8] overflow-hidden shadow-sm">
                         <div
-                        className="h-full bg-[#6FA7B5] transition-all duration-[1600ms] ease-out rounded-lg"
-                        style={{ width: reviewStep >= item.fillAt ? "100%" : "0%" }}
+                          className={`h-full bg-[#6FA7B5] rounded-lg transition-[width] duration-[1500ms] ease-out`}
+                          style={{
+                            width: reviewStep >= item.fillAt ? "100%" : "0%",
+                          }}
                         />
-                    </div>
+                      </div>
                     </div>
 
                     {/* TICK (Right Side) */}

@@ -75,7 +75,7 @@ export default function IncludedBox({ type }) {
                     <FaPills className="text-[#0D4F8B] text-[22px]" />
                     <div>
                       <p className="font-semibold text-sm text-[#0D4F8B]">
-                        Semaglutide Weekly Injections
+                       Mounjaro  Weekly Injections
                       </p>
                       <ul className="list-disc pl-5 text-[13px] text-[#375C7A] mt-2 space-y-1">
                         <li>4 prefilled pens</li>

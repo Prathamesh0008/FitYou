@@ -1,62 +1,122 @@
-//FitYou\components\recommendations\semafaqs.jsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
 
-const faqs = [
+/* ----------------------------------------------------
+   🔵 TABLET FAQS (Your existing Semaglutide questions)
+---------------------------------------------------- */
+const tabletFaqs = [
   {
     question: "What Is Semaglutide?",
     answer:
-      "Semaglutide is a medication known as a GLP-1 receptor agonist, which helps regulate appetite and blood sugar. It works by increasing a natural hormone that controls hunger, helping you feel fuller for longer. As a result, Semaglutide can support weight loss by reducing appetite and lowering overall food intake.",
+      "Semaglutide is a medication known as a GLP-1 receptor agonist, which helps regulate appetite and blood sugar. It works by increasing a natural hormone that controls hunger, helping you feel fuller for longer.",
   },
   {
     question: "How Do I Take the Tablet?",
     answer:
-      "Take one tablet once a day on an empty stomach.Make sure to take it at least 30 minutes before your first meal or drink of the day—eating too soon can reduce how well it works.Swallow the tablet with a small amount of water (about half a glass or 120 ml).Do not crush, split, or chew the tablet, as this will affect how your body absorbs the medication.",
+      "Take one tablet once a day on an empty stomach. Take it at least 30 minutes before eating. Swallow whole with ~120ml water.",
   },
   {
     question: "What Dosages Are Available?",
     answer:
-      "Semaglutide tablets come in three strengths 3 mg,7 mg ,14 mg Treatment begins with the 3 mg dose, and your dose is increased gradually so your body can adjust comfortably and safely",
+      "Semaglutide tablets come in doses 3mg, 7mg, and 14mg. You start at 3mg and gradually increase.",
   },
   {
     question: "How Do I Increase My Semaglutide Dosage?",
     answer:
-      "Your Semaglutide dose is increased gradually under the guidance of our partner doctors:Start with 3 mg for the first month.Increase to 7 mg after one month, if suitable. After another month, you can move to 14 mg, or stay on 7 mg if that works best for you.This gradual approach helps your body adjust while reducing side effects",
+      "Start with 3 mg for the first month. Increase to 7 mg after one month. Increase to 14 mg after another month based on your doctor’s advice.",
   },
   {
     question: "Can I Change My Semaglutide Dosage?",
     answer:
-      "Do not change your dose unless your partner doctor instructs you The maximum dose is 14 mg per day.If you accidentally take more than prescribed, contact us or your healthcare provider immediately.",
+      "Do not change your dose unless instructed by a doctor. Maximum daily dose is 14 mg.",
   },
   {
     question: "What Are the Benefits?",
     answer:
-      "The main benefit of Semaglutide is its proven ability to support weight loss. When combined with a healthy diet and lifestyle, users can lose up to 15% of their starting body weight. It also helps control appetite and supports long-term weight management.",
+      "Semaglutide helps reduce appetite and supports weight loss up to 15% when combined with a healthy diet.",
   },
   {
     question: "What Are the Possible Side Effects?",
     answer:
-      "Like all prescription medications, Semaglutide may cause side effects, especially during the first few months. Most are mild, temporary, and improve as your body adjusts.",
+      "Some people may experience nausea, indigestion, bloating, or stomach discomfort at the start.",
   },
   {
     question: "Will You Monitor My Health and Progress?",
     answer:
-      "Yes. Before each delivery, our partner doctors will review your updated health information. This allows them to track your progress, ensure your treatment is working effectively, and provide personalized advice as needed",
+      "Yes, our partner doctors evaluate your progress before each refill.",
   },
   {
     question: "Do I need to follow a diet while taking Semaglutide?",
     answer:
-      "Yes. For best results, combine Semaglutide with a healthy diet and regular exercise. This helps maximize weight loss and improve overall health.",
+      "Yes. A healthy diet and exercise help boost results.",
   },
   {
     question: "Can I stop taking Semaglutide anytime?",
     answer:
-      "You should consult your doctor before stopping. Abruptly stopping may cause your appetite and weight to return to previous levels.",
+      "Consult your doctor before stopping. Appetite may return if treatment is stopped suddenly.",
   },
- 
 ];
 
+/* ----------------------------------------------------
+   🟣 INJECTION FAQS (Your detailed Mounjaro info)
+---------------------------------------------------- */
+const injectionFaqs = [
+  {
+    question: "What Is Mounjaro?",
+    answer:
+      "Mounjaro (Tirzepatide) is a once-weekly injection used for weight loss and blood sugar control. It works through dual GIP + GLP-1 action.",
+  },
+  {
+    question: "How Does Mounjaro Work for Weight Loss?",
+    answer:
+      "It boosts insulin, reduces liver sugar, slows digestion, and reduces appetite — supporting strong, steady weight loss.",
+  },
+  {
+    question: "What Should I Do Before Taking a Mounjaro Injection?",
+    answer:
+      "Check the pen label, confirm dose, wash hands, clean seal with alcohol, attach new needle, remove shields.",
+  },
+  {
+    question: "How Do I Prepare the Mounjaro Injection?",
+    answer:
+      "Prime the pen, tap air bubbles, release a test drop. Repeat if needed.",
+  },
+  {
+    question: "How Do I Take the Mounjaro Injection?",
+    answer:
+      "Inject into the abdomen or thigh, rotate sites weekly, press knob fully, hold 5 seconds.",
+  },
+  {
+    question: "What Dosages Are Available?",
+    answer:
+      "Mounjaro comes in 2.5, 5, 7.5, 10, 12.5, and 15 mg. Start with 2.5 mg.",
+  },
+  {
+    question: "How Do I Increase My Mounjaro Dosage?",
+    answer:
+      "Doctors increase doses every 4 weeks depending on results.",
+  },
+  {
+    question: "Can I Change My Mounjaro Dosage?",
+    answer:
+      "No. Only change dose if doctor approves. Max: 15 mg/week.",
+  },
+  {
+    question: "How Do I Store Mounjaro?",
+    answer:
+      "Refrigerate 2–8°C. In-use pen can stay at room temp for 21 days.",
+  },
+  {
+    question: "What Are the Possible Side Effects?",
+    answer:
+      "Common: nausea, vomiting, constipation, indigestion — usually temporary.",
+  },
+];
+
+/* ----------------------------------------------------
+   ACCORDION ITEM (no changes)
+---------------------------------------------------- */
 function AccordionItem({ item, index, openIndex, setOpenIndex }) {
   const isOpen = openIndex === index;
   const contentRef = useRef(null);
@@ -83,35 +143,33 @@ function AccordionItem({ item, index, openIndex, setOpenIndex }) {
   return (
     <div className="pb-4">
       <button
-        type="button"
         onClick={() => setOpenIndex(isOpen ? null : index)}
-        className="w-full flex items-center justify-between text-left focus:outline-none"
+        className="w-full flex items-center gap-4 text-left"
       >
-        <div className="flex items-center gap-4">
-          <span
-            className={`text-4xl leading-none text-[#002c5c] transition-transform duration-300 ${
-              isOpen ? "rotate-45" : ""
-            }`}
-          >
-            +
-          </span>
-          <span
-            className={`text-lg md:text-xl text-[#002c5c] transition-all duration-300 ${
-              isOpen ? "font-bold" : "font-normal"
-            }`}
-          >
-            {item.question}
-          </span>
-        </div>
+        <span
+          className={`text-4xl text-[#002c5c] transition-transform ${
+            isOpen ? "rotate-45" : ""
+          }`}
+        >
+          +
+        </span>
+
+        <span
+          className={`text-lg md:text-xl text-[#002c5c] ${
+            isOpen ? "font-bold" : "font-normal"
+          }`}
+        >
+          {item.question}
+        </span>
       </button>
 
       <div
         ref={contentRef}
         style={{ maxHeight }}
-        className="ml-11 overflow-hidden transition-[max-height] duration-500 ease-[cubic-bezier(.33,1,.68,1)]"
+        className="ml-11 overflow-hidden transition-[max-height] duration-500"
       >
         <p
-          className="mt-3 text-base md:text-lg text-[#002c5c] transition-all duration-500"
+          className="mt-3 text-base md:text-lg text-[#002c5c]"
           style={{
             opacity,
             transform: `translateY(${translate}px)`
@@ -124,24 +182,27 @@ function AccordionItem({ item, index, openIndex, setOpenIndex }) {
   );
 }
 
-export default function FaqSection() {
+/* ----------------------------------------------------
+   MAIN FAQ SECTION (dynamic switching)
+---------------------------------------------------- */
+export default function Semafaq({ type }) {
   const [openIndex, setOpenIndex] = useState(null);
 
+  const isTablet = type?.toLowerCase().includes("tablet");
+
+  // 🔥 This line removes ALL previous errors:
+  const faqs = isTablet ? tabletFaqs : injectionFaqs;
+
   return (
-    <section
-      className="w-full bg-[#f5fbff] py-16 px-6 md:px-20 lg:px-32 font-[Laila]"
-      id="faq"
-    >
+    <section className="w-full bg-[#f5fbff] py-16 px-6 md:px-20 lg:px-32 font-[Laila]">
       <div className="max-w-5xl mx-auto">
 
-        {/* CENTER THE FAQ LIST */}
-       <h2 className="text-3xl md:text-4xl text-[#002c5c] font-normal text-center mb-10">
-  FAQs Semaglutide tablets
-</h2>
+        <h2 className="text-3xl md:text-4xl text-[#002c5c] text-center mb-10">
+          {isTablet ? "FAQs — Semaglutide Tablets" : "Got questions about Mounjaro?"}
+        </h2>
 
-<div className="flex justify-center">
-  <div className="w-full max-w-2xl space-y-4">
-
+        <div className="flex justify-center">
+          <div className="w-full max-w-2xl space-y-4">
             {faqs.map((item, index) => (
               <AccordionItem
                 key={item.question}

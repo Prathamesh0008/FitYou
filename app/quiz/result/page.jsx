@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { QUESTIONS } from "../page";
+import {QUESTIONS}  from "../page";
 import { ChevronLeft } from "lucide-react";
 
 export default function QuizResultPage() {
@@ -105,113 +105,147 @@ export default function QuizResultPage() {
       </div>
     );
   }
+return (
+  <div className="min-h-screen bg-[#FFFDFB] text-[#0A2A5F] font-laila flex flex-col">
 
-  return (
-    <div className="min-h-screen bg-[#F6FAFF] text-[#0D4F8B] font-laila flex flex-col">
-      
-      {/* GRADIENT HEADER */}
-      <section className="w-full bg-gradient-to-b from-[#E8F4FB] to-[#F6FAFF] py-10 shadow-sm">
-        <div className="w-full max-w-xl mx-auto px-4 flex items-center gap-3">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center text-[#0D4F8B] hover:text-[#0D2451]"
-          >
-            <ChevronLeft size={24} />
-          </button>
+    {/* HEADER */}
+    {/* HEADER — FITYOU BLUE GRADIENT */}
+<section className="w-full bg-gradient-to-b from-[#E8F4FB] to-[#F6FAFF] border-b border-[#DDE7F0] py-6">
+  <div className="max-w-md mx-auto px-4 flex items-center gap-4">
+    <button
+      onClick={() => router.back()}
+      className="p-2 rounded-full hover:bg-[#E3EDF7] transition"
+    >
+      <ChevronLeft size={22} className="text-[#0D4F8B]" />
+    </button>
 
-          <h1 className="text-3xl md:text-4xl font-semibold">
-            Your medical summary
-          </h1>
+    <h1 className="text-2xl font-bold text-[#0D4F8B]">
+      Your medical summary
+    </h1>
+  </div>
+</section>
+
+    {/* MAIN CONTENT */}
+    <section className="w-full flex justify-center py-8 px-4">
+      <div className="w-full max-w-md space-y-8">
+
+        {/* INTRO */}
+        <div className="bg-[#FFF8F3] border border-[#FFE2CC] rounded-xl p-5">
+          <h2 className="text-lg font-semibold mb-1 text-[#0A2A5F]">
+            A quick review of your information
+          </h2>
+          <p className="text-xs text-[#6A4A3F] leading-relaxed">
+            These details help our medical team assess your health profile and determine the safest recommendations.
+          </p>
         </div>
-      </section>
 
-      {/* CONTENT AREA */}
-      <section className="w-full flex justify-center py-10 px-4">
-        <div className="w-full max-w-xl space-y-8">
+        {/* TITLE */}
+        <h2 className="text-xl font-bold text-[#0A2A5F]">
+          Your answers
+        </h2>
 
-          {/* DOCTOR NOTE CARD */}
-          <div className="bg-[#E8F4FB] border border-[#C8DDED] rounded-xl p-5 shadow-sm">
-            <h2 className="text-lg font-semibold text-[#0D4F8B] mb-2">
-              A quick review of your information
-            </h2>
-            <p className="text-sm text-[#375C7A] leading-relaxed">
-              These details help our medical team assess your health profile and determine the safest, most suitable treatment options for you.
-            </p>
-          </div>
+        {/* ANSWERS */}
+        <div className="space-y-6">
+          {QUESTIONS.filter(q => q.type !== "info").map((q, i) => {
+            const userAnswer = formatAnswer(q);
+            const isYesNo = ["Yes", "No"].includes(userAnswer);
 
-          {/* MAIN TITLE */}
-          <h2 className="text-2xl font-semibold text-[#0D2451]">Your Answers</h2>
+            return (
+              <div key={i} className="space-y-2">
 
-          {/* ANSWER CARDS */}
-          <div className="space-y-5">
-            {QUESTIONS.filter(q => q.type !== "info").map((q, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-[#E3ECF4] bg-white shadow-sm p-4 hover:shadow-md transition"
-              >
-                <h3 className="text-sm font-semibold text-[#0D4F8B] mb-1">
+                {/* QUESTION */}
+                <p className="text-[15px] font-semibold text-[#0A2A5F]">
                   {q.title}
-                </h3>
-                <p className="text-sm text-[#375C7A]">
-                  {formatAnswer(q)}
                 </p>
-              </div>
-            ))}
-          </div>
 
-          {/* EXTRA DETAILS */}
-          {extra.length > 0 && (
-            <>
-              <h2 className="text-2xl font-semibold text-[#0D2451] mt-10">
-                Additional Details
-              </h2>
+                {/* ANSWERS COMPACT */}
+                {isYesNo ? (
+                  <div className="flex gap-3">
 
-              <div className="space-y-5">
-                {extra.map((sec, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-xl border border-[#D9E8F3] bg-[#F9FBFF] p-5 shadow-sm"
-                  >
-                    <h3 className="text-md font-semibold text-[#0D4F8B] mb-3">
-                      {sec.title}
-                    </h3>
+                    {/* YES */}
+                    <div
+                      className={`
+                        flex-1 text-center py-2 rounded-lg text-sm border
+                        ${
+                          userAnswer === "Yes"
+                            ? "bg-[#FFC9A2] border-[#FFB88C]"
+                            : "bg-white border-[#D9D9D9]"
+                        }
+                      `}
+                    >
+                      Yes
+                    </div>
 
-                    <div className="space-y-2">
-                      {sec.items.map(([label, value], j) => (
-                        <div key={j} className="flex justify-between text-sm">
-                          <span className="text-[#375C7A] font-medium">
-                            {label}:
-                          </span>
-                          <span className="text-[#0D2451]">
-                            {value || "Not specified"}
-                          </span>
-                        </div>
-                      ))}
+                    {/* NO */}
+                    <div
+                      className={`
+                        flex-1 text-center py-2 rounded-lg text-sm border
+                        ${
+                          userAnswer === "No"
+                            ? "bg-[#FFC9A2] border-[#FFB88C]"
+                            : "bg-white border-[#D9D9D9]"
+                        }
+                      `}
+                    >
+                      No
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="inline-block bg-white border border-[#DADADA] py-2 px-4 rounded-lg text-sm text-[#6A4A3F]">
+                    {userAnswer}
+                  </div>
+                )}
               </div>
-            </>
-          )}
-
-          {/* BUTTON */}
-          <button
-            onClick={() =>
-              router.push(
-                `/recommendations?data=${encodeURIComponent(JSON.stringify(quiz))}`
-              )
-            }
-            className="w-full rounded-lg py-3 bg-[#8DB9C9] hover:bg-[#7AA7B8] text-white text-sm font-semibold shadow-md transition"
-          >
-            Continue to Recommendations
-          </button>
-
-          <p className="text-center text-xs text-[#7C8CA3]">
-            By continuing, you confirm that all information provided is accurate.
-          </p>
-
+            );
+          })}
         </div>
-      </section>
-    </div>
-  );
+
+        {/* EXTRA DETAILS */}
+        {extra.length > 0 && (
+          <>
+            <h2 className="text-xl font-bold text-[#0A2A5F] mt-6">
+              Additional details
+            </h2>
+
+            <div className="space-y-4">
+              {extra.map((sec, idx) => (
+                <div
+                  key={idx}
+                  className="bg-[#FFF8F3] border border-[#FFE2CC] p-5 rounded-xl"
+                >
+                  <h3 className="text-md font-semibold text-[#0A2A5F] mb-2">
+                    {sec.title}
+                  </h3>
+
+                  {sec.items.map(([label, value], j) => (
+                    <div key={j} className="flex justify-between text-xs text-[#6A4A3F] py-1">
+                      <span className="font-medium">{label}</span>
+                      <span>{value || "Not specified"}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* BUTTON */}
+        <button
+          onClick={() =>
+            router.push(`/recommendations?data=${encodeURIComponent(JSON.stringify(quiz))}`)
+          }
+          className="w-full py-3 rounded-lg bg-[#A3C7D9] hover:bg-[#8EBAD1] text-[#0D4F8B] font-semibold shadow"
+        >
+          Continue to Recommendations
+        </button>
+
+        <p className="text-center text-[10px] text-[#8D7668]">
+          By continuing, you confirm the information is accurate.
+        </p>
+      </div>
+    </section>
+  </div>
+);
+
+
 }

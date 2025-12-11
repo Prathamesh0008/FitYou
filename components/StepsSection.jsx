@@ -22,17 +22,17 @@ export default function StepsSection() {
           {/* STEP BLOCK TEMPLATE */}
           {[
   {
-    img: "/guide/how-it-work-img1.jpg",
+    img: "/guide/1.svg",
     num: "1",
     text: "Answer a few medical questions to see if our treatment is safe for you."
   },
   {
-    img: "/guide/how-it-work-img2.jpg",
+    img: "/guide/2.svg",
     num: "2",
     text: "Based on your results, we create a personalised Aktive programme for you."
   },
   {
-    img: "/guide/how-it-work-img3.jpg",
+    img: "/guide/3.svg",
     num: "3",
     text:
       "If the doctor approves you for treatment, you will receive your injections’ first month’s supply in a few days."

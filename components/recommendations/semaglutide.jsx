@@ -1,4 +1,5 @@
-//FitYou\components\recommendations\semaglutide.jsx
+//components\recommendations\semaglutide.jsx
+
 "use client";
 
 import { Laila } from "next/font/google";
@@ -10,13 +11,53 @@ const laila = Laila({
   display: "swap",
 });
 
-const Semaglutide = () => {
+const Semaglutide = ({ type }) => {
+  const isTablet = type?.toLowerCase().includes("tablet");
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   };
+
+  // 🔵 TABLET CONTENT -----------------------------------------
+  const tabletHeading = (
+    <>
+      <span className="relative inline-block border-b border-[#8ea2c8] pb-1">
+        Semaglutide,
+      </span>
+      <br />
+      <span className="inline mt-3 block md:inline whitespace-normal md:whitespace-nowrap">
+        the new groundbreaking weight loss medicine
+      </span>
+    </>
+  );
+
+  const tabletPara1 =
+    "Semaglutide is the famous weight loss medication. Internationally popular as injection, under the brand names Ozempic and Wegovy.";
+
+  const tabletPara2 =
+    "In India, the injection is not yet available, but we offer you the Semaglutide tablets. Same unique powers, just in a daily tablet.";
+
+  // 🟣 INJECTION CONTENT (Mounjaro) ------------------------------
+  const injectionHeading = (
+    <>
+      <span className="relative inline-block border-b border-[#8ea2c8] pb-1">
+        Mounjaro,
+      </span>
+      <br />
+      <span className="inline mt-3 block md:inline whitespace-normal md:whitespace-nowrap">
+        the weekly injection transforming weight loss results
+      </span>
+    </>
+  );
+
+  const injectionPara1 =
+    "Mounjaro (Tirzepatide) is a once-weekly injection that supports significant weight loss and regulates blood sugar through dual GIP + GLP-1 action.";
+
+  const injectionPara2 =
+    "It slows digestion, reduces appetite, improves insulin response, and helps you stay full longer — leading to powerful, sustainable weight loss.";
 
   return (
     <div className={`w-full bg-[#F4F7FB] flex items-start justify-start px-6 py-16 ${laila.className}`}>
@@ -26,15 +67,7 @@ const Semaglutide = () => {
         {/* Headings */}
         <div className="space-y-3 pl-0">
           <h1 className="text-3xl md:text-4xl lg:text-5xl text-[#051E64] leading-tight font-normal">
-            <span className="relative inline-block border-b border-[#8ea2c8] pb-1">
-              Semaglutide,
-            </span>
-
-            <br />
-
-            <span className="inline mt-3 block md:inline whitespace-normal md:whitespace-nowrap">
-              the new groundbreaking weight loss medicine
-            </span>
+            {isTablet ? tabletHeading : injectionHeading}
           </h1>
         </div>
 
@@ -42,16 +75,12 @@ const Semaglutide = () => {
         <div className="pl-0">
           <div className="inline-block">
 
-            {/* Paragraph 1 (responsive) */}
             <p className="mb-3 whitespace-normal md:whitespace-nowrap">
-              Semaglutide is the famous weight loss medication. Internationally
-              popular as injection, under the brand names Ozempic and Wegovy.
+              {isTablet ? tabletPara1 : injectionPara1}
             </p>
 
-            {/* Paragraph 2 (responsive) */}
             <p className="whitespace-normal md:whitespace-nowrap">
-              In India, the injection is not yet available, but we offer you the
-              Semaglutide tablets. Same unique powers, just in a daily tablet.
+              {isTablet ? tabletPara2 : injectionPara2}
             </p>
 
             {/* Arrow Scroll Button */}

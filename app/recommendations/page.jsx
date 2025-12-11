@@ -14,13 +14,19 @@ import Semafaq from "@/components/recommendations/semafaqs.jsx";
 
 export default function RecommendationsPage() {
   const params = useSearchParams();
+    const dataRaw = params.get("data");
+  const quiz = dataRaw ? JSON.parse(dataRaw) : null;
+  const height = quiz?.heightCm || params.get("height");
+  const weight = quiz?.weightKg || params.get("weight");
 
-  const weight = params.get("weight");
-  const height = params.get("height");
-  const type=params.get("type")
+  const type =
+    quiz?.injectionPreference === "Yes"
+      ? "injection"
+      : quiz?.injectionPreference === "No, I prefer a tablet"
+      ? "tablet"
+      : params.get("type");
+
   
-
-
   const bmi =
     weight && height
       ? +(Number(weight) / ((Number(height) / 100) ** 2)).toFixed(1)
@@ -28,14 +34,15 @@ export default function RecommendationsPage() {
 
   return (
     <div className="bg-[#F7FAFF] text-[#0D4F8B] min-h-screen pb-20">
-      <DoctorBox />
-      <IncludedBox  type={type} prefer={params.get("prefer")} />
-      <WhyQualify />
+      <DoctorBox dataRaw={dataRaw} />
+      <IncludedBox  type={type} />
+      <WhyQualify bmi={bmi} />
       <MiddleImage />
       <ActionSteps />
       <Milestones />
-      <Semaglutide/>
-      <Semafaq/>
+      <Semaglutide  type={type} />
+      <Semafaq type={type} />
+
       <NewsSection />
     </div>
   );

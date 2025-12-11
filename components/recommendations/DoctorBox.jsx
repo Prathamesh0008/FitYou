@@ -3,13 +3,10 @@
 
 import { ChevronLeft, Info } from "lucide-react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 
-export default function DoctorBox()
- {
-  const params = useSearchParams();
-const data = params.get("data");
+
+export default function DoctorBox({ dataRaw }) {
 
   return (
     <section className="w-full bg-[#E7F3FA] pb-4"> {/* Reduced bottom spacing */}
@@ -18,7 +15,7 @@ const data = params.get("data");
         {/* TOP BAR */}
         <div className="flex items-center justify-between  mb-7 md:mb-12">
           <div className="flex items-center gap-2">
-            <Link href={`/quiz/result?data=${encodeURIComponent(data)}`}>
+            <Link href={`/quiz/result?data=${encodeURIComponent(dataRaw || "")}`}>
               <ChevronLeft size={22} className="text-[#0D4F8B]" />
             </Link>
 
