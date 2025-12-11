@@ -1,55 +1,37 @@
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import dbConnect from "@/lib/db";
 import User from "@/models/User";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 
 export async function GET() {
-  console.log("👤 /api/auth/me called");
-  
   try {
-    const cookieStore = await cookies();
-    const email = cookieStore.get("fityou_auth")?.value || null;
-    
-    console.log("Cookie email:", email);
+    await dbConnect();
 
-    if (!email) {
-      console.log("❌ No auth cookie found");
+    const cookieStore = await cookies(); // ✅ MUST AWAIT
+    const phone = cookieStore.get("fityou_auth")?.value;
+
+    if (!phone) {
       return NextResponse.json({ user: null });
     }
 
-    await dbConnect();
-    console.log("✅ Database connected");
-
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ phone });
 
     if (!user) {
-      console.log("❌ User not found in database for email:", email);
-      
-      // Clear invalid cookie
-      const response = NextResponse.json({ user: null });
-      response.cookies.delete("fityou_auth");
-      return response;
+      return NextResponse.json({ user: null });
     }
 
-    console.log("✅ User found:", user.email);
     return NextResponse.json({
       user: {
-        email: user.email,
-        name: user.name,
+        email: user.email || "",
         phone: user.phone,
-        dob: user.dob,
-        address: user.address,
-        quiz: user.quiz || {},
+        name: user.name || "",
+        dob: user.dob || "",
+        address: user.address || {},
+        quiz: user.quiz || {} ,
       },
     });
-    
   } catch (err) {
-    console.error("💥 /api/auth/me ERROR:", err);
-    
-    // Return null user on error (don't crash the frontend)
-    return NextResponse.json({ 
-      user: null,
-      error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
+    console.error("AUTH ME ERROR:", err);
+    return NextResponse.json({ user: null });
   }
 }

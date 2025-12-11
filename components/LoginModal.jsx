@@ -6,21 +6,24 @@ import { useState } from "react";
 export default function LoginModal({ open, onClose }) {
   if (!open) return null;
 
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const sendOtp = async () => {
-    // Validate email
-    const emailValue = email.trim().toLowerCase();
-    
-    if (!emailValue) {
-      setError("Please enter your email");
+    // Validate phone number
+    const phoneValue = phone.trim();
+
+    if (!phoneValue) {
+      setError("Please enter your phone number");
       return;
     }
-    
-    if (!emailValue.includes('@')) {
-      setError("Please enter a valid email address");
+
+    // Basic validation for +91 or 10 digit
+    const phoneRegex = /^(\+?\d{10,15})$/;
+
+    if (!phoneRegex.test(phoneValue)) {
+      setError("Please enter a valid phone number (10–15 digits)");
       return;
     }
 
@@ -28,12 +31,12 @@ export default function LoginModal({ open, onClose }) {
     setError("");
 
     try {
-      console.log("📤 Sending OTP to:", emailValue);
-      
+      console.log("📤 Sending OTP to:", phoneValue);
+
       const res = await fetch("/api/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailValue }),
+        body: JSON.stringify({ phone: phoneValue }),
       });
 
       const data = await res.json();
@@ -45,30 +48,31 @@ export default function LoginModal({ open, onClose }) {
         return;
       }
 
-      // ✅ CRITICAL FIX: Save to localStorage with EXACT key that OtpModal expects
-      console.log("💾 Saving email for OTP verification:", emailValue);
-      localStorage.setItem("fityou_email", emailValue);
-      
-      // Also save to sessionStorage as backup
-      sessionStorage.setItem("fityou_email", emailValue);
-      
-      // Verify it was saved
-      const savedEmail = localStorage.getItem("fityou_email");
-      console.log("✅ Email saved successfully?", savedEmail === emailValue ? "Yes" : "No");
-      console.log("📦 Actual saved value:", savedEmail);
+      // SAVE PHONE NUMBER FOR OTP VERIFICATION
+      console.log("💾 Saving phone for OTP verification:", phoneValue);
+      localStorage.setItem("fityou_phone", phoneValue);
+      sessionStorage.setItem("fityou_phone", phoneValue);
 
-      // Close this modal
+      const savedPhone = localStorage.getItem("fityou_phone");
+      console.log(
+        "✅ Phone saved successfully?",
+        savedPhone === phoneValue ? "Yes" : "No"
+      );
+      console.log("📦 Actual saved value:", savedPhone);
+
+      // CLOSE LOGIN MODAL
       onClose();
 
-      // Open OTP modal with slight delay (CRITICAL: Give time for state to update)
+      // OPEN OTP MODAL (SLIGHT DELAY FOR SAFETY)
       setTimeout(() => {
-        console.log("🚀 Dispatching open-otp event with email:", emailValue);
-        // Pass email in event detail
-        window.dispatchEvent(new CustomEvent("open-otp", { 
-          detail: { email: emailValue } 
-        }));
-      }, 100); // Increased delay to ensure storage is ready
-      
+        console.log("🚀 Dispatching open-otp event with phone:", phoneValue);
+
+        window.dispatchEvent(
+          new CustomEvent("open-otp", {
+            detail: { phone: phoneValue },
+          })
+        );
+      }, 120);
     } catch (error) {
       console.error("💥 OTP Error:", error);
       setError("Network error. Please try again.");
@@ -78,9 +82,7 @@ export default function LoginModal({ open, onClose }) {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      sendOtp();
-    }
+    if (e.key === "Enter") sendOtp();
   };
 
   return (
@@ -119,20 +121,22 @@ export default function LoginModal({ open, onClose }) {
 
           {/* DESCRIPTION */}
           <p className="text-center text-[15px] text-[#4d4d4d] mt-3 leading-relaxed">
-            Enter your email address to receive<br />a 6-digit passcode.
+            Enter your phone number to receive
+            <br />
+            a 6-digit passcode.
           </p>
 
           {/* INPUT */}
           <div className="mt-7 flex flex-col gap-2 px-1">
             <input
-              type="email"
-              value={email}
+              type="tel"
+              value={phone}
               onChange={(e) => {
-                setEmail(e.target.value);
+                setPhone(e.target.value);
                 setError("");
               }}
               onKeyPress={handleKeyPress}
-              placeholder="Email address"
+              placeholder="Phone number (e.g. +91XXXXXXXXXX)"
               className="
                 w-full
                 border 
@@ -152,14 +156,12 @@ export default function LoginModal({ open, onClose }) {
 
           {/* ERROR MESSAGE */}
           {error && (
-            <p className="text-red-500 text-[12px] mt-1 pl-1">
-              {error}
-            </p>
+            <p className="text-red-500 text-[12px] mt-1 pl-1">{error}</p>
           )}
 
           {/* SEND CODE BUTTON */}
           <button
-            disabled={loading || !email}
+            disabled={loading || !phone}
             className="
               w-full mt-6 py-3.5 
               rounded-[10px]
@@ -171,11 +173,11 @@ export default function LoginModal({ open, onClose }) {
           >
             {loading ? "Sending..." : "Send code"}
           </button>
-          
-          {/* Debug info (can remove in production) */}
-          {process.env.NODE_ENV === 'development' && (
+
+          {/* Debug */}
+          {process.env.NODE_ENV === "development" && (
             <div className="mt-4 text-xs text-gray-500">
-              <p>Debug: Will save to localStorage key: "fityou_email"</p>
+              <p>Debug: Will save to localStorage key: "fityou_phone"</p>
             </div>
           )}
         </div>

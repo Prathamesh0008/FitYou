@@ -8,41 +8,43 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load session on mount
+  // LOAD SESSION ON APP START
   useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch("/api/auth/me");
-        const data = await res.json();
-        setUser(data.user || null);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
+    refreshUser();
   }, []);
 
-  // LOGIN → refresh session from backend
-  const login = async () => {
+  // ----- UNIVERSAL REFRESH FUNCTION -----
+  const refreshUser = async () => {
     try {
-      const res = await fetch("/api/auth/me");
+      const res = await fetch("/api/auth/me", { cache: "no-store" });
       const data = await res.json();
+
       setUser(data.user || null);
     } catch (err) {
-      console.error("Error refreshing login state:", err);
+      console.error("Auth load error:", err);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // LOGOUT → clear cookie + reset user
+  // LOGIN → refresh session after OTP verification
+  const login = async () => {
+    await refreshUser();
+  };
+
+  // LOGOUT → remove cookie + clear state
   const logout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, refreshUser }}>
       {!loading && children}
     </AuthContext.Provider>
   );

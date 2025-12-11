@@ -75,37 +75,40 @@ export default function Navbar() {
   /* ------------------------------
      OPEN OTP EVENT LISTENER - UPDATED
   ------------------------------ */
-  useEffect(() => {
-    const handler = (e) => {
-      console.log("🔔 open-otp event received:", e.detail);
-      
-      // Get email from event or localStorage
-      const email = e.detail?.email || localStorage.getItem("fityou_email");
-      
-      if (email && email.includes('@')) {
-        console.log("✅ Opening OTP modal for email:", email);
-        
-        // Close login modal first
-        setLoginOpen(false);
-        
-        // Give time for modal transition, then open OTP modal
-        setTimeout(() => {
-          setOtpOpen(true);
-          
-          // Also send email via custom event for OtpModal to catch
-          window.dispatchEvent(new CustomEvent("otp-email", { 
-            detail: { email } 
-          }));
-        }, 150);
-      } else {
-        console.error("❌ No valid email found for OTP modal");
-        alert("Email not found. Please login again.");
-      }
-    };
-    
-    window.addEventListener("open-otp", handler);
-    return () => window.removeEventListener("open-otp", handler);
-  }, []);
+useEffect(() => {
+  const handler = (e) => {
+    console.log("🔔 open-otp event received:", e.detail);
+
+    // Get phone from event or localStorage
+    const phone = e.detail?.phone || localStorage.getItem("fityou_phone");
+
+    if (phone) {
+      console.log("✅ Opening OTP modal for phone:", phone);
+
+      // Close login modal
+      setLoginOpen(false);
+
+      // Open OTP modal after transition
+      setTimeout(() => {
+        setOtpOpen(true);
+
+        // Send phone to OtpModal
+        window.dispatchEvent(
+          new CustomEvent("otp-phone", {
+            detail: { phone },
+          })
+        );
+      }, 150);
+    } else {
+      console.error("❌ No valid phone found for OTP modal");
+      alert("Phone number not found. Please login again.");
+    }
+  };
+
+  window.addEventListener("open-otp", handler);
+  return () => window.removeEventListener("open-otp", handler);
+}, []);
+
 
   /* ------------------------------
      OTP SUCCESS EVENT LISTENER
@@ -142,15 +145,17 @@ export default function Navbar() {
   /* ------------------------------
      LOGOUT
   ------------------------------ */
-  const handleLogout = () => {
-    logout();
-    // Clear stored email
-    localStorage.removeItem("fityou_email");
-    sessionStorage.removeItem("fityou_email");
-    
-    router.push("/");
-    setOpen(false);
-  };
+ const handleLogout = () => {
+  logout();
+
+  // CLEAR PHONE-BASED LOGIN
+  localStorage.removeItem("fityou_phone");
+  sessionStorage.removeItem("fityou_phone");
+
+  router.push("/");
+  setOpen(false);
+};
+
 
   return (
     <header className="sticky top-0 z-50 bg-[#F2F7FA] border-b border-[#E5E7EB] font-laila">
@@ -182,7 +187,7 @@ export default function Navbar() {
           )}
 
           {/* USER ICON */}
-          {user ? (
+         {user?.phone ? (
             <button onClick={() => router.push("/profile")}>
               <User2 className="w-6 h-6 text-[#0D4F8B]" />
             </button>
@@ -234,11 +239,12 @@ export default function Navbar() {
               </button>
             ))}
 
-            {user && (
-              <button onClick={handleLogout} className="text-left text-red-500 mt-4">
-                Logout
-              </button>
-            )}
+           {user?.phone && (
+  <button onClick={handleLogout} className="text-left text-red-500 mt-4">
+    Logout
+  </button>
+)}
+
           </div>
         ) : (
           /* -----------------------------------------------------

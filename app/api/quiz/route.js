@@ -10,13 +10,13 @@ export async function POST(req) {
     await dbConnect();
     console.log("📌 DB Connected");
 
-    // NEW correct cookie parsing
+    // The cookie now stores PHONE, not email
     const cookieStore = await cookies();
-    const email = cookieStore.get("fityou_auth")?.value;
+    const phone = cookieStore.get("fityou_auth")?.value;
 
-    console.log("📌 Cookie Email:", email);
+    console.log("📌 Cookie Phone:", phone);
 
-    if (!email) {
+    if (!phone) {
       console.log("❌ User not logged in");
       return NextResponse.json(
         { success: false, error: "Not logged in" },
@@ -37,10 +37,11 @@ export async function POST(req) {
       );
     }
 
-    const user = await User.findOne({ email });
+    // FIND USER BY PHONE, NOT EMAIL
+    const user = await User.findOne({ phone });
 
     if (!user) {
-      console.log("❌ No user found for email:", email);
+      console.log("❌ No user found for phone:", phone);
       return NextResponse.json(
         { success: false, error: "User not found" },
         { status: 404 }

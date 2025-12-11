@@ -1,165 +1,60 @@
+// app/api/send-otp/route.js
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/db";
-import User from "@/models/User";
-import nodemailer from "nodemailer";
+import twilio from "twilio";
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 export async function POST(req) {
-  console.log("📧 /api/send-otp called");
-  
+  console.log("📱 /api/send-otp (Verify) called");
+
   try {
-    const { email } = await req.json();
-    if (!email) {
-      return NextResponse.json({ 
-        success: false, 
-        error: "Email required" 
-      }, { status: 400 });
+    const { phone } = await req.json();
+
+    if (!phone) {
+      return NextResponse.json(
+        { success: false, error: "Phone number required" },
+        { status: 400 }
+      );
     }
 
-    console.log("📨 Processing OTP for:", email);
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
-    console.log("🔢 Generated OTP:", otp);
+    console.log("📨 Requesting OTP via Twilio Verify for:", phone);
 
-    // Try database connection
-    let dbSuccess = false;
-    try {
-      await dbConnect();
-      console.log("✅ Database connected");
-      
-      let user = await User.findOne({ email });
-      if (!user) {
-        console.log("👤 Creating new user");
-        user = await User.create({ email });
-      }
-      
-      user.otpCode = otp;
-      user.otpExpires = Date.now() + 5 * 60 * 1000;
-      await user.save();
-      dbSuccess = true;
-      console.log("💾 OTP saved to database");
-    } catch (dbError) {
-      console.warn("⚠️ Database operation failed:", dbError.message);
-      // Continue without database
-    }
-
-    // Send email
-    console.log("📤 Attempting to send email...");
-    try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT) || 587,
-        secure: process.env.SMTP_PORT === '465',
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
+    const verification = await client.verify.v2
+      .services(process.env.TWILIO_VERIFY_SID)
+      .verifications.create({
+        to: phone,
+        channel: "sms",
       });
 
-      await transporter.verify();
-      console.log("✅ SMTP connection verified");
+    console.log("✅ Twilio Verify status:", verification.status);
 
-      const htmlTemplate = `
-      <div style="background:#f4f9ff;padding:30px;width:100%;font-family:Arial,Helvetica,sans-serif;">
-        <div style="
-          max-width:420px;
-          margin:auto;
-          background:#ffffff;
-          border-radius:14px;
-          padding:30px;
-          box-shadow:0 4px 20px rgba(0,0,0,0.08);
-          text-align:center;
-        ">
-
-          <img src="https://instasize.com/api/image/31b93bf1504858963649f40913a0f55450500ccb6c267a15e7f09393d3accada.png" 
-              alt="FitYou" 
-              style="width:140px;margin-bottom:20px;" />
-
-          <h2 style="color:#0D4F8B;margin-bottom:10px;">Your OTP Verification Code</h2>
-          <p style="color:#375C7A;font-size:15px;line-height:1.6;">
-            Use the OTP below to continue your secure login.  
-            This code is valid for <strong>5 minutes</strong>.
-          </p>
-
-          <div style="
-            margin:25px auto;
-            background:#F0F7FF;
-            width:200px;
-            padding:12px 0;
-            border-radius:10px;
-            font-size:26px;
-            letter-spacing:4px;
-            color:#0D4F8B;
-            font-weight:bold;
-          ">
-            ${otp}
-          </div>
-
-          <p style="font-size:14px;color:#7A8CA5;margin-top:20px;">
-            If you didn't request this, please ignore this email.<br />
-            This is an automated message — do not reply.
-          </p>
-
-          <hr style="border:none;border-top:1px solid #E3EAF4;margin:25px 0">
-
-          <p style="font-size:12px;color:#9FB3C8;">
-            © ${new Date().getFullYear()} FitYou<br>
-            Improving lives through science-backed weight management.
-          </p>
-        </div>
-      </div>
-      `;
-
-      const mailOptions = {
-        from: process.env.OTP_FROM || process.env.SMTP_USER,
-        to: email,
-        subject: "Your FitYou OTP Code",
-        html: htmlTemplate,
-        text: `Your FitYou OTP code is: ${otp}. This code expires in 5 minutes.`,
-      };
-
-      const info = await transporter.sendMail(mailOptions);
-      console.log("✅ Email sent successfully:", info.messageId);
-      
-      return NextResponse.json({
-        success: true,
-        message: "OTP sent successfully",
-        emailSent: true,
-        savedToDatabase: dbSuccess
-      });
-      
-    } catch (emailError) {
-      console.error("❌ Email sending failed:", emailError.message);
-      
-      return NextResponse.json({
-        success: dbSuccess,
-        message: dbSuccess ? "OTP saved but email failed" : "Failed to send OTP",
-        error: emailError.message,
-        emailSent: false,
-        savedToDatabase: dbSuccess
-      });
-    }
-
-  } catch (error) {
-    console.error("💥 /api/send-otp error:", error.message);
-    
     return NextResponse.json({
-      success: false,
-      error: "Failed to process OTP request",
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    }, { status: 500 });
+      success: true,
+      message: "OTP sent via Twilio Verify",
+      status: verification.status,
+    });
+  } catch (err) {
+    console.error("❌ Twilio Verify error:", err?.message || err);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to send OTP",
+        details:
+          process.env.NODE_ENV === "development" ? err?.message : undefined,
+      },
+      { status: 500 }
+    );
   }
 }
 
-// GET method for testing
 export async function GET() {
-  return NextResponse.json({
-    message: "Use POST method to send OTP",
-    example: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: { email: "user@example.com" }
-    }
-  }, { status: 405 });
+  return NextResponse.json(
+    {
+      message: "Use POST with { phone } to send OTP via Twilio Verify",
+    },
+    { status: 405 }
+  );
 }

@@ -1,192 +1,111 @@
-// app/api/verify-otp/route.js - UPDATED VERSION
 import dbConnect from "@/lib/db";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import twilio from "twilio";
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 export async function POST(req) {
-  console.log("🔐 /api/verify-otp called");
-  
+  console.log("🔐 /api/verify-otp (Twilio Verify) called");
+
   try {
-    // Parse request with more validation
-    let email, otp;
-    try {
-      const body = await req.json();
-      email = body?.email?.toString().trim();
-      otp = body?.otp?.toString().trim();
-      
-      console.log("📥 Request received:");
-      console.log("- Raw email:", body?.email);
-      console.log("- Cleaned email:", email);
-      console.log("- Raw OTP:", body?.otp);
-      console.log("- Cleaned OTP:", otp ? "******" : "EMPTY");
-      console.log("- OTP length:", otp?.length || 0);
-    } catch (parseError) {
-      console.error("❌ Failed to parse request:", parseError);
-      return NextResponse.json({ 
-        success: false, 
-        error: "Invalid request format" 
-      }, { status: 400 });
+    const body = await req.json();
+    const phone = body?.phone?.toString().trim();
+    const otp = body?.otp?.toString().trim();
+
+    console.log("📥 Incoming verify:", { phone, otp });
+
+    if (!phone) {
+      return NextResponse.json(
+        { success: false, error: "Phone number is required" },
+        { status: 400 }
+      );
     }
 
-    // Validate inputs
-    if (!email || !email.includes('@')) {
-      console.log("❌ Invalid email:", email);
-      return NextResponse.json({ 
-        success: false, 
-        error: "Valid email is required" 
-      }, { status: 400 });
+    if (!otp || !/^\d{6}$/.test(otp)) {
+      return NextResponse.json(
+        { success: false, error: "OTP must be 6 digits" },
+        { status: 400 }
+      );
     }
 
-    if (!otp || otp.length !== 6 || !/^\d{6}$/.test(otp)) {
-      console.log("❌ Invalid OTP format:", otp);
-      return NextResponse.json({ 
-        success: false, 
-        error: "OTP must be 6 digits" 
-      }, { status: 400 });
+    // 1️⃣ CHECK OTP WITH TWILIO VERIFY
+    console.log("📡 Checking OTP with Twilio Verify...");
+
+    const check = await client.verify.v2
+      .services(process.env.TWILIO_VERIFY_SID)
+      .verificationChecks.create({
+        to: phone,
+        code: otp,
+      });
+
+    console.log("✅ Twilio Verify check status:", check.status);
+
+    if (check.status !== "approved") {
+      return NextResponse.json(
+        { success: false, error: "Invalid or expired OTP" },
+        { status: 400 }
+      );
     }
 
-    // Connect to database
-    try {
-      await dbConnect();
-      console.log("✅ Database connected");
-    } catch (dbError) {
-      console.error("❌ Database connection failed:", dbError.message);
-      return NextResponse.json({ 
-        success: false, 
-        error: "Database unavailable. Please try again." 
-      }, { status: 500 });
-    }
+    // 2️⃣ CONNECT DB AND FIND/CREATE USER BY PHONE
+    await dbConnect();
+    console.log("✅ Database connected");
 
-    // Find user (case-insensitive search)
-    const user = await User.findOne({ 
-      email: { $regex: new RegExp(`^${email}$`, 'i') }
-    });
-    
+    let user = await User.findOne({ phone });
+
     if (!user) {
-      console.log("❌ User not found for email:", email);
-      return NextResponse.json({ 
-        success: false, 
-        error: "User not found. Please request a new OTP." 
-      }, { status: 400 });
+      console.log("👤 No user with this phone, creating new one…");
+      user = await User.create({ phone }); // email is no longer required
     }
 
-    console.log("📊 User found:", user.email);
-    console.log("📊 OTP in database:", user.otpCode || "NULL");
-    console.log("📊 OTP expiry timestamp:", user.otpExpires);
-    console.log("📊 Current timestamp:", Date.now());
-    
-    if (user.otpExpires) {
-      console.log("📊 OTP expires at (human):", new Date(user.otpExpires).toISOString());
-      console.log("📊 Current time (human):", new Date().toISOString());
-      console.log("📊 Is expired?", user.otpExpires < Date.now() ? "YES" : "NO");
-      console.log("📊 Time left (seconds):", Math.max(0, user.otpExpires - Date.now()) / 1000);
-    }
-
-    // Check OTP exists
-    if (!user.otpCode) {
-      console.log("❌ No OTP found in database for this user");
-      return NextResponse.json({ 
-        success: false, 
-        error: "No OTP requested. Please request a new OTP." 
-      }, { status: 400 });
-    }
-
-    // Check OTP match (exact comparison with logging)
-    console.log("🔍 Comparing OTPs:");
-    console.log("- Database OTP:", `"${user.otpCode}"`);
-    console.log("- Input OTP:", `"${otp}"`);
-    console.log("- Length match?", user.otpCode.length === otp.length);
-    console.log("- Character by character:");
-    
-    for (let i = 0; i < Math.max(user.otpCode.length, otp.length); i++) {
-      const dbChar = user.otpCode[i];
-      const inputChar = otp[i];
-      const match = dbChar === inputChar;
-      console.log(`  Position ${i}: DB "${dbChar}" vs Input "${inputChar}" = ${match ? "✓" : "✗"}`);
-    }
-
-    if (user.otpCode !== otp) {
-      console.log("❌ OTP MISMATCH!");
-      console.log("   DB OTP type:", typeof user.otpCode);
-      console.log("   Input OTP type:", typeof otp);
-      return NextResponse.json({ 
-        success: false, 
-        error: "Invalid OTP code. Please check and try again." 
-      }, { status: 400 });
-    }
-
-    // Check if OTP is expired
-    if (!user.otpExpires || user.otpExpires < Date.now()) {
-      console.log("❌ OTP EXPIRED!");
-      if (user.otpExpires) {
-        console.log("   Expired", Math.floor((Date.now() - user.otpExpires) / 1000), "seconds ago");
-      }
-      return NextResponse.json({ 
-        success: false, 
-        error: "OTP has expired. Please request a new OTP." 
-      }, { status: 400 });
-    }
-
-    // SUCCESS - Clear OTP
-    console.log("✅ OTP VERIFIED SUCCESSFULLY!");
-    user.otpCode = null;
-    user.otpExpires = null;
-    await user.save();
-    console.log("✅ OTP cleared from database");
-
-    // Create success response
-    const response = NextResponse.json({ 
-      success: true, 
+    // 3️⃣ SET AUTH COOKIE (phone-based)
+    const response = NextResponse.json({
+      success: true,
       user: {
-        email: user.email,
+        phone: user.phone,
         name: user.name || "",
-        phone: user.phone || "",
+        email: user.email || "",
         dob: user.dob || "",
-        address: user.address || {}
+        address: user.address || {},
       },
-      message: "OTP verified successfully!"
+      message: "OTP verified successfully!",
     });
 
-    // Set cookie
-    const isProduction = process.env.NODE_ENV === 'production';
+    const isProduction = process.env.NODE_ENV === "production";
     const cookieStore = await cookies();
-    
-    cookieStore.set("fityou_auth", email, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-    });
 
-    console.log("🍪 Authentication cookie set for:", email);
+ cookieStore.set("fityou_auth", phone, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+  maxAge: 60 * 60 * 24 * 30, // 30 days
+});
+
+
+    console.log("🍪 Authentication cookie set for phone:", phone);
     return response;
-
   } catch (err) {
-    console.error("💥 OTP VERIFY ERROR:", err);
-    console.error("Error stack:", err.stack);
-    
-    return NextResponse.json({ 
-      success: false, 
-      error: "Server error during verification",
-      details: process.env.NODE_ENV === 'development' ? err.message : undefined
-    }, { status: 500 });
+    console.error("💥 /api/verify-otp error:", err);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Server error during verification",
+        details:
+          process.env.NODE_ENV === "development" ? err?.message : undefined,
+      },
+      { status: 500 }
+    );
   }
 }
 
-// GET method for debugging
 export async function GET() {
   return NextResponse.json({
-    message: "OTP Verification Endpoint",
-    instructions: "Send a POST request with email and otp",
-    example: {
-      curl: 'curl -X POST https://your-site.com/api/verify-otp -H "Content-Type: application/json" -d \'{"email":"user@example.com","otp":"123456"}\'',
-      javascript: `fetch('/api/verify-otp', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email: 'user@example.com', otp: '123456' })
-})`
-    }
+    message: "POST { phone, otp } to verify with Twilio Verify",
   });
 }

@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
+import EmailOtpModal from "./EmailOtpModal";
 
 import {
   User,
@@ -25,6 +26,15 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("personal");
   const [profile, setProfile] = useState(null);
 
+  // For email verification flow
+  const [newEmail, setNewEmail] = useState("");
+  const [emailOtpOpen, setEmailOtpOpen] = useState(false);
+
+  // Keep newEmail in sync with profile.email
+  useEffect(() => {
+    if (profile?.email) setNewEmail(profile.email);
+  }, [profile]);
+
   // Allow navbar slide-in menu to switch profile tabs
   useEffect(() => {
     const handler = (e) => {
@@ -37,7 +47,6 @@ export default function ProfilePage() {
   // Seed profile from logged-in user (DB)
   useEffect(() => {
     if (!user) {
-      // if not logged in, go home
       router.push("/");
       return;
     }
@@ -46,7 +55,7 @@ export default function ProfilePage() {
       if (prev) return prev; // don't overwrite edits
 
       return {
-        email: user.email,
+        email: user.email || "",
         name: user.name || "",
         phone: user.phone || "",
         dob: user.dob || "",
@@ -88,141 +97,158 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className=" bg-[#F5FAFD] py-10">
-      <h1 className="text-center text-2xl font-semibold text-[#0D4F8B] mb-10">
-        Personal details
-      </h1>
+    <>
+      <div className="bg-[#F5FAFD] py-10">
+        <h1 className="text-center text-2xl font-semibold text-[#0D4F8B] mb-10">
+          Personal details
+        </h1>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8 px-6">
-        {/* LEFT SIDEBAR */}
-        <div className="hidden md:block md:col-span-3">
-          <SidebarItem
-            icon={<Package size={18} />}
-            label="Upcoming shipment"
-            active={activeTab === "upcoming"}
-            onClick={() => setActiveTab("upcoming")}
-          />
-          <SidebarItem
-            icon={<CheckCircle size={18} />}
-            label="Completed shipments"
-            active={activeTab === "completed"}
-            onClick={() => setActiveTab("completed")}
-          />
-          <SidebarItem
-            icon={<Image size={18} />}
-            label="Weight loss diary + images"
-            active={activeTab === "diary"}
-            onClick={() => setActiveTab("diary")}
-          />
-          <SidebarItem
-            icon={<MessageCircle size={18} />}
-            label="Message centre"
-            active={activeTab === "messages"}
-            onClick={() => setActiveTab("messages")}
-          />
-          <SidebarItem
-            icon={<Stethoscope size={18} />}
-            label="Medical consultation"
-            active={activeTab === "consultation"}
-            onClick={() => setActiveTab("consultation")}
-          />
-          <SidebarItem
-            icon={<Gift size={18} />}
-            label="My subscription"
-            active={activeTab === "subscription"}
-            onClick={() => setActiveTab("subscription")}
-          />
-          <SidebarItem
-            icon={<Gift size={18} />}
-            label="My membership benefits"
-            active={activeTab === "benefits"}
-            onClick={() => setActiveTab("benefits")}
-          />
-          <SidebarItem
-            icon={<User size={18} />}
-            label="Personal details"
-            active={activeTab === "personal"}
-            onClick={() => setActiveTab("personal")}
-          />
-          <SidebarItem
-            icon={<MapPin size={18} />}
-            label="Delivery address"
-            active={activeTab === "address"}
-            onClick={() => setActiveTab("address")}
-          />
-          <SidebarItem
-            icon={<Bell size={18} />}
-            label="Notifications"
-            active={activeTab === "notifications"}
-            onClick={() => setActiveTab("notifications")}
-          />
+        <div className="max-w-6xl mx-auto grid grid-cols-12 gap-8 px-6">
+          {/* LEFT SIDEBAR */}
+          <div className="hidden md:block md:col-span-3">
+            <SidebarItem
+              icon={<Package size={18} />}
+              label="Upcoming shipment"
+              active={activeTab === "upcoming"}
+              onClick={() => setActiveTab("upcoming")}
+            />
+            <SidebarItem
+              icon={<CheckCircle size={18} />}
+              label="Completed shipments"
+              active={activeTab === "completed"}
+              onClick={() => setActiveTab("completed")}
+            />
+            <SidebarItem
+              icon={<Image size={18} />}
+              label="Weight loss diary + images"
+              active={activeTab === "diary"}
+              onClick={() => setActiveTab("diary")}
+            />
+            <SidebarItem
+              icon={<MessageCircle size={18} />}
+              label="Message centre"
+              active={activeTab === "messages"}
+              onClick={() => setActiveTab("messages")}
+            />
+            <SidebarItem
+              icon={<Stethoscope size={18} />}
+              label="Medical consultation"
+              active={activeTab === "consultation"}
+              onClick={() => setActiveTab("consultation")}
+            />
+            <SidebarItem
+              icon={<Gift size={18} />}
+              label="My subscription"
+              active={activeTab === "subscription"}
+              onClick={() => setActiveTab("subscription")}
+            />
+            <SidebarItem
+              icon={<Gift size={18} />}
+              label="My membership benefits"
+              active={activeTab === "benefits"}
+              onClick={() => setActiveTab("benefits")}
+            />
+            <SidebarItem
+              icon={<User size={18} />}
+              label="Personal details"
+              active={activeTab === "personal"}
+              onClick={() => setActiveTab("personal")}
+            />
+            <SidebarItem
+              icon={<MapPin size={18} />}
+              label="Delivery address"
+              active={activeTab === "address"}
+              onClick={() => setActiveTab("address")}
+            />
+            <SidebarItem
+              icon={<Bell size={18} />}
+              label="Notifications"
+              active={activeTab === "notifications"}
+              onClick={() => setActiveTab("notifications")}
+            />
 
-          {/* LOG OUT */}
-          <SidebarItem
-            icon={<LogOut size={18} />}
-            label="Log out"
-            logout
-            onClick={() => {
-              logout();
-              router.push("/");
-            }}
-          />
-        </div>
+            {/* LOG OUT */}
+            <SidebarItem
+              icon={<LogOut size={18} />}
+              label="Log out"
+              logout
+              onClick={() => {
+                logout();
+                router.push("/");
+              }}
+            />
+          </div>
 
-        {/* RIGHT CONTENT */}
-        <div className="col-span-12 md:col-span-9">
-          <div className="bg-white rounded-xl shadow p-8 min-h-[260px] mr-5">
-            {activeTab === "personal" && (
-              <PersonalDetailsCard
-                profile={profile}
-                updateProfile={updateProfile}
-              />
-            )}
+          {/* RIGHT CONTENT */}
+          <div className="col-span-12 md:col-span-9">
+            <div className="bg-white rounded-xl shadow p-8 min-h-[260px] mr-5">
+              {activeTab === "personal" && (
+                <PersonalDetailsCard
+                  profile={profile}
+                  updateProfile={updateProfile}
+                  newEmail={newEmail}
+                  setNewEmail={setNewEmail}
+                  setEmailOtpOpen={setEmailOtpOpen}
+                />
+              )}
 
-            {activeTab === "address" && (
-              <AddressCard profile={profile} updateProfile={updateProfile} />
-            )}
+              {activeTab === "address" && (
+                <AddressCard profile={profile} updateProfile={updateProfile} />
+              )}
 
-            {activeTab === "upcoming" && (
-              <ShipmentsCard
-                title="Upcoming shipments"
-                shipments={profile.shipmentsUpcoming}
-              />
-            )}
+              {activeTab === "upcoming" && (
+                <ShipmentsCard
+                  title="Upcoming shipments"
+                  shipments={profile.shipmentsUpcoming}
+                />
+              )}
 
-            {activeTab === "completed" && (
-              <ShipmentsCard
-                title="Completed shipments"
-                shipments={profile.shipmentsCompleted}
-              />
-            )}
+              {activeTab === "completed" && (
+                <ShipmentsCard
+                  title="Completed shipments"
+                  shipments={profile.shipmentsCompleted}
+                />
+              )}
 
-            {activeTab === "notifications" && (
-              <NotificationsCard
-                profile={profile}
-                updateProfile={updateProfile}
-              />
-            )}
+              {activeTab === "notifications" && (
+                <NotificationsCard
+                  profile={profile}
+                  updateProfile={updateProfile}
+                />
+              )}
 
-            {activeTab === "subscription" && (
-              <PlaceholderCard title="My subscription" />
-            )}
-            {activeTab === "benefits" && (
-              <PlaceholderCard title="My membership benefits" />
-            )}
-            {activeTab === "diary" && (
-              <PlaceholderCard title="Weight loss diary + images" />
-            )}
-            {activeTab === "messages" && (
-              <PlaceholderCard title="Message centre" />
-            )}
-            {activeTab === "consultation" && (
-              <PlaceholderCard title="Medical consultation" />
-            )}
+              {activeTab === "subscription" && (
+                <PlaceholderCard title="My subscription" />
+              )}
+              {activeTab === "benefits" && (
+                <PlaceholderCard title="My membership benefits" />
+              )}
+              {activeTab === "diary" && (
+                <PlaceholderCard title="Weight loss diary + images" />
+              )}
+              {activeTab === "messages" && (
+                <PlaceholderCard title="Message centre" />
+              )}
+              {activeTab === "consultation" && (
+                <PlaceholderCard title="Medical consultation" />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* EMAIL OTP MODAL */}
+<EmailOtpModal
+  open={emailOtpOpen}
+  email={newEmail}          // MUST SEND EMAIL
+  onClose={() => setEmailOtpOpen(false)}
+  onVerified={(verifiedEmail) => {
+    updateProfile({ email: verifiedEmail });
+    setNewEmail(verifiedEmail);
+  }}
+/>
+
+    </>
   );
 }
 
@@ -247,51 +273,77 @@ function SidebarItem({ icon, label, active, logout, onClick }) {
   );
 }
 
-function PersonalDetailsCard({ profile, updateProfile }) {
+function PersonalDetailsCard({
+  profile,
+  updateProfile,
+  newEmail,
+  setNewEmail,
+  setEmailOtpOpen,
+}) {
   const [saving, setSaving] = useState(false);
   const [dobPickerOpen, setDobPickerOpen] = useState(false);
   const { login } = useAuth();
 
   const handleSave = async () => {
-  setSaving(true);
-  try {
-    const res = await fetch("/api/profile", {
+    setSaving(true);
+    try {
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          phone: profile.phone,
+          dob: profile.dob,
+          address: profile.address,
+        }),
+      });
+
+      console.log("PROFILE SAVE STATUS", res.status);
+
+      const data = await res.json();
+      console.log("PROFILE SAVE DATA", data);
+
+      if (data.success) {
+        login(data.user);
+        updateProfile({
+          name: data.user.name,
+          phone: data.user.phone,
+          dob: data.user.dob,
+          address: data.user.address,
+        });
+      } else {
+        alert(data.error || "Failed to save profile");
+      }
+    } catch (err) {
+      console.error("PROFILE SAVE ERROR:", err);
+      alert("Something went wrong while saving");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleEmailVerification = async () => {
+    if (!newEmail || !newEmail.includes("@")) {
+      alert("Please enter a valid email");
+      return;
+    }
+
+    const res = await fetch("/api/email/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: profile.name,
-        phone: profile.phone,
-        dob: profile.dob,
-        address: profile.address,
-      }),
+      body: JSON.stringify({ email: newEmail }),
     });
 
-    console.log("PROFILE SAVE STATUS", res.status);
-
     const data = await res.json();
-    console.log("PROFILE SAVE DATA", data);
 
     if (data.success) {
-
-      // sync global auth user + local profile
-      login(data.user);
-      updateProfile({
-        name: data.user.name,
-        phone: data.user.phone,
-        dob: data.user.dob,
-        address: data.user.address,
-      });
+      // store for safety if you want, but not required
+      localStorage.setItem("pending_email", newEmail);
+      setEmailOtpOpen(true);
     } else {
-      alert(data.error || "Failed to save profile");
+      alert(data.error || "Failed to send OTP");
     }
-  } catch (err) {
-    console.error("PROFILE SAVE ERROR:", err);
-    alert("Something went wrong while saving");
-  } finally {
-    setSaving(false);
-  }
-};
-
+  };
 
   return (
     <>
@@ -325,17 +377,27 @@ function PersonalDetailsCard({ profile, updateProfile }) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
+          {/* EMAIL + VERIFY BUTTON */}
           <div>
-            <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
+            <label className="block text-xs uppercase text-[#7A8BA4] mb-1">
               Email
             </label>
-            <input
-              value={profile.email}
-              disabled
-              className="w-full border border-[#D0D7E2] bg-[#F5FAFD] rounded-lg px-3 py-2 text-sm text-[#7A8BA4]"
-            />
+            <div className="flex gap-2">
+              <input
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                className="w-full border border-[#D0D7E2] rounded-lg px-3 py-2 text-sm"
+              />
+              <button
+                onClick={handleEmailVerification}
+                className="px-3 py-2 bg-[#0D4F8B] text-white rounded-lg text-sm"
+              >
+                Verify
+              </button>
+            </div>
           </div>
 
+          {/* DOB PICKER */}
           <div>
             <label className="block text-xs uppercase tracking-wide text-[#7A8BA4] mb-1">
               Date of birth
@@ -383,43 +445,42 @@ function AddressCard({ profile, updateProfile }) {
     updateProfile({ address: { ...addr, ...patch } });
 
   const handleSave = async () => {
-  setSaving(true);
-  try {
-    const res = await fetch("/api/profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: profile.name,
-        phone: profile.phone,
-        dob: profile.dob,
-        address: profile.address,
-      }),
-    });
-
-    console.log("PROFILE SAVE STATUS", res.status);
-
-    const data = await res.json();
-    console.log("PROFILE SAVE DATA", data); // <— see what API returns
-
-    if (data.success && data.user) {
-      login(data.user);
-      updateProfile({
-        name: data.user.name,
-        phone: data.user.phone,
-        dob: data.user.dob,
-        address: data.user.address,
+    setSaving(true);
+    try {
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          phone: profile.phone,
+          dob: profile.dob,
+          address: profile.address,
+        }),
       });
-    } else {
-      alert(data.error || "Failed to save profile");
-    }
-  } catch (err) {
-    console.error("PROFILE SAVE ERROR:", err);
-    alert("Something went wrong while saving");
-  } finally {
-    setSaving(false);
-  }
-};
 
+      console.log("PROFILE SAVE STATUS", res.status);
+
+      const data = await res.json();
+      console.log("PROFILE SAVE DATA", data);
+
+      if (data.success && data.user) {
+        login(data.user);
+        updateProfile({
+          name: data.user.name,
+          phone: data.user.phone,
+          dob: data.user.dob,
+          address: data.user.address,
+        });
+      } else {
+        alert(data.error || "Failed to save profile");
+      }
+    } catch (err) {
+      console.error("PROFILE SAVE ERROR:", err);
+      alert("Something went wrong while saving");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <>
