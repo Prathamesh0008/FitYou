@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 export default function WhyItWorks() {
   const ref = useRef(null);
@@ -101,23 +102,36 @@ export default function WhyItWorks() {
             </p>
           </div>
 
-          {/* Simple stats */}
+          {/* UPDATED: Stats with animated counters */}
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-8">
             {[
-              { value: "85%", label: "Success Rate" },
-              { value: "12K+", label: "People Helped" },
-              { value: "94%", label: "Stay On Track" }
+              { 
+                start: 0, 
+                end: 85, 
+                suffix: "%", 
+                label: "Success Rate",
+                duration: 2.5
+              },
+              { 
+                start: 0, 
+                end: 12, 
+                suffix: "K+", 
+                label: "People Helped",
+                duration: 2
+              },
+              { 
+                start: 0, 
+                end: 94, 
+                suffix: "%", 
+                label: "Stay On Track",
+                duration: 2.5
+              }
             ].map((stat, index) => (
-              <motion.div 
+              <CounterStat 
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1">{stat.value}</div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
-              </motion.div>
+                index={index}
+                stat={stat}
+              />
             ))}
           </div>
         </motion.div>
@@ -177,6 +191,56 @@ export default function WhyItWorks() {
         <path fill="white" d="M0,0 C300,0 900,120 1440,60 L1440,120 L0,120 Z" />
       </svg>
     </section>
+  );
+}
+
+/* CounterStat Component */
+function CounterStat({ index, stat }) {
+  const [count, setCount] = useState(stat.start);
+  const { ref, inView } = useInView({
+    threshold: 0.3,
+    triggerOnce: true
+  });
+
+  useEffect(() => {
+    if (inView) {
+      let startTimestamp = null;
+      const duration = stat.duration * 1000; // Convert to milliseconds
+      const startValue = stat.start;
+      const endValue = stat.end;
+      
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        
+        // Easing function for smoother animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(easeOutQuart * (endValue - startValue) + startValue);
+        
+        setCount(currentValue);
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      
+      window.requestAnimationFrame(step);
+    }
+  }, [inView, stat.start, stat.end, stat.duration]);
+
+  return (
+    <motion.div 
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      className="text-center min-w-[100px]"
+    >
+      <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-600 mb-2">
+        {count}{stat.suffix}
+      </div>
+      <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
+    </motion.div>
   );
 }
 

@@ -72,7 +72,7 @@ export default function Calculator() {
     step="1"
     value={weight}
     onChange={(e) => setWeight(parseInt(e.target.value))}
-    className="w-full h-2 rounded-lg appearance-none slider-track"
+    className="w-full h-2 pt-2 rounded-lg appearance-none slider-track"
     style={{
       background: `linear-gradient(to right, #002074 ${(weight - 40) / 1.6}%, #E5E7EB ${(weight - 40) / 1.6}%)`,
     }}
@@ -124,7 +124,7 @@ export default function Calculator() {
             Take the quiz. It’s free.
           </p>
 
-          <button className="w-full bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-4 rounded-lg shadow-md transition-colors">
+          <button href="/quiz" className="w-full bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-4 rounded-lg shadow-md transition-colors">
             Do I qualify for treatment?
           </button>
 

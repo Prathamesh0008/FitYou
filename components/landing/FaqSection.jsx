@@ -68,21 +68,21 @@ function AccordionItem({ item, index, openIndex, setOpenIndex }) {
   }, [isOpen]);
 
   return (
-    <div className="border-b border-transparent py-2">
+    <div className="border-b border-gray-200 py-4">
       <button
         type="button"
         onClick={() => setOpenIndex(isOpen ? null : index)}
         className="w-full flex items-start gap-4 text-left focus:outline-none group"
       >
         <span
-          className={`text-3xl leading-none text-[#206C8C] transition-transform duration-300 mt-1 shrink-0 ${
+          className={`text-2xl leading-none text-[#206C8C] transition-transform duration-300 mt-0.5 shrink-0 ${
             isOpen ? "rotate-45" : ""
           }`}
         >
           +
         </span>
 
-        <span className="text-lg md:text-[19px] text-[#002c5c] font-normal leading-relaxed group-hover:text-[#206C8C] transition-colors">
+        <span className="text-lg md:text-xl text-[#002c5c] font-medium leading-tight group-hover:text-[#206C8C] transition-colors flex-1">
           {item.question}
         </span>
       </button>
@@ -90,10 +90,10 @@ function AccordionItem({ item, index, openIndex, setOpenIndex }) {
       <div
         ref={contentRef}
         style={{ maxHeight }}
-        className="ml-8 overflow-hidden transition-[max-height] duration-500 ease-[cubic-bezier(.33,1,.68,1)]"
+        className="ml-10 overflow-hidden transition-[max-height] duration-500 ease-[cubic-bezier(.33,1,.68,1)]"
       >
         <p
-          className="mt-3 text-base text-[#002c5c] leading-relaxed transition-all duration-500"
+          className="mt-3 text-base text-gray-700 leading-relaxed transition-all duration-500"
           style={{
             opacity,
             transform: `translateY(${translate}px)`,
@@ -111,47 +111,48 @@ export default function FaqSection() {
 
   return (
     <section className={`bg-white py-16 md:py-24 ${laila.variable} ${raleway.variable} font-raleway`}>
-      <div className="container mx-auto px-6 md:px-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
-        <h2 className="text-[#002074] text-3xl md:text-[40px] font-bold font-laila text-center mb-16">
+        <h2 className="text-[#002074] text-3xl md:text-[40px] font-bold font-laila text-center mb-12 md:mb-16">
           Still unsure? Check out our FAQs
         </h2>
 
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 xl:gap-16">
           
-          {/* LEFT SIDE: IMAGE */}
-          <div className="w-full lg:w-5/12">
-            <div className="rounded-2xl overflow-hidden shadow-lg w-[400px] h-[400px] ml-20">
+          {/* LEFT SIDE: IMAGE - Fixed alignment */}
+          <div className="w-full lg:w-5/12 flex justify-center lg:justify-start">
+            <div className="rounded-2xl overflow-hidden shadow-lg w-full max-w-[400px] h-auto lg:w-full lg:max-w-none">
               <img 
                 src="/landing/start1.png" 
                 alt="Aktive weight loss box" 
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-contain"
               />
             </div>
           </div>
 
           {/* RIGHT SIDE: FAQ LIST */}
-          <div className="w-full lg:w-7/12 space-y-4">
-            {faqs.map((item, index) => (
-              <AccordionItem
-                key={item.question}
-                item={item}
-                index={index}
-                openIndex={openIndex}
-                setOpenIndex={setOpenIndex}
-              />
-            ))}
+          <div className="w-full lg:w-7/12">
+            <div className="space-y-2">
+              {faqs.map((item, index) => (
+                <AccordionItem
+                  key={item.question}
+                  item={item}
+                  index={index}
+                  openIndex={openIndex}
+                  setOpenIndex={setOpenIndex}
+                />
+              ))}
+            </div>
           </div>
 
         </div>
 
-        {/* BOTTOM BUTTON */}
-      <div className="mt-16 text-center">
-  <button className="bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-12 rounded-lg shadow-md transition-colors w-full md:w-[350px]">
-    Do I qualify?
-  </button>
-</div>
-
+        {/* BOTTOM BUTTON - Centered properly */}
+        <div className="mt-12 md:mt-16 text-center">
+          <button className="bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-8 md:px-12 rounded-lg shadow-md transition-colors inline-block w-full max-w-[350px]">
+            Do I qualify?
+          </button>
+        </div>
 
       </div>
     </section>

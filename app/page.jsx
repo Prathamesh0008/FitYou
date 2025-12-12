@@ -13,6 +13,7 @@ import StepsSection from "@/components/StepsSection";
 import WeightLossCalculator from "@/components/WeightLossCalculator";
 import WhyItWorks from "@/components/WhyItWorks";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const benefits = [
   "Screened for medical risks before you start",
@@ -67,6 +68,7 @@ const readinessTrends = [
 ];
 
 export default function HomePage() {
+  
   return (
     <main className="min-h-screen relative overflow-hidden  text-[#0D4F8B] font-laila">
       {/* <Splash /> */}

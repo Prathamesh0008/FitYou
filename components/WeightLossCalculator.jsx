@@ -78,7 +78,7 @@ export default function WeightLossCalculator() {
 
           {/* WEIGHT SELECT */}
           <div>
-            <label className="text-sm font-medium text-[#0D4F8B]">
+            <label className="text-sm font-medium text-[#0D4F8B] ">
               Your current weight
             </label>
             <CustomSelect

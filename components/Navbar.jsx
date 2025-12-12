@@ -189,7 +189,7 @@ useEffect(() => {
           {/* USER ICON */}
          {user?.phone ? (
             <button onClick={() => router.push("/profile")}>
-              <User2 className="w-6 h-6 text-[#0D4F8B]" />
+              <User2 className="w-6 h-6 cursor-pointer text-[#0D4F8B]" />
             </button>
           ) : (
             <button onClick={() => setLoginOpen(true)}>
@@ -202,7 +202,7 @@ useEffect(() => {
             onClick={() => setOpen(true)}
             className="p-2 rounded-md border border-[#D6E4FF]"
           >
-            <Menu className="w-6 h-6 text-[#0D4F8B]" />
+            <Menu className="w-6 h-6 cursor-pointer text-[#0D4F8B]" />
           </button>
         </div>
       </nav>
@@ -222,7 +222,7 @@ useEffect(() => {
 
         {/* PROFILE MENU (only on /profile) */}
         {isProfilePage ? (
-          <div className="flex flex-col px-6 space-y-6 mt-2">
+          <div className="flex flex-col px-6 space-y-6 mt-2 ">
             {profileMenu.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}

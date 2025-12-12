@@ -1,4 +1,4 @@
-"use client";
+// app/landing/page.jsx
 import React from "react";
 import Hero from "@/components/landing/Hero";
 import Journey from "@/components/landing/Journey";
@@ -9,25 +9,17 @@ import Review from "@/components/landing/review";
 import Science from "@/components/landing/science";
 import Included from "@/components/landing/included";
 
-
-
-const LandingPage = () => {
+export default function LandingPage() {
   return (
-    <main>
+    <div className="min-h-screen">
       <Hero />
-       <Science/>
-       <Included/>
-       <Calculator />
-       <Journey /> 
-       <HowToStart />
-       <Review/>
-       <FaqSection />
-       
-       
-       
-      {/* You can add more components below here */}
-    </main>
+      <Science/>
+      <Included/>
+      <Calculator />
+      <Journey /> 
+      <HowToStart />
+      <Review/>
+      <FaqSection />
+    </div>
   );
-};
-
-export default LandingPage;
+}

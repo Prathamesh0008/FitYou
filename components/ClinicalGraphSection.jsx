@@ -271,7 +271,7 @@ export default function ClinicalGraphSection() {
           
           <button 
       onClick={() => router.push('/program')}
-      className="mt-8 bg-gradient-to-r from-[#0D4F8B] to-[#1A6DC2] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      className="mt-8 bg-gradient-to-r cursor-pointer from-[#0D4F8B] to-[#1A6DC2] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
     >
       View Full Clinical Study
     </button>
