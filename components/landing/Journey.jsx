@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Laila, Raleway } from "next/font/google";
 
 const laila = Laila({
@@ -48,13 +49,19 @@ const steps = [
     title: "Long-term success",
     heading: "A healthier you",
     description: "You have reached your goal weight and built healthy habits for life.",
-    image: "/landing/step5.png",
+    image: "/landing/fit.svg",
   },
 ];
 
 export default function Journey() {
+  const router = useRouter();
   const scrollRef = useRef(null);
   const [activeStep, setActiveStep] = useState(1);
+  
+  const handleQuizClick = () => {
+    // console.log("Quiz button clicked!");
+    router.push("/quiz");
+  };
 
   const scrollToStep = (index) => {
     setActiveStep(index + 1);
@@ -85,7 +92,7 @@ export default function Journey() {
   }, []);
 
   return (
-    <section className={`bg-[#FFFBF3] py-12 md:py-24 ${laila.variable} ${raleway.variable} font-raleway`}>
+    <section className={`bg-[#FFFBF3]  py-12 md:py-24 ${laila.variable} ${raleway.variable} font-raleway`}>
       <div className="container mx-auto px-4 md:px-12">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-20">
 
@@ -94,34 +101,32 @@ export default function Journey() {
                 px-0 md:px-30 w-full">
 
             <h2
-  className="
-    text-[#002074] 
-    text-[32px] md:text-[50px] 
-    leading-tight font-laila 
-    mb-4 md:mb-6 
-    w-full 
-    px-10 md:px-0        /* ⭐ Add padding ONLY on mobile */
-    text-center lg:text-left
-  "
->
-
-
-
+              className="
+                text-[#002074] 
+                text-[32px] md:text-[50px] 
+                leading-tight font-laila 
+                mb-4 md:mb-6 
+                w-full 
+                px-10 md:px-0
+                text-center lg:text-left
+              "
+            >
               Your 5-step weight loss<br className="hidden md:block" />
               journey
             </h2>
 
             <p className="text-[#002074] text-base md:text-lg leading-relaxed mb-6 md:mb-8 
               w-full max-w-none text-center lg:text-left">
-
-
-
-              Aktive’s weight loss programme is designed with precision in mind. Check out what your 5–step weight loss journey will look like.
+              Aktive's weight loss programme is designed with precision in mind. Check out what your 5–step weight loss journey will look like.
             </p>
 
+            {/* FIXED DESKTOP BUTTON - ADDED onClick */}
             <div className="hidden lg:flex flex-col items-start gap-6">
-              <span className="text-[#002074] text-lg">Take the quiz. It’s free.</span>
-              <button className="bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-8 rounded-lg shadow-md transition-colors">
+              <span className="text-[#002074] text-lg">Take the quiz. It's free.</span>
+              <button 
+                onClick={handleQuizClick} // ← THIS WAS MISSING!
+                className="bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-8 rounded-lg shadow-md transition-colors cursor-pointer"
+              >
                 Do I qualify for treatment?
               </button>
             </div>
@@ -139,7 +144,7 @@ export default function Journey() {
               {steps.map((step) => (
                 <div key={step.stepNumber} className="min-w-full lg:min-w-0 snap-center px-2 lg:px-0 flex justify-center">
 
-                  {/* CARD (Reduced Size Here) */}
+                  {/* CARD */}
                   <div className="bg-[#F7F5F2] border border-[#E5E0D8] rounded-2xl p-5 md:p-6 h-auto 
                                   lg:max-w-[450px] w-full lg:mx-auto flex flex-col justify-start">
 
@@ -187,8 +192,11 @@ export default function Journey() {
 
             {/* MOBILE BOTTOM SECTION */}
             <div className="lg:hidden text-center mt-2 px-4">
-              <p className="text-[#002074] text-lg mb-4">Take the quiz. It’s free.</p>
-              <button className="w-full bg-[#9BCDD2] text-[#002074] font-bold text-lg py-4 rounded-lg shadow-md">
+              <p className="text-[#002074] text-lg mb-4">Take the quiz. It's free.</p>
+              <button 
+                onClick={handleQuizClick}
+                className="w-full bg-[#9BCDD2] text-[#002074] font-bold text-lg py-4 rounded-lg shadow-md cursor-pointer"
+              >
                 Do I qualify for treatment?
               </button>
             </div>

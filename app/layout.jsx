@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
           {/* Show LandingNavbar only on /landing, regular Navbar elsewhere */}
           {isLandingPage ? <LandingNavbar /> : <Navbar />}
           
-          <main className="min-h-screen">
+          <main >
             {children}
           </main>
           

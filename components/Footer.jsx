@@ -8,15 +8,15 @@ export default function Footer() {
     <footer className="bg-[#F7FAFC] border-t border-[#E2E8F0] font-laila mt-0">
 
       {/* Wrapper for top content */}
-      <div className="max-w-7xl mx-auto px-6 py-14 relative">
+      <div className="max-w-7xl mx-auto px-6 py-14 relative ">
 
         {/* ================= BACK TO TOP BUTTON (TOP RIGHT) ================= */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="absolute top-2 right-0 flex flex-col items-center translate-y-[-50%]"
+          className="absolute top-2 right-0 flex flex-col items-center translate-y-[-50%] cursor-pointer"
         >
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#2B6CB0] border border-[#CBD5E0] shadow-sm">
-            <ArrowUp className="w-4 h-4 text-white" />
+            <ArrowUp className="w-4 h-4 text-white " />
           </div>
           <span className="text-[11px] text-[#1A365D] mt-1">To top</span>
         </button>
@@ -30,7 +30,7 @@ export default function Footer() {
               FitYou
             </h3>
             <ul className="space-y-2 text-[14px] text-[#2C5282]">
-              <li><Link href="/about" className="hover:text-[#2B6CB0]">About Us</Link></li>
+              {/* <li><Link href="/about" className="hover:text-[#2B6CB0]">About Us</Link></li> */}
               <li><Link href="/contact" className="hover:text-[#2B6CB0]">Contact</Link></li>
               <li><Link href="/how-it-works" className="hover:text-[#2B6CB0]">How it Works</Link></li>
               <li><Link href="/health-guide" className="hover:text-[#2B6CB0]">Health Guide</Link></li>

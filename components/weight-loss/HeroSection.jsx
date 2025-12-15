@@ -111,7 +111,7 @@ export default function HeroSection() {
       <div className="mx-auto max-w-6xl px-4">
         {/* heading + subtitle */}
         <div className="max-w-3xl">
-          <h1 className="text-[3rem] lg:text-[4rem] leading-[1.1] font-bold text-[#123c78]">
+          <h1 className="text-[3rem] lg:text-[4rem] leading-[1.1]  text-[#123c78]">
             {/* Mobile / Tablet: single line */}
             <span className="block lg:hidden">
               The weight loss programme that works

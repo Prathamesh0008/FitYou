@@ -453,6 +453,7 @@ const isSameDay = (a, b) =>
 
 // ---- MAIN PAGE ----
 export default function QuizPage() {
+  
  
   
   const router = useRouter();
@@ -463,6 +464,11 @@ const [openDropdown, setOpen] = useState(null);
 
   const [introDone, setIntroDone] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
+  useEffect(() => {
+  if (!introDone && typeof window !== "undefined") {
+    window.scrollTo(0, 0);
+  }
+}, [introDone]);
 
   const [answers, setAnswers] = useState({
     heightFeet: "",
@@ -1348,7 +1354,7 @@ const renderSubQuestions = (q) => {
 
       <main className="flex-1">
         {!introDone ? (
-          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
+          <section className="max-w-3xl mx-auto px-4 pt-16 pb-12 text-left">
             <h1 className="text-3xl font-semibold text-[#0D2451]">
               Medical consultation
             </h1>
@@ -1389,9 +1395,17 @@ const renderSubQuestions = (q) => {
 
             <p className="mt-6 text-xs text-[#3E5678] text-center">
               Already have a personalised plan?{" "}
-              <span className="underline cursor-pointer">
-                Login with your mobile number
-              </span>
+              <span
+  className="underline cursor-pointer"
+  onClick={() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("open-login"));
+    }
+  }}
+>
+  Login with your mobile number
+</span>
+
             </p>
 
             <p className="mt-10 text-[10px] text-[#8CA0C0] text-center">
@@ -1437,14 +1451,7 @@ const renderSubQuestions = (q) => {
         )}
       </main>
 
-      <footer className="w-full border-t border-[#E5EEF6] bg-[#F6FAFF]">
-        <div className="max-w-5xl mx-auto px-4 py-4 text-center">
-          <p className="text-[10px] text-[#8CA0C0]">
-            Your answers help our doctors guide you safely — this is not a
-            diagnosis.
-          </p>
-        </div>
-      </footer>
+      
     </div>
   );
 }

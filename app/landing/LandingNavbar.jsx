@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const LandingNavbar = () => {
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b">
+    <nav className="sticky top-0 z-50 bg-white ">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* LOGO */}
         <Link href="/">

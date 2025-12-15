@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Laila, Raleway } from "next/font/google";
+import Link from "next/link";
 
 const laila = Laila({
   subsets: ["latin"],
@@ -72,7 +73,7 @@ function AccordionItem({ item, index, openIndex, setOpenIndex }) {
       <button
         type="button"
         onClick={() => setOpenIndex(isOpen ? null : index)}
-        className="w-full flex items-start gap-4 text-left focus:outline-none group"
+        className="w-full flex items-start gap-4 text-left focus:outline-none group cursor-pointer"
       >
         <span
           className={`text-2xl leading-none text-[#206C8C] transition-transform duration-300 mt-0.5 shrink-0 ${
@@ -149,9 +150,11 @@ export default function FaqSection() {
 
         {/* BOTTOM BUTTON - Centered properly */}
         <div className="mt-12 md:mt-16 text-center">
-          <button className="bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-8 md:px-12 rounded-lg shadow-md transition-colors inline-block w-full max-w-[350px]">
+          <Link href="/quiz" className="w-full block ">
+          <button className="bg-[#9BCDD2] cursor-pointer hover:bg-[#8abfc4] text-[#002074] font-bold text-lg py-3 px-8 md:px-12 rounded-lg shadow-md transition-colors inline-block w-full max-w-[350px]">
             Do I qualify?
           </button>
+          </Link>
         </div>
 
       </div>

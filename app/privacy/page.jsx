@@ -28,7 +28,7 @@ export default function PrivacyPage() {
   Privacy Policy
 </h1>
 
-  <p className="text-base md:text-lg leading-relaxed text-[#4b5c7a] space-y-4">
+<div className="text-base md:text-lg leading-relaxed text-[#4b5c7a] space-y-4">
     FitYou (https://fityou.net) is an internet-based platform (the
     “Website”) operated by FitYou Health &amp; Wellness Private Limited
     (the “Company”, “we”, “our”, or “us”), a company duly incorporated
@@ -54,7 +54,7 @@ export default function PrivacyPage() {
     This Privacy Policy applies to all users who visit, access, or use the
     FitYou Website or any of our services.
      </ul>
-  </p>
+  </div>
 </header>
 
 

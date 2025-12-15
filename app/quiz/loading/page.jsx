@@ -26,7 +26,7 @@ export default function QuizLoadingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#E8F4F7] flex flex-col">
+    <div className=" w-full bg-[#E8F4F7] flex flex-col">
 
       {/* HEADER */}
       <header className="py-6 px-8 bg-white border-b border-[#DDE7F0]">

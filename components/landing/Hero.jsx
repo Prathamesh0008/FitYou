@@ -46,11 +46,11 @@ export default function Hero() {
         
         {/* Dark overlay - stronger on right side where text is */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent
-          md:bg-gradient-to-r md:from-transparent md:via-black/40 md:to-black/60"></div>
+          md:bg-gradient-to-r md:from-transparent md:via-black/20 md:to-black/60"></div>
       </div>
 
       {/* Container - centered but content pushed to right on desktop */}
-      <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10 h-full flex items-center">
+      <div className="container mx-auto mb-5 px-6 md:px-12 lg:px-20 relative z-10 h-full flex items-end">
         
         {/* Empty space on left for image (on desktop) */}
         <div className="hidden md:block w-1/2"></div>
@@ -63,7 +63,7 @@ export default function Hero() {
           </h1>
 
           {/* Features list - left aligned inside container */}
-          <div className="space-y-3 mb-10 max-w-[320px]">
+          <div className="space-y-3 mb-10 max-w-[320px] cursor-pointer">
             {[
               { icon: Scale, text: "Lose upto 21% body weight" },
               { icon: Syringe, text: "Once-weekly treatment" },
@@ -89,17 +89,17 @@ export default function Hero() {
           {/* CTA Button - left aligned */}
           <Link href="/quiz" className="block w-full md:w-[300px]">
             <button 
-              className="w-full bg-[#002074] hover:bg-[#001a5c] text-white 
+              className="w-full bg-[#9BCDD2] hover:bg-[#8abfc4] text-[#001a5c]
                 font-bold text-lg py-3 px-8 transition-all duration-300 shadow-lg 
                 hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0
-                rounded-lg"
+                rounded-lg cursor-pointer"
             >
               Get started
             </button>
           </Link>
           
           {/* Trust indicator - left aligned */}
-          <p className="mt-6 text-white/90 text-sm font-medium max-w-[300px]">
+          <p className="mt-6  text-amber-50 font-medium max-w-[300px]">
             Trusted by over 12,000 people on their weight loss journey
           </p>
         </div>

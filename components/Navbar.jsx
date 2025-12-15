@@ -40,7 +40,7 @@ const navLinks = [
   { href: "/faq", label: "FAQs", icon: HelpCircle },
   { href: "/glp1-science", label: "Science of GLP-1", icon: FlaskRound },
   { href: "/health-guide", label: "Health guide", icon: BookOpen },
-  { href: "/pricing", label: "Pricing", icon: HelpCircle },
+  // { href: "/pricing", label: "Pricing", icon: HelpCircle },
   { href: "/contact", label: "Contact", icon: BookOpen },
 ];
 
