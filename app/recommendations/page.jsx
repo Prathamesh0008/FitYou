@@ -1,5 +1,6 @@
 //FitYou\app\recommendations\page.jsx
 "use client";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import DoctorBox from "@/components/recommendations/DoctorBox";
 import IncludedBox from "@/components/recommendations/IncludedBox";
@@ -31,6 +32,12 @@ export default function RecommendationsPage() {
     weight && height
       ? +(Number(weight) / ((Number(height) / 100) ** 2)).toFixed(1)
       : null;
+      useEffect(() => {
+  if (quiz) {
+    localStorage.setItem("fityou-quiz", JSON.stringify(quiz));
+  }
+}, [quiz]);
+
 
   return (
     <div className="bg-[#F7FAFF] text-[#0D4F8B] min-h-screen pb-20">

@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function LoginModal({ open, onClose }) {
   if (!open) return null;
 
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+91");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -128,30 +128,37 @@ export default function LoginModal({ open, onClose }) {
 
           {/* INPUT */}
           <div className="mt-7 flex flex-col gap-2 px-1">
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => {
-                setPhone(e.target.value);
-                setError("");
-              }}
-              onKeyPress={handleKeyPress}
-              placeholder="Phone number (e.g. +91XXXXXXXXXX)"
-              className="
-                w-full
-                border 
-                border-[#D0D7E2]
-                rounded-[8px]
-                px-3 
-                py-2.5
-                text-[14px]
-                text-[#1A1A1A]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#0D4F8B]/40
-              "
-              disabled={loading}
-            />
+           <input
+  type="tel"
+  value={phone}
+  onChange={(e) => {
+    let value = e.target.value;
+
+    if (!value.startsWith("+91")) {
+      value = "+91" + value.replace(/^\+?91/, "");
+    }
+
+    setPhone(value);
+    setError("");
+  }}
+  onKeyPress={handleKeyPress}
+  placeholder="Enter Your 10 Digit Number "
+  className="
+    w-full
+    border 
+    border-[#D0D7E2]
+    rounded-[8px]
+    px-3 
+    py-2.5
+    text-[14px]
+    text-[#1A1A1A]
+    focus:outline-none
+    focus:ring-2
+    focus:ring-[#0D4F8B]/40
+  "
+  disabled={loading}
+/>
+
           </div>
 
           {/* ERROR MESSAGE */}

@@ -8,7 +8,8 @@ import { useState, useEffect } from "react";
 
 // MODALS
 import LoginModal from "./LoginModal";
-import OtpModal from "./OtpModal";
+import OtpModal from "@/components/OtpModal";
+
 import SuccessModal from "./SuccessModal";
 
 // ICONS
@@ -40,7 +41,7 @@ const navLinks = [
   { href: "/faq", label: "FAQs", icon: HelpCircle },
   { href: "/glp1-science", label: "Science of GLP-1", icon: FlaskRound },
   { href: "/health-guide", label: "Health guide", icon: BookOpen },
-  // { href: "/pricing", label: "Pricing", icon: HelpCircle },
+  { href: "/pricing", label: "Pricing", icon: HelpCircle },
   { href: "/contact", label: "Contact", icon: BookOpen },
 ];
 
@@ -189,7 +190,7 @@ useEffect(() => {
           {/* USER ICON */}
          {user?.phone ? (
             <button onClick={() => router.push("/profile")}>
-              <User2 className="w-6 h-6 cursor-pointer text-[#0D4F8B]" />
+              <User2 className="w-6 h-6 text-[#0D4F8B]" />
             </button>
           ) : (
             <button onClick={() => setLoginOpen(true)}>
@@ -202,7 +203,7 @@ useEffect(() => {
             onClick={() => setOpen(true)}
             className="p-2 rounded-md border border-[#D6E4FF]"
           >
-            <Menu className="w-6 h-6 cursor-pointer text-[#0D4F8B]" />
+            <Menu className="w-6 h-6 text-[#0D4F8B]" />
           </button>
         </div>
       </nav>
@@ -222,7 +223,7 @@ useEffect(() => {
 
         {/* PROFILE MENU (only on /profile) */}
         {isProfilePage ? (
-          <div className="flex flex-col px-6 space-y-6 mt-2 ">
+          <div className="flex flex-col px-6 space-y-6 mt-2">
             {profileMenu.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}

@@ -33,7 +33,7 @@ export async function POST(req) {
       );
     }
 
-    // 1️⃣ CHECK OTP WITH TWILIO VERIFY
+    // 🔹 1) Check OTP using Twilio Verify
     console.log("📡 Checking OTP with Twilio Verify...");
 
     const check = await client.verify.v2
@@ -43,7 +43,7 @@ export async function POST(req) {
         code: otp,
       });
 
-    console.log("✅ Twilio Verify check status:", check.status);
+    console.log("✅ Twilio Verify status:", check.status);
 
     if (check.status !== "approved") {
       return NextResponse.json(
@@ -52,44 +52,61 @@ export async function POST(req) {
       );
     }
 
-    // 2️⃣ CONNECT DB AND FIND/CREATE USER BY PHONE
+    // 🔹 2) Connect DB
     await dbConnect();
     console.log("✅ Database connected");
 
+    // 🔹 3) Find or create user
     let user = await User.findOne({ phone });
 
     if (!user) {
-      console.log("👤 No user with this phone, creating new one…");
-      user = await User.create({ phone }); // email is no longer required
+      console.log("👤 Creating new user...");
+      user = await User.create({
+        phone,
+        role: "user", // ⭐ default role
+      });
     }
 
-    // 3️⃣ SET AUTH COOKIE (phone-based)
-    const response = NextResponse.json({
+    // ⭐ IMPORTANT: return user role to frontend
+    const userRole = user.role || "user";
+
+    // 🔹 4) Set cookies
+    const cookieStore = await cookies();
+
+    // Phone authentication cookie
+    cookieStore.set("fityou_auth", phone, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    });
+
+    // ⭐ Role cookie
+    cookieStore.set("fityou_role", userRole, {
+      httpOnly: false, // UI needs to read this
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    console.log(`🍪 Role cookie set: ${userRole}`);
+
+    // 🔹 5) Respond
+    return NextResponse.json({
       success: true,
+      role: userRole,          // ⭐ CRITICAL for dashboards
       user: {
         phone: user.phone,
-        name: user.name || "",
-        email: user.email || "",
-        dob: user.dob || "",
-        address: user.address || {},
+        name: user.name,
+        role: userRole,
+        email: user.email,
+        dob: user.dob,
+        address: user.address,
       },
       message: "OTP verified successfully!",
     });
-
-    const isProduction = process.env.NODE_ENV === "production";
-    const cookieStore = await cookies();
-
- cookieStore.set("fityou_auth", phone, {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
-  path: "/",
-  maxAge: 60 * 60 * 24 * 30, // 30 days
-});
-
-
-    console.log("🍪 Authentication cookie set for phone:", phone);
-    return response;
   } catch (err) {
     console.error("💥 /api/verify-otp error:", err);
     return NextResponse.json(

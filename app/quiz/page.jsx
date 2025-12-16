@@ -453,7 +453,6 @@ const isSameDay = (a, b) =>
 
 // ---- MAIN PAGE ----
 export default function QuizPage() {
-  
  
   
   const router = useRouter();
@@ -464,11 +463,6 @@ const [openDropdown, setOpen] = useState(null);
 
   const [introDone, setIntroDone] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
-  useEffect(() => {
-  if (!introDone && typeof window !== "undefined") {
-    window.scrollTo(0, 0);
-  }
-}, [introDone]);
 
   const [answers, setAnswers] = useState({
     heightFeet: "",
@@ -867,40 +861,12 @@ if (q.type === "weight") {
     }
 
     // 🔚 FINAL INFO SCREEN → SAVE + LOGIN FLOW
-    if (q.type === "info" && stepIndex === totalSteps - 1) {
-      // CASE 1: USER IS LOGGED IN → SAVE QUIZ
-      if (user?.email) {
-        (async () => {
-          try {
-            const res = await fetch("/api/quiz", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ quiz: answers }),
-            });
+ // 🔚 FINAL INFO SCREEN
+if (q.type === "info" && stepIndex === totalSteps - 1) {
+  redirectToResult();
+  return;
+}
 
-            const data = await res.json();
-
-            if (data.success) {
-              redirectToResult();
-            } else {
-              alert("Failed to save quiz");
-            }
-          } catch (err) {
-            console.error("Quiz save failed:", err);
-            alert("Failed to save quiz");
-          }
-        })();
-        return;
-      }
-
-      // CASE 2 — GUEST → NOW REQUIRE LOGIN
-      if (typeof window !== "undefined") {
-        setPendingSubmitAfterLogin(true);
-        window.dispatchEvent(new Event("open-login"));
-      }
-
-      return;
-    }
 
     // normal next
     setStepIndex((i) => Math.min(totalSteps - 1, i + 1));
@@ -1354,7 +1320,7 @@ const renderSubQuestions = (q) => {
 
       <main className="flex-1">
         {!introDone ? (
-          <section className="max-w-3xl mx-auto px-4 pt-16 pb-12 text-left">
+          <section className="max-w-3xl mx-auto px-4 pt-16 pb-20 text-left">
             <h1 className="text-3xl font-semibold text-[#0D2451]">
               Medical consultation
             </h1>
@@ -1405,7 +1371,6 @@ const renderSubQuestions = (q) => {
 >
   Login with your mobile number
 </span>
-
             </p>
 
             <p className="mt-10 text-[10px] text-[#8CA0C0] text-center">
@@ -1451,7 +1416,14 @@ const renderSubQuestions = (q) => {
         )}
       </main>
 
-      
+      <footer className="w-full border-t border-[#E5EEF6] bg-[#F6FAFF]">
+        <div className="max-w-5xl mx-auto px-4 py-4 text-center">
+          <p className="text-[10px] text-[#8CA0C0]">
+            Your answers help our doctors guide you safely — this is not a
+            diagnosis.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

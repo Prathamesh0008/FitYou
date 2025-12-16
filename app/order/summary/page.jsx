@@ -151,7 +151,51 @@ export default function OrderSummary() {
 
         {/* CONTINUE BUTTON */}
         <button
-          onClick={() => router.push("/order/payment")}
+onClick={async () => {
+  const address = JSON.parse(localStorage.getItem("fityou-address") || "{}");
+
+  const params = new URLSearchParams(window.location.search);
+  const quizRaw = params.get("data");
+ const quiz = JSON.parse(localStorage.getItem("fityou-quiz") || "{}");
+
+const productType =
+  quiz?.injectionPreference === "Yes"
+    ? "injection"
+    : quiz?.injectionPreference === "No, I prefer a tablet"
+    ? "tablet"
+    : "unknown";
+
+
+ const payload = {
+  productType,
+  address,
+  imageUploaded: true,
+  confirmations: { confirm1: true, confirm2: true },
+  quizData: quiz,
+};
+
+
+  console.log("📦 Sending Payload:", payload);
+
+  try {
+    const res = await fetch("/api/order/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",   // 🔥 REQUIRED (VERY IMPORTANT)
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    console.log("📥 API Response:", data);
+  } catch (err) {
+    console.error("❌ Failed to send order:", err);
+  }
+
+  router.push("/order/payment");
+}}
+
+
+
           className="w-full bg-[#A3C7D9] text-[#0D4F8B] font-semibold py-3 rounded-lg hover:bg-[#8EBAD1]"
         >
           Continue to payment
